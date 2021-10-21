@@ -1,0 +1,14 @@
+{
+  "name": "web-extension",
+  "version": "1.0.0",
+  "private": true,
+  "author": "danesjenovdan",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "web-ext run --source-dir=src",
+    "build": "web-ext build --source-dir=src"
+  },
+  "devDependencies": {
+    "web-ext": "^6.5.0"
+  }
+}

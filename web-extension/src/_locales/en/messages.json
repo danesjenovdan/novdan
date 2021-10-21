@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "TODO: extensionName",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "TODO: extensionDescription",
+    "description": "Description of the extension."
+  }
+}
