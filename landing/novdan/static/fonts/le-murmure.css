@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "Le Murmure";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("LeMurmure-Regular.woff2") format("woff2"),
+  url("LeMurmure-Regular.woff") format("woff");
+}
