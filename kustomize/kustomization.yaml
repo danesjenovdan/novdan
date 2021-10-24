@@ -6,4 +6,4 @@ resources:
 images:
   - name: novdan-frontend
     newName: rg.fr-par.scw.cloud/djnd/novdan-frontend
-    newTag: '355ee819299a8aec39d04228166a37018de5ec47'
+    newTag: '8dd10dfbe4eb66e1fae33116c54dd844b1f001c9'
