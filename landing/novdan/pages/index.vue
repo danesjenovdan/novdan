@@ -29,13 +29,13 @@ body {
   margin: 0;
   font-family: 'Syne', sans-serif;
 }
-video {
+#bgvid {
   object-fit: cover;
   width: 100vw;
   height: 100vh;
   position: fixed;
-  top: 0;
   left: 0;
+  top: 0;
 }
 section {
   display: flex;
@@ -62,10 +62,6 @@ section {
     max-width: 1320px;
   }
 }
-.background-gif {
-  // background-image: url("assets/images/gif.png");
-  // background-size: cover;
-}
 .background-white {
   background-color: white;
 }
@@ -78,9 +74,6 @@ section {
 }
 .background-black {
   background-color: black;
-}
-.background-gradient-pink {
-  background-image: linear-gradient(to bottom, rgba(255, 215, 0, 0) 0%, #ff5ccb 100%);
 }
 .row {
   display: flex;

@@ -1,38 +1,40 @@
 <template>
-  <section class="background-gradient-orange-pink media">
+  <section class="background-gradient-orange-pink media" @mousemove="tiltTiles">
     <div class="container">
-      <h2 data-aos="fade-up">Sodelujoči <br> mediji</h2>
+      <h2 data-aos="fade-up">
+        Sodelujoči <br> mediji
+      </h2>
       <div class="row">
         <div>
           <ul>
             <li>
               <a href="/" target="_blank">
                 <span>Pod črto</span>
-                <img src="~assets/images/pod-crto.svg" alt="Pod Črto logo">
+                <img src="~assets/images/pod-crto.svg" alt="Pod Črto logo" :style="`transform: rotate(${tilted * 0.5}deg)`">
               </a>
             </li>
             <li>
               <a href="/" target="_blank">
                 <span>Boris Vezjak - In Media Res</span>
-                <img src="~assets/images/imr.svg" alt="Boris Vezjak - In Media Res logo">
+                <img src="~assets/images/imr.svg" alt="Boris Vezjak - In Media Res logo" :style="`transform: rotate(${tilted * 0.8}deg)`">
               </a>
             </li>
             <li>
               <a href="/" target="_blank">
                 <span>Oštro</span>
-                <img src="~assets/images/ostro.svg" alt="Oštro logo">
+                <img src="~assets/images/ostro.svg" alt="Oštro logo" :style="`transform: rotate(${tilted * 0.6}deg)`">
               </a>
             </li>
             <li>
               <a href="/" target="_blank">
                 <span>Radio Študent</span>
-                <img src="~assets/images/rs.svg" alt="Radio Študent logo">
+                <img src="~assets/images/rs.svg" alt="Radio Študent logo" :style="`transform: rotate(${tilted * 0.2}deg)`">
               </a>
             </li>
             <li>
               <a href="/" target="_blank">
                 <span>Domen Savič - Državljan D</span>
-                <img src="~assets/images/drzavljan-d.svg" alt="Domen Savič - Državljan D logo">
+                <img src="~assets/images/drzavljan-d.svg" alt="Domen Savič - Državljan D logo" :style="`transform: rotate(${tilted * 0.4}deg)`">
               </a>
             </li>
           </ul>
@@ -55,11 +57,31 @@
               <p>Podpri <span>neodvisno</span> novinarstvo.</p>
             </div>
           </div>
+          <div class="yellow-bg" />
         </div>
       </div>
     </div>
   </section>
 </template>
+
+<script>
+export default {
+  data () {
+    return {
+      tilted: 0
+    }
+  },
+  methods: {
+    tiltTiles (event) {
+      const positionX = event.pageX
+      const windowWidth = window.innerWidth
+      const windowCenter = windowWidth / 2
+      const tilted = (windowCenter - positionX) / windowCenter * -45
+      this.tilted = tilted / 2
+    }
+  }
+}
+</script>
 
 <style scoped lang="scss">
 .media {
@@ -90,14 +112,9 @@
       }
       img {
         height: 5rem;
-        transition:all .3s cubic-bezier(.28,.05,.65,.97);
+        //transition:all .3s cubic-bezier(.28,.05,.65,.97);
         position: absolute;
         top: -1.5rem;
-      }
-      &:hover {
-        img {
-          animation:shake .4s 1;
-        }
       }
     }
   }
@@ -107,9 +124,21 @@
   display: flex;
   align-items: center;
   margin-left: 12rem;
+  .yellow-bg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 622px;
+    height: 622px;
+    background-image: radial-gradient(circle 311px at center, #ffd700 0%, rgba(255, 215, 0, 0) 100%);
+    opacity: 0.4;
+    z-index: 1;
+  }
 }
 
 .support-wrapper {
+  z-index: 2;
   .button {
     position: relative;
     display: flex;
@@ -122,13 +151,13 @@
       border-radius: 1.25rem;
       background-color: white;
       position: relative;
-      z-index: 1;
+      z-index: 3;
       transition: all 0.25s ease;
       transform:rotate(0) scale(1);
     }
     .star {
       position: absolute;
-      z-index: 1;
+      z-index: 3;
       right: -4rem;
       img {
         height: 11rem;
@@ -137,9 +166,11 @@
       }
       div {
         position: absolute;
-        top: 4rem;
+        top: 3.5rem;
         left: 3.5rem;
-        z-index: 2;
+        z-index: 4;
+        display: flex;
+        align-items: flex-end;
         span:first-child {
           font-size: 3rem;
           font-weight: 700;
@@ -148,6 +179,7 @@
         span:last-child {
           font-style: italic;
           display: inline-block;
+          font-family: 'Syne Tactile', cursive;
         }
       }
     }
@@ -168,9 +200,9 @@
     font-size: 1.5rem;
     font-weight: 700;
     span {
-      font-style: italic;
       color: #1103b1;
       font-weight: 400;
+      font-family: 'Syne Tactile', cursive;
     }
   }
 }

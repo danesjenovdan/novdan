@@ -1,35 +1,25 @@
 <template>
-  <section class="background-gif headline">
+  <section class="background-gif headline" @mousemove="tiltTiles">
     <div class="container">
       <div class="title">
         <h1>n<span style="position: absolute; z-index: -2; display: none">o</span><span style="opacity: 0">o</span>v dan</h1>
         <p>Neposredna podpora neodvisnemu novinarstvu</p>
       </div>
       <div class="plates">
-        <div class="plate-wrapper">
-          <div class="yellow-plate">
-            Pod črto
-          </div>
+        <div class="plate-wrapper" :style="`transform: rotate(${tilted * 0.5}deg)`">
+          <YellowPlate text="Pod Črto" bg="bottom" />
         </div>
-        <div class="plate-wrapper">
-          <div class="yellow-plate">
-            Oštro
-          </div>
+        <div class="plate-wrapper" :style="`transform: rotate(${tilted * 0.25}deg)`">
+          <YellowPlate text="Oštro" bg="bottom" />
         </div>
-        <div class="plate-wrapper">
-          <div class="yellow-plate">
-            Boris Vezjak - In Media Res
-          </div>
+        <div class="plate-wrapper" :style="`transform: rotate(${tilted * 0.8}deg)`">
+          <YellowPlate text="Boris Vezjak - In Media Res" bg="top" />
         </div>
-        <div class="plate-wrapper">
-          <div class="yellow-plate">
-            Radio Študent
-          </div>
+        <div class="plate-wrapper" :style="`transform: rotate(${tilted * 0.2}deg)`">
+          <YellowPlate text="Radio Študent" bg="bottom" />
         </div>
-        <div class="plate-wrapper">
-          <div class="yellow-plate">
-            Domen Savič - Državljan D
-          </div>
+        <div class="plate-wrapper" :style="`transform: rotate(${tilted * 0.4}deg)`">
+          <YellowPlate text="Domen Savič - Državljan D" bg="top" />
         </div>
       </div>
     </div>
@@ -42,6 +32,26 @@
     </div>
   </section>
 </template>
+
+<script>
+// import { gsap } from 'gsap'
+export default {
+  data () {
+    return {
+      tilted: 0
+    }
+  },
+  methods: {
+    tiltTiles (event) {
+      const positionX = event.pageX
+      const windowWidth = window.innerWidth
+      const windowCenter = windowWidth / 2
+      const tilted = (windowCenter - positionX) / windowCenter * -45
+      this.tilted = tilted / 10
+    }
+  }
+}
+</script>
 
 <style scoped lang="scss">
 .headline {
@@ -69,8 +79,8 @@
     .yellow-plate {
       display: inline-block;
       position: relative;
-      //background-color: #ffd700;
-      //border: 1px solid #000000;
+      background-color: #ffd700;
+      border: 1px solid #000000;
       //background-image: url("assets/images/yellow-plate.png");
       //background-size: 100% 100%;
       padding: 0.5rem 1rem 0 1rem;
@@ -79,18 +89,10 @@
       font-size: 4rem;
       margin: 0.5rem 0;
       line-height: 1;
-      &:before {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        top: 0;
-        z-index: -1;
-        background-image: url("assets/images/yellow-plate.png");
-        background-size: 100% 100%;
-        transform: rotate(1deg);
-      }
+    }
+    .plate-wrapper {
+      transition: rotate 2s ease-out;
+      will-change: transform;
     }
     .plate-wrapper:nth-child(odd) {
       .yellow-plate {
