@@ -44,6 +44,7 @@
   h4 {
     font-size: 2rem;
     font-weight: 800;
+    margin-bottom: 1.5rem;
   }
   p {
     font-size: 1.5rem;

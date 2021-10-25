@@ -18,32 +18,21 @@
         <div class="support">
           Podpri
         </div>
+        <div class="yellow-bg" />
       </div>
     </div>
     <div class="spinners">
       <div class="spinning-banner">
-        <div class="spinning-text">
-          <h2>Fake news. Fašizem. Pozni kapitalizem. Svoboda govora. Teorije zarote. Politična korektnost. Deep fake. Tribalizem. Mnenjski mehurčki. Kultura zgražanja. Kultura kenslanja. Psyop. Slamnati mož. Propaganda. Laž. Lažna sled.</h2>
-        </div>
-        <div class="spinning-text">
-          <h2>Fake news. Fašizem. Pozni kapitalizem. Svoboda govora. Teorije zarote. Politična korektnost. Deep fake. Tribalizem. Mnenjski mehurčki. Kultura zgražanja. Kultura kenslanja. Psyop. Slamnati mož. Propaganda. Laž. Lažna sled.</h2>
-        </div>
+        <SpinningBanner class="spinning-text" />
+        <SpinningBanner class="spinning-text" />
       </div>
       <div class="spinning-banner">
-        <div class="spinning-text">
-          <h2>Fake news. Fašizem. Pozni kapitalizem. Svoboda govora. Teorije zarote. Politična korektnost. Deep fake. Tribalizem. Mnenjski mehurčki. Kultura zgražanja. Kultura kenslanja. Psyop. Slamnati mož. Propaganda. Laž. Lažna sled.</h2>
-        </div>
-        <div class="spinning-text">
-          <h2>Fake news. Fašizem. Pozni kapitalizem. Svoboda govora. Teorije zarote. Politična korektnost. Deep fake. Tribalizem. Mnenjski mehurčki. Kultura zgražanja. Kultura kenslanja. Psyop. Slamnati mož. Propaganda. Laž. Lažna sled.</h2>
-        </div>
+        <SpinningBanner class="spinning-text" />
+        <SpinningBanner class="spinning-text" />
       </div>
       <div class="spinning-banner">
-        <div class="spinning-text">
-          <h2>Fake news. Fašizem. Pozni kapitalizem. Svoboda govora. Teorije zarote. Politična korektnost. Deep fake. Tribalizem. Mnenjski mehurčki. Kultura zgražanja. Kultura kenslanja. Psyop. Slamnati mož. Propaganda. Laž. Lažna sled.</h2>
-        </div>
-        <div class="spinning-text">
-          <h2>Fake news. Fašizem. Pozni kapitalizem. Svoboda govora. Teorije zarote. Politična korektnost. Deep fake. Tribalizem. Mnenjski mehurčki. Kultura zgražanja. Kultura kenslanja. Psyop. Slamnati mož. Propaganda. Laž. Lažna sled.</h2>
-        </div>
+        <SpinningBanner class="spinning-text" />
+        <SpinningBanner class="spinning-text" />
       </div>
     </div>
   </section>
@@ -87,11 +76,14 @@
     position: absolute;
     bottom: 3rem;
     right: 2rem;
+    z-index: 2;
     div {
       position: absolute;
       top: 3rem;
       left: 3rem;
       z-index: 2;
+      display: flex;
+      align-items: flex-end;
       span:first-child {
         font-size: 3rem;
         font-weight: 700;
@@ -100,6 +92,7 @@
       span:last-child {
         font-style: italic;
         display: inline-block;
+        font-family: 'Syne Tactile', cursive;
       }
     }
   }
@@ -111,7 +104,7 @@
     border-radius: 1.25rem;
     background-color: white;
     position: relative;
-    z-index: 1;
+    z-index: 3;
     transition: all 0.25s ease;
     transform:rotate(0) scale(1);
   }
@@ -124,6 +117,17 @@
     .star img {
       animation-play-state: running;
     }
+  }
+  .yellow-bg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 622px;
+    height: 622px;
+    background-image: radial-gradient(circle 311px at center, #ffd700 0%, rgba(255, 215, 0, 0) 100%);
+    opacity: 0.4;
+    z-index: 1;
   }
 }
 
