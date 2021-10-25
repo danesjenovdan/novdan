@@ -1,7 +1,7 @@
 <template>
   <section class="background-gradient-orange-pink media">
     <div class="container">
-      <h2>Sodelujoči <br> mediji</h2>
+      <h2 data-aos="fade-up">Sodelujoči <br> mediji</h2>
       <div class="row">
         <div>
           <ul>

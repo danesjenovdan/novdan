@@ -1,7 +1,7 @@
 <template>
   <section class="background-gradient-pink footer">
     <div class="container">
-      <div>
+      <div data-aos="fade-up">
         <p>
           Projekt razvija <a href="https://danesjenovdan.si/" target="_blank">Danes je nov dan</a> <br>
           ob podpori fundacije <a href="https://www.grantfortheweb.org/" target="_blank">Grant for the Web</a>.
