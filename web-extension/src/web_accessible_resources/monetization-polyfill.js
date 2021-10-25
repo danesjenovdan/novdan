@@ -71,9 +71,23 @@
 
   function onMonetizationMetaTagAdded(metaTag) {
     console.log('added', metaTag.content);
+    window.postMessage({
+      name: 'monetization',
+      event: {
+        type: 'meta-tag-added',
+        detail: { content: metaTag.content },
+      },
+    });
   }
 
   function onMonetizationMetaTagRemoved(metaTag) {
     console.log('removed', metaTag.content);
+    window.postMessage({
+      name: 'monetization',
+      event: {
+        type: 'meta-tag-removed',
+        detail: { content: metaTag.content },
+      },
+    });
   }
 })();
