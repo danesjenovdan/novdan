@@ -45,7 +45,7 @@
 
 <style scoped lang="scss">
 .headline {
-  padding: 3rem 0;
+  padding: 3rem 0 6rem 0;
 
   .title {
     margin: 2rem 0;
@@ -119,7 +119,7 @@
     position: absolute;
     display: flex;
     justify-content: center;
-    top: 86px;
+    top: 5rem;
   }
 }
 

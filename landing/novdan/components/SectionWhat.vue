@@ -1,10 +1,10 @@
 <template>
   <section class="background-white what">
     <div class="container">
-      <h1>
+      <h1 data-aos="fade-up">
         Kvalitetno novinarstvo <br>NE M<img class="sun" src="~assets/images/sun.png" alt="sun icon">RE<br> biti zastonj!
       </h1>
-      <p>
+      <p data-aos="fade-up">
         Nov dan je nova eksperimentalna platforma za podporo neodvisnemu novinarstvu, ki deluje s pomočjo novega odprtega standarda za spletno monetizacijo (web monetization standard - WMS).
       </p>
       <div class="support-wrapper">
