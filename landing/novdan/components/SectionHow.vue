@@ -2,15 +2,29 @@
   <section class="background-gradient-white-yellow how">
     <div class="container">
       <h1>Kako?</h1>
-      <div class="row">
+      <div class="row first">
         <p>
-          Inštaliraj si <span>Nov<br> Dan vtičnik</span> za<br> Chrome ali Firefox.
+          Inštaliraj si <span>Nov<br> Dan vtičnik</span>.
         </p>
-        <div class="button-firefox">
-          <img src="~assets/images/mozilla.png" alt="pink spinning star">
-        </div>
-        <div class="button-chrome">
-          <img src="~assets/images/chrome.png" alt="pink spinning star">
+        <div class="browsers">
+          <div class="button-browser-wrapper">
+            <div class="support">
+              Chrome
+            </div>
+            <div class="button">
+              <img src="~assets/images/chrome.png" class="browser" alt="pink spinning star">
+              <img src="~assets/images/modra-zvezda.svg" class="spinning-star" alt="pink spinning star">
+            </div>
+          </div>
+          <div class="button-browser-wrapper">
+            <div class="support">
+              Firefox
+            </div>
+            <div class="button">
+              <img src="~assets/images/mozilla.png" class="browser" alt="pink spinning star">
+              <img src="~assets/images/modra-zvezda.svg" class="spinning-star" alt="pink spinning star">
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -34,6 +48,15 @@
           <div>
             <img src="~assets/images/vesoljcek.png" alt="pink spinning star">
           </div>
+        </div>
+      </div>
+      <div class="row forth" style="justify-content: end">
+        <div>
+          <p style="text-align: end">
+            <span>Tvoj prispevek bo</span><br>
+            <span>med njih razdeljen</span><br>
+            <span>samodejno.</span>
+          </p>
         </div>
       </div>
     </div>
@@ -61,33 +84,68 @@
       font-weight: 800;
     }
   }
-  .button-firefox, .button-chrome {
-    background-image: url("assets/images/circle-background.png");
-    background-size: 100% 100%;
-    //border: 1px solid #000000;
-    //border-radius: 50%;
-    height: 7rem;
-    width: 7rem;
+  .first {
+    margin-top: 4rem;
+    margin-bottom: 6rem;
+  }
+  .browsers {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-left: 3rem;
-    transition: all 0.25s ease;
-    transform: rotate(0) scale(1);
-    img {
-      height: 4rem;
+  }
+  .button-browser-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 2rem 0;
+    &:first-child {
+      margin-left: 8rem;
+    }
+    .support {
+      font-size: 3rem;
+      font-weight: 700;
+      padding: 0.25rem 6rem 0.25rem 1rem;
+      border: 3px solid #000000;
+      border-radius: 1.25rem;
+      background-color: white;
+      position: relative;
+      z-index: 3;
+      transition: all 0.25s ease;
+      transform: rotate(0) scale(1);
+      cursor: pointer;
+    }
+    .button {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      right: 0;
+      transform: translateX(50%);
+      cursor: pointer;
+      .browser {
+        position: absolute;
+        z-index: 6;
+        height: 4rem;
+      }
+      .spinning-star {
+        width: 10rem;
+        animation: rotate360 3s linear infinite;
+        animation-play-state: paused;
+      }
     }
     &:hover {
-      cursor: pointer;
-      transform:rotate(0) scale(1.2);
+      .support {
+        background-color: #ffd700;
+        transform:rotate(0) scale(1.2);
+      }
+      .spinning-star {
+        animation-play-state: running;
+      }
     }
   }
-  .button-firefox {
-    margin-top: 4rem;
-  }
-  .button-chrome {
-    margin-top: 5rem;
-  }
+
   .subscribe {
     margin-left: 8rem;
     display: flex;
@@ -101,7 +159,7 @@
         width: 24rem;
       }
       .effect {
-        width: 44rem;
+        width: 16rem;
         height: auto;
         top: 50%;
         left: 50%;
@@ -111,7 +169,7 @@
       }
       &:hover {
         .effect {
-          transform: translateY(-50%) translateX(-50%) scale(1.2);
+          transform: translateY(-50%) translateX(-50%) scale(3);
         }
       }
     }
@@ -132,5 +190,20 @@
       }
     }
   }
+  .forth {
+    p {
+      span {
+        font-weight: 700;
+        background-color: white;
+        margin: 0.5rem 0;
+        padding: 0 0.25rem;
+        display: inline-block;
+        &:last-child {
+          font-weight: 800;
+        }
+      }
+    }
+  }
 }
+
 </style>

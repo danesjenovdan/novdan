@@ -1,15 +1,5 @@
 <template>
   <section class="footer">
-    <video
-      id="bgvidfooter"
-      playsinline
-      autoplay
-      muted
-      loop
-      poster="~assets/images/gif.png"
-    >
-      <source src="~assets/video/back_v2_1.mp4" type="video/mp4">
-    </video>
     <div class="background-gradient-pink">
       <div class="container">
         <div>
@@ -64,15 +54,6 @@
   img {
     width: 100%;
     z-index: 2;
-  }
-  video {
-    object-fit: cover;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    z-index: -1;
   }
 }
 </style>

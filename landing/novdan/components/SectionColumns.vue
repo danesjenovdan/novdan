@@ -3,6 +3,16 @@
     <div class="rotating-circle">
       <img src="~assets/images/krog-moder.svg" alt="">
     </div>
+    <video
+      id="bgvidfooter"
+      playsinline
+      autoplay
+      muted
+      loop
+      poster="~assets/images/gif.png"
+    >
+      <source src="~assets/video/back_v2_1.mp4" type="video/mp4">
+    </video>
     <div class="container">
       <div class="row">
         <div class="yellow-column-wrapper">
@@ -43,6 +53,16 @@
 <style lang="scss" scoped>
 .columns {
   position: relative;
+  overflow: visible;
+  video {
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+  }
   .container {
     margin: 6rem 0;
     .row {

@@ -136,7 +136,7 @@
   width: 100%;
   transform: rotate(60deg);
   position: absolute;
-  right: -50%;
+  right: -40%;
   top: 50%;
 }
 .spinning-banner {
