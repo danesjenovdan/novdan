@@ -15,10 +15,17 @@ spec:
         app: novdan-frontend
     spec:
       containers:
-      - name: novdan-frontend
-        image: novdan-frontend # kustomize thing
-        ports:
-        - containerPort: 3000
+        - name: novdan-frontend
+          image: novdan-frontend
+          ports:
+            - containerPort: 3000
+          # resources:
+          #   requests:
+          #     memory: 500Mi
+          #     cpu: 200m
+          #   limits:
+          #     memory: 500Mi
+          #     cpu: 200m
 ---
 apiVersion: v1
 kind: Service
@@ -40,17 +47,17 @@ metadata:
     cert-manager.io/cluster-issuer: "letsencrypt-production"
 spec:
   tls:
-  - hosts:
-    - novdan.lb.djnd.si
-    secretName: novdan-frontend-tls
+    - hosts:
+        - novdan.lb.djnd.si
+      secretName: novdan-frontend-tls
   rules:
-  - host: novdan.lb.djnd.si
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: novdan-frontend
-            port:
-              number: 80
+    - host: novdan.lb.djnd.si
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: novdan-frontend
+                port:
+                  number: 80

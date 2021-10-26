@@ -31,6 +31,15 @@ jobs:
             rg.fr-par.scw.cloud/djnd/novdan-frontend:${{ github.sha }}
             rg.fr-par.scw.cloud/djnd/novdan-frontend:latest
       -
+        name: Build and push novdan api
+        uses: docker/build-push-action@v2
+        with:
+          context: ./novdan_api
+          push: true
+          tags: |
+            rg.fr-par.scw.cloud/djnd/novdan-api:${{ github.sha }}
+            rg.fr-par.scw.cloud/djnd/novdan-api:latest
+      -
         name: Update image versions in kustomize/kustomization.yaml
         run: |
           sed -i "s/newTag: .*\+/newTag\: '${{ github.sha }}'/" kustomize/kustomization.yaml
