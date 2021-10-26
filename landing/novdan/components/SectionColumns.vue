@@ -5,7 +5,7 @@
     </div>
     <div class="container">
       <div class="row">
-        <div class="yellow-column-wrapper" data-aos="fade-up" data-aos-offset="200">
+        <div class="yellow-column-wrapper">
           <div class="yellow-column">
             <h3>
               Podpiraj medije, <br> ki jih bereš
@@ -15,7 +15,7 @@
             </p>
           </div>
         </div>
-        <div class="yellow-column-wrapper" data-aos="fade-up">
+        <div class="yellow-column-wrapper">
           <div class="yellow-column">
             <h3>
               Nov odprtokodni spletni standard
@@ -25,7 +25,7 @@
             </p>
           </div>
         </div>
-        <div class="yellow-column-wrapper" data-aos="fade-up" data-aos-offset="300">
+        <div class="yellow-column-wrapper">
           <div class="yellow-column">
             <h3>
               Sodeluj pri <br> spremembi

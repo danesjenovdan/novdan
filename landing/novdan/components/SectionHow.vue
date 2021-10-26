@@ -1,8 +1,8 @@
 <template>
   <section class="background-gradient-white-yellow how">
     <div class="container">
-      <h1 data-aos="fade-up">Kako?</h1>
-      <div class="row" data-aos="fade-up">
+      <h1>Kako?</h1>
+      <div class="row">
         <p>
           Inštaliraj si <span>Nov<br> Dan vtičnik</span> za<br> Chrome ali Firefox.
         </p>
@@ -13,7 +13,7 @@
           <img src="~assets/images/chrome.png" alt="pink spinning star">
         </div>
       </div>
-      <div class="row" data-aos="fade-up">
+      <div class="row">
         <div class="subscribe">
           <p>
             Plačaj <br>naročnino.
@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-      <div class="row" data-aos="fade-up">
+      <div class="row">
         <div class="read">
           <p>
             Beri <br><span>neodvisne</span><br> medije.
