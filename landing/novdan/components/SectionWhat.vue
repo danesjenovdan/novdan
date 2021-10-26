@@ -1,10 +1,10 @@
 <template>
   <section class="background-white what">
     <div class="container">
-      <h1 data-aos="fade-up">
+      <h1>
         Kvalitetno novinarstvo <br>NE M<img class="sun" src="~assets/images/sun.png" alt="sun icon">RE<br> biti zastonj!
       </h1>
-      <p data-aos="fade-up">
+      <p>
         Nov dan je nova eksperimentalna platforma za podporo neodvisnemu novinarstvu, ki deluje s pomočjo novega odprtega standarda za spletno monetizacijo (web monetization standard - WMS).
       </p>
       <div class="support-wrapper">
@@ -40,8 +40,9 @@
 
 <style lang="scss" scoped>
 .what {
-  height: 64rem;
+  min-height: 60rem;
   position: relative;
+  overflow-y: hidden;
   .container {
     position: relative;
   }
@@ -132,10 +133,11 @@
 }
 
 .spinners {
-  width: 64rem;
-  transform: translateX(50%) translateY(-50%) rotate(90deg) translateY(50%) translateX(50%);
+  width: 100%;
+  transform: rotate(60deg);
   position: absolute;
-  right: 0;
+  right: -40%;
+  top: 50%;
 }
 .spinning-banner {
   width: 100%;
@@ -162,11 +164,11 @@
     background-color: #1103b1;
     color: #ffd700;
     .spinning-text {
-      -moz-animation: spinning-banner 32s linear infinite;
-      -webkit-animation: spinning-banner 32s linear infinite;
-      animation: spinning-banner 32s linear infinite;
+      -moz-animation: spinning-banner 36s linear infinite;
+      -webkit-animation: spinning-banner 36s linear infinite;
+      animation: spinning-banner 36s linear infinite;
       &:last-child {
-        animation-delay: -16s;
+        animation-delay: -18s;
       }
     }
   }
@@ -174,11 +176,11 @@
     background-color: #ffd700;
     color: #ff5ccb;
     .spinning-text {
-      -moz-animation: spinning-banner 36s reverse linear infinite;
-      -webkit-animation: spinning-banner 36s reverse linear infinite;
-      animation: spinning-banner 36s reverse linear infinite;
+      -moz-animation: spinning-banner 42s reverse linear infinite;
+      -webkit-animation: spinning-banner 42s reverse linear infinite;
+      animation: spinning-banner 42s reverse linear infinite;
       &:last-child {
-        animation-delay: -18s;
+        animation-delay: -21s;
       }
     }
   }
@@ -186,11 +188,11 @@
     background-color: #ff5ccb;
     color: #1103b1;
     .spinning-text {
-      -moz-animation: spinning-banner 22s linear infinite;
-      -webkit-animation: spinning-banner 22s linear infinite;
-      animation: spinning-banner 22s linear infinite;
+      -moz-animation: spinning-banner 32s linear infinite;
+      -webkit-animation: spinning-banner 32s linear infinite;
+      animation: spinning-banner 32s linear infinite;
       &:last-child {
-        animation-delay: -11s;
+        animation-delay: -16s;
       }
     }
   }

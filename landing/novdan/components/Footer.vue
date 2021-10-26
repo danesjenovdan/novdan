@@ -1,18 +1,8 @@
 <template>
   <section class="footer">
-    <video
-      id="bgvidfooter"
-      playsinline
-      autoplay
-      muted
-      loop
-      poster="~assets/images/gif.png"
-    >
-      <source src="~assets/video/back_v2_1.mp4" type="video/mp4">
-    </video>
     <div class="background-gradient-pink">
       <div class="container">
-        <div data-aos="fade-up">
+        <div>
           <p>
             Projekt razvija <a href="https://danesjenovdan.si/" target="_blank">Danes je nov dan</a> <br>
             ob podpori fundacije <a href="https://www.grantfortheweb.org/" target="_blank">Grant for the Web</a>.
@@ -64,15 +54,6 @@
   img {
     width: 100%;
     z-index: 2;
-  }
-  video {
-    object-fit: cover;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    z-index: -1;
   }
 }
 </style>

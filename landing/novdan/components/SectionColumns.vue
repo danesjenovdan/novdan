@@ -3,19 +3,29 @@
     <div class="rotating-circle">
       <img src="~assets/images/krog-moder.svg" alt="">
     </div>
+    <video
+      id="bgvidfooter"
+      playsinline
+      autoplay
+      muted
+      loop
+      poster="~assets/images/gif.png"
+    >
+      <source src="~assets/video/back_v2_1.mp4" type="video/mp4">
+    </video>
     <div class="container">
       <div class="row">
-        <div class="yellow-column-wrapper" data-aos="fade-up" data-aos-offset="200">
+        <div class="yellow-column-wrapper">
           <div class="yellow-column">
             <h3>
-              Podpiraj medije, <br> ki jih bereš
+              Sodeluj pri <br> spremembi
             </h3>
             <p>
-              Tvoja podpora bo med neodvisne medije razdeljena proporcionalno, glede na količino časa, ki si ga porabil_a za branje posameznega medija.
+              Pridruži se pilotskemu projektu in pomagaj pri izgradnji spleta, v katerem je kvalitetna vsebina pravično nagrajena.
             </p>
           </div>
         </div>
-        <div class="yellow-column-wrapper" data-aos="fade-up">
+        <div class="yellow-column-wrapper">
           <div class="yellow-column">
             <h3>
               Nov odprtokodni spletni standard
@@ -25,13 +35,13 @@
             </p>
           </div>
         </div>
-        <div class="yellow-column-wrapper" data-aos="fade-up" data-aos-offset="300">
+        <div class="yellow-column-wrapper">
           <div class="yellow-column">
             <h3>
-              Sodeluj pri <br> spremembi
+              Podpiraj medije, <br> ki jih bereš
             </h3>
             <p>
-              Pridruži se pilotskemu projektu in pomagaj pri izgradnji spleta, v katerem je kvalitetna vsebina pravično nagrajena.
+              Tvoja podpora bo med neodvisne medije razdeljena proporcionalno, glede na količino časa, ki si ga porabil_a za branje posameznega medija.
             </p>
           </div>
         </div>
@@ -43,6 +53,16 @@
 <style lang="scss" scoped>
 .columns {
   position: relative;
+  overflow: visible;
+  video {
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+  }
   .container {
     margin: 6rem 0;
     .row {
