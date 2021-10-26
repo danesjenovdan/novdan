@@ -8,10 +8,10 @@
         <div class="yellow-column-wrapper">
           <div class="yellow-column">
             <h3>
-              Podpiraj medije, <br> ki jih bereš
+              Sodeluj pri <br> spremembi
             </h3>
             <p>
-              Tvoja podpora bo med neodvisne medije razdeljena proporcionalno, glede na količino časa, ki si ga porabil_a za branje posameznega medija.
+              Pridruži se pilotskemu projektu in pomagaj pri izgradnji spleta, v katerem je kvalitetna vsebina pravično nagrajena.
             </p>
           </div>
         </div>
@@ -28,10 +28,10 @@
         <div class="yellow-column-wrapper">
           <div class="yellow-column">
             <h3>
-              Sodeluj pri <br> spremembi
+              Podpiraj medije, <br> ki jih bereš
             </h3>
             <p>
-              Pridruži se pilotskemu projektu in pomagaj pri izgradnji spleta, v katerem je kvalitetna vsebina pravično nagrajena.
+              Tvoja podpora bo med neodvisne medije razdeljena proporcionalno, glede na količino časa, ki si ga porabil_a za branje posameznega medija.
             </p>
           </div>
         </div>
