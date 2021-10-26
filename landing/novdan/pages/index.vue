@@ -43,6 +43,7 @@ section {
   align-items: center;
   position: relative;
   z-index: 1;
+  overflow-x: hidden;
 }
 .container {
   width: 100%;
