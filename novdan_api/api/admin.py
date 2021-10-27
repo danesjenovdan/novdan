@@ -1,6 +1,5 @@
 from django.contrib import admin
-from django.db.models import Q
-from django.utils import timezone
+from rangefilter.filters import DateTimeRangeFilter
 from django.utils.translation import gettext_lazy as _
 
 from .models import Wallet, Subscription, SubscriptionTimeRange, Transaction
@@ -25,15 +24,9 @@ class IsSubscriptionActiveFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == '1':
-            return queryset.filter(
-                Q(active_range__started_at__lte=timezone.now()),
-                Q(active_range__ended_at__gte=timezone.now()) | Q(active_range__ended_at__isnull=True),
-            )
+            return queryset.active()
         if self.value() == '0':
-            return queryset.exclude(
-                Q(active_range__started_at__lte=timezone.now()),
-                Q(active_range__ended_at__gte=timezone.now()) | Q(active_range__ended_at__isnull=True),
-            )
+            return queryset.exclude(id__in=queryset.active())
         return queryset
 
 
@@ -54,4 +47,8 @@ class SubscriptionAdmin(admin.ModelAdmin):
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'from_wallet', 'to_wallet', 'amount')
+    list_filter = (('created_at', DateTimeRangeFilter),)
+    search_fields = ('from_wallet__id', 'to_wallet__id', 'amount')
+    readonly_fields = ('created_at',)
+    fields = ('created_at', 'from_wallet', 'to_wallet', 'amount')

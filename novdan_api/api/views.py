@@ -1,3 +1,87 @@
-from django.shortcuts import render
+from django.core.exceptions import ValidationError
+from django.db import transaction
+from django.db.models import F
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_409_CONFLICT
+from rest_framework.views import APIView
 
-# Create your views here.
+from .serializers import WalletSerializer
+from .models import Wallet, Subscription, Transaction
+
+
+class StatusView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        wallet = Wallet.objects.filter(user=self.request.user).first()
+        wallet_serializer = WalletSerializer(wallet)
+
+        active_subscriptions = Subscription.objects.filter(user=self.request.user).active()
+
+        return Response({
+            "wallet": wallet_serializer.data,
+            "subscription_active": bool(active_subscriptions.first()),
+        })
+
+
+"""
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    "
+    Object-level permission to only allow owners of an object to edit it.
+    Assumes the model instance has an `owner` attribute.
+    "
+
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        # Instance must have an attribute named `owner`.
+        return obj.owner == request.user
+"""
+
+class TransferView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        from_wallet_id = self.request.query_params.get('from')
+        to_wallet_id = self.request.query_params.get('to')
+        amount_string = self.request.query_params.get('amount')
+
+        if not from_wallet_id or not to_wallet_id or from_wallet_id == to_wallet_id or not amount_string:
+            return Response(None, status=HTTP_400_BAD_REQUEST)
+
+        try:
+            from_wallet = Wallet.objects.get(id=from_wallet_id)
+            to_wallet = Wallet.objects.get(id=to_wallet_id)
+            amount = int(amount_string)
+        except (ValueError, ValidationError, Wallet.DoesNotExist):
+            return Response(None, status=HTTP_400_BAD_REQUEST)
+
+        if not amount or amount < 1:
+            return Response(None, status=HTTP_400_BAD_REQUEST)
+
+        with transaction.atomic():
+            if from_wallet.amount < amount:
+                return Response(None, status=HTTP_409_CONFLICT)
+
+            from_wallet.amount = F('amount') - amount
+            to_wallet.amount = F('amount') + amount
+
+            new_transaction = Transaction(
+                from_wallet=from_wallet,
+                to_wallet=to_wallet,
+                amount=amount,
+            )
+
+            from_wallet.save()
+            to_wallet.save()
+            new_transaction.save()
+
+        return Response({
+            "from": from_wallet_id,
+            "to": to_wallet_id,
+            "amount": amount,
+        })

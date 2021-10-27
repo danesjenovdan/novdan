@@ -18,7 +18,25 @@ class Wallet(models.Model):
         return f'Wallet ({self.id})'
 
 
+class SubscriptionQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(
+            Q(active_range__started_at__lte=timezone.now()),
+            Q(active_range__ended_at__gte=timezone.now()) | Q(active_range__ended_at__isnull=True),
+        )
+
+
+class SubscriptionManager(models.Manager):
+    def get_queryset(self):
+        return SubscriptionQuerySet(self.model, using=self._db)
+
+    def active(self):
+        return self.get_queryset().active()
+
+
 class Subscription(models.Model):
+    objects = SubscriptionManager()
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
