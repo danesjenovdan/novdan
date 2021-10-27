@@ -1,87 +1,128 @@
 <template>
-  <section class="background-gradient-white-yellow how">
+  <section id="how-section" class="background-gradient-white-yellow how">
     <div class="container">
       <h1>Kako?</h1>
-      <div class="row first">
-        <p>
-          Inštaliraj si <span>Nov<br> Dan vtičnik</span>.
-        </p>
-        <div class="browsers">
-          <div class="button-browser-wrapper">
-            <div class="support">
-              Chrome
+      <div v-if="windowWidth > 1200">
+        <div class="row first">
+          <p>
+            Inštaliraj si <span>Nov<br> Dan vtičnik</span>.
+          </p>
+          <div class="browsers">
+            <div class="button-browser-wrapper">
+              <div class="support">
+                Chrome
+              </div>
+              <div class="button">
+                <img src="~assets/images/chrome.png" class="browser" alt="pink spinning star">
+                <img src="~assets/images/modra-zvezda.svg" class="spinning-star" alt="pink spinning star">
+              </div>
             </div>
-            <div class="button">
-              <img src="~assets/images/chrome.png" class="browser" alt="pink spinning star">
-              <img src="~assets/images/modra-zvezda.svg" class="spinning-star" alt="pink spinning star">
-            </div>
-          </div>
-          <div class="button-browser-wrapper">
-            <div class="support">
-              Firefox
-            </div>
-            <div class="button">
-              <img src="~assets/images/mozilla.png" class="browser" alt="pink spinning star">
-              <img src="~assets/images/modra-zvezda.svg" class="spinning-star" alt="pink spinning star">
+            <div class="button-browser-wrapper">
+              <div class="support">
+                Firefox
+              </div>
+              <div class="button">
+                <img src="~assets/images/mozilla.png" class="browser" alt="pink spinning star">
+                <img src="~assets/images/modra-zvezda.svg" class="spinning-star" alt="pink spinning star">
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="subscribe">
-          <p>
-            Plačaj <br>naročnino.
-          </p>
-          <div class="moneybill">
-            <img src="~assets/images/5-eur.svg" alt="pink spinning star">
-            <div class="effect">
-              <img src="~assets/images/zarki-roza.svg" alt="pink spinning star">
+        <div class="row">
+          <div class="subscribe">
+            <p>
+              Plačaj <br>naročnino.
+            </p>
+            <div class="moneybill">
+              <img src="~assets/images/5-eur.svg" alt="pink spinning star">
+              <div class="effect">
+                <img src="~assets/images/zarki-roza.svg" alt="pink spinning star">
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="read">
-          <p>
-            Beri <br><span>neodvisne</span><br> medije.
-          </p>
+        <div class="row">
+          <div class="read">
+            <p>
+              Beri <br><span>neodvisne</span><br> medije.
+            </p>
+            <div>
+              <img src="~assets/images/vesoljcek.png" alt="pink spinning star">
+            </div>
+          </div>
+        </div>
+        <div class="row forth" style="justify-content: end">
           <div>
-            <img src="~assets/images/vesoljcek.png" alt="pink spinning star">
+            <p style="text-align: end">
+              <span>Tvoj prispevek bo</span><br>
+              <span>med njih razdeljen</span><br>
+              <span>samodejno.</span>
+            </p>
           </div>
         </div>
       </div>
-      <div class="row forth" style="justify-content: end">
-        <div>
-          <p style="text-align: end">
-            <span>Tvoj prispevek bo</span><br>
-            <span>med njih razdeljen</span><br>
-            <span>samodejno.</span>
+      <div v-if="windowWidth <= 1200" class="how-mobile">
+        <div class="row">
+          <p>
+            Nov dan je eksperimentalna platforma, ki zaenkrat podpira samo Firefox in Chrome računalniške brskalnike.
           </p>
+          <div class="subscribe">
+            <div class="moneybill">
+              <img src="~assets/images/5-eur.svg" alt="pink spinning star">
+              <div class="effect">
+                <img src="~assets/images/zarki-roza.svg" alt="pink spinning star">
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 </template>
 
+<script>
+export default {
+  props: {
+    windowWidth: {
+      type: Number,
+      default: 0
+    }
+  }
+}
+</script>
+
 <style scoped lang="scss">
 .how {
-  padding: 6rem 0;
+  padding: 6rem 1rem;
+  overflow-x: hidden;
+  .row {
+    display: block;
+    @media (min-width: 1200px) {
+      display: flex;
+    }
+  }
   h1 {
-    font-size: 7rem;
+    font-size: 3rem;
     font-weight: 800;
     margin-top: 0;
     margin-bottom: 2rem;
     text-align: center;
+    @media (min-width: 1200px) {
+      font-size: 7rem;
+    }
   }
   p {
     text-transform: uppercase;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     font-weight: 700;
     position: relative;
     z-index: 2;
     margin: 5rem 0;
     span {
       font-weight: 800;
+    }
+    @media (min-width: 1200px) {
+      font-size: 2.5rem;
     }
   }
   .first {
@@ -91,19 +132,25 @@
   .browsers {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    @media (min-width: 1200px) {
+      align-items: center;
+      justify-content: center;
+    }
   }
   .button-browser-wrapper {
     position: relative;
     display: flex;
     align-items: center;
     margin: 2rem 0;
-    &:first-child {
-      margin-left: 8rem;
+    @media (min-width: 1200px) {
+      &:first-child {
+        margin-left: 8rem;
+      }
     }
     .support {
-      font-size: 3rem;
+      text-decoration: none;
+      font-size: 2.5rem;
       font-weight: 700;
       padding: 0.25rem 6rem 0.25rem 1rem;
       border: 3px solid #000000;
@@ -114,6 +161,9 @@
       transition: all 0.25s ease;
       transform: rotate(0) scale(1);
       cursor: pointer;
+      @media (min-width: 1200px) {
+        font-size: 3rem;
+      }
     }
     .button {
       position: absolute;
@@ -138,7 +188,9 @@
     &:hover {
       .support {
         background-color: #ffd700;
-        transform:rotate(0) scale(1.2);
+        @media (min-width: 1200px) {
+          transform: rotate(0) scale(1.2);
+        }
       }
       .spinning-star {
         animation-play-state: running;
@@ -147,16 +199,21 @@
   }
 
   .subscribe {
-    margin-left: 8rem;
-    display: flex;
-    align-items: center;
+    @media (min-width: 1200px) {
+      display: flex;
+      align-items: center;
+      margin-left: 8rem;
+    }
     .moneybill {
       margin-left: 5rem;
       position: relative;
       &>img {
         z-index: 2;
         position: relative;
-        width: 24rem;
+        width: 16rem;
+        @media (min-width: 1200px) {
+          width: 24rem;
+        }
       }
       .effect {
         width: 16rem;
@@ -169,14 +226,19 @@
       }
       &:hover {
         .effect {
-          transform: translateY(-50%) translateX(-50%) scale(3);
+          transform: translateY(-50%) translateX(-50%) scale(2);
+          @media (min-width: 1200px) {
+            transform: translateY(-50%) translateX(-50%) scale(3);
+          }
         }
       }
     }
   }
   .read {
-    margin-left: 16rem;
     display: flex;
+    @media (min-width: 1200px) {
+      margin-left: 16rem;
+    }
     &>div {
       margin-top: 5rem;
       margin-left: 3rem;
@@ -202,6 +264,11 @@
           font-weight: 800;
         }
       }
+    }
+  }
+  .how-mobile {
+    p {
+      text-align: center;
     }
   }
 }

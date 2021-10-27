@@ -11,20 +11,35 @@
       <source src="~assets/video/back_v1_1.mp4" type="video/mp4">
     </video>
     <Headline />
-    <SectionWhat />
-    <SectionColumns />
+    <SectionWhat :window-width="windowWidth" />
+    <SectionColumns :window-width="windowWidth" />
     <SectionMedia />
-    <SectionHow />
+    <SectionHow :window-width="windowWidth" />
     <SectionFaq />
     <Footer />
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      windowWidth: 0
+    }
+  },
+  mounted () {
+    this.windowWidth = window.innerWidth
+    window.addEventListener('resize', () => {
+      this.windowWidth = window.innerWidth
+    })
+  }
+}
 </script>
 
 <style lang="scss">
+html {
+  scroll-behavior: smooth;
+}
 body {
   margin: 0;
   font-family: 'Syne', sans-serif;
@@ -43,7 +58,6 @@ section {
   align-items: center;
   position: relative;
   z-index: 1;
-  overflow-x: hidden;
 }
 .container {
   width: 100%;

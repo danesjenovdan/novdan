@@ -1,6 +1,6 @@
 <template>
   <section class="background-gif columns">
-    <div class="rotating-circle">
+    <div v-if="windowWidth > 1200" class="rotating-circle">
       <img src="~assets/images/krog-moder.svg" alt="">
     </div>
     <video
@@ -18,7 +18,7 @@
         <div class="yellow-column-wrapper">
           <div class="yellow-column">
             <h3>
-              Sodeluj pri <br> spremembi
+              Sodeluj pri <br v-if="windowWidth > 1200"> spremembi
             </h3>
             <p>
               Pridruži se pilotskemu projektu in pomagaj pri izgradnji spleta, v katerem je kvalitetna vsebina pravično nagrajena.
@@ -38,7 +38,7 @@
         <div class="yellow-column-wrapper">
           <div class="yellow-column">
             <h3>
-              Podpiraj medije, <br> ki jih bereš
+              Podpiraj medije, <br v-if="windowWidth > 1200"> ki jih bereš
             </h3>
             <p>
               Tvoja podpora bo med neodvisne medije razdeljena proporcionalno, glede na količino časa, ki si ga porabil_a za branje posameznega medija.
@@ -49,6 +49,17 @@
     </div>
   </section>
 </template>
+
+<script>
+export default {
+  props: {
+    windowWidth: {
+      type: Number,
+      default: 0
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .columns {
@@ -66,7 +77,11 @@
   .container {
     margin: 6rem 0;
     .row {
-      align-items: center;
+      display: block;
+      @media (min-width: 1200px) {
+        display: flex;
+        align-items: center;
+      }
     }
   }
   .rotating-circle {
@@ -78,23 +93,35 @@
   }
 }
 .yellow-column-wrapper {
-  margin: 1.5rem;
+  margin: 1rem;
   flex-grow: 1;
   flex-basis: 0;
+  @media (min-width: 1200px) {
+    margin: 1.5rem;
+  }
   .yellow-column {
     background-color: #ffd700;
     border: 1px solid #000000;
     border-radius: 1.25rem;
-    padding: 2rem;
+    padding: 1.5rem;
     h3 {
       text-transform: uppercase;
-      font-size: 3.5rem;
+      font-size: 2rem;
       font-family: "Le Murmure", serif;
       margin: 0;
     }
     p {
-      font-size: 1.75rem;
+      font-size: 1.25rem;
       margin-top: 0.5rem;
+    }
+    @media (min-width: 1200px) {
+      padding: 2rem;
+      h3 {
+        font-size: 3.5rem;
+      }
+      p {
+        font-size: 1.75rem;
+      }
     }
   }
 }

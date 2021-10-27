@@ -3,7 +3,11 @@ kind: Kustomization
 namespace: novdan
 resources:
   - frontend.yaml
+  # - api.yaml
 images:
   - name: novdan-frontend
     newName: rg.fr-par.scw.cloud/djnd/novdan-frontend
-    newTag: '32f50680da07b720db13c4a1063ca7372e230035'
+    newTag: 'latest'
+  # - name: novdan-api
+  #   newName: rg.fr-par.scw.cloud/djnd/novdan-api
+  #   newTag: 'latest'

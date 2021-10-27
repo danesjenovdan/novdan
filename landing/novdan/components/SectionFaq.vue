@@ -26,25 +26,33 @@
 
 <style scoped lang="scss">
 .faq {
-  padding: 6rem 0;
-  .container>div {
-    padding-left: 8rem;
-    padding-right: 6rem;
+  padding: 6rem 1rem;
+  @media (min-width: 1200px) {
+    .container>div {
+      padding-left: 8rem;
+      padding-right: 6rem;
+    }
   }
   h1 {
-    font-size: 8rem;
+    font-size: 4rem;
     font-weight: 800;
     margin-top: 2rem;
     margin-bottom: 2rem;
     color: #ff5ccb;
+    @media (min-width: 1200px) {
+      font-size: 8rem;
+    }
   }
   h4, p {
     color: white;
   }
   h4 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 800;
     margin-bottom: 1.5rem;
+    @media (min-width: 1200px) {
+      font-size: 2rem;
+    }
   }
   p {
     font-size: 1.5rem;
