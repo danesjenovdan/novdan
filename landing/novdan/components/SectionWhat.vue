@@ -7,7 +7,7 @@
       <p>
         Nov dan je nova eksperimentalna platforma za podporo neodvisnemu novinarstvu, ki deluje s pomočjo novega odprtega standarda za spletno monetizacijo (web monetization standard - WMS).
       </p>
-      <div class="support-wrapper">
+      <a href="#how-section" class="support-wrapper">
         <div class="star">
           <img src="~assets/images/star.png" alt="pink spinning star">
           <div>
@@ -18,10 +18,10 @@
         <div class="support">
           Podpri
         </div>
-        <div class="yellow-bg" />
-      </div>
+        <div v-if="windowWidth > 1200" class="yellow-bg" />
+      </a>
     </div>
-    <div class="spinners">
+    <div v-if="windowWidth > 1200" class="spinners">
       <div class="spinning-banner">
         <SpinningBanner class="spinning-text" />
         <SpinningBanner class="spinning-text" />
@@ -38,82 +38,140 @@
   </section>
 </template>
 
+<script>
+export default {
+  props: {
+    windowWidth: {
+      type: Number,
+      default: 0
+    }
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 .what {
-  min-height: 60rem;
   position: relative;
-  overflow-y: hidden;
+  overflow: hidden;
+  padding: 0 1rem;
+  @media (min-width: 1400px) {
+    padding: 0;
+  }
   .container {
     position: relative;
   }
+  @media (min-width: 1400px) {
+    min-height: 60rem;
+  }
   h1 {
     font-weight: 800;
-    font-size: 7rem;
+    font-size: 2.25rem;
     line-height: 0.8;
-    margin-top: 8rem;
+    margin-top: 4rem;
+    @media (min-width: 1400px) {
+      font-size: 7rem;
+      margin-top: 8rem;
+    }
   }
   p {
-    font-size: 1.75rem;
-    width: 50%;
-    margin-left: 12rem;
+    font-size: 1.5rem;
+    @media (min-width: 1400px) {
+      width: 50%;
+      margin-left: 12rem;
+      font-size: 1.75rem;
+    }
   }
   .sun {
-    height: 5rem;
-    width: 5rem;
+    height: 2rem;
+    width: 2rem;
+    @media (min-width: 1400px) {
+      height: 5rem;
+      width: 5rem;
+    }
   }
 }
 
 .support-wrapper {
-  position: absolute;
-  right: 8rem;
   cursor: pointer;
-  transform: rotate(-10deg);
+  display: flex;
+  align-items: center;
+  margin: 2rem 0;
+  text-decoration: none;
+  color: black;
+  @media (min-width: 1400px) {
+    position: absolute;
+    right: 8rem;
+    transform: rotate(-10deg);
+    margin: 0;
+  }
   .star {
+    position: absolute;
+    z-index: 5;
+    right: 3rem;
     img {
       animation: rotate360 3s linear infinite;  /* animation set */
       animation-play-state: paused;
-      height: 10rem;
+      height: 8rem;
     }
-    position: absolute;
-    bottom: 3rem;
-    right: 2rem;
-    z-index: 2;
     div {
       position: absolute;
-      top: 3rem;
-      left: 3rem;
+      top: 2.75rem;
+      left: 2.5rem;
       z-index: 2;
       display: flex;
       align-items: flex-end;
       span:first-child {
-        font-size: 3rem;
+        font-size: 2rem;
         font-weight: 700;
         line-height: 1;
       }
       span:last-child {
+        font-size: 0.75rem;
         font-style: italic;
         display: inline-block;
         font-family: 'Syne Tactile', cursive;
       }
     }
+    @media (min-width: 1400px) {
+      bottom: 3rem;
+      right: 2rem;
+      img {
+        height: 10rem;
+      }
+      div {
+        top: 3rem;
+        left: 3rem;
+        span:first-child {
+          font-size: 3rem;
+        }
+        span:last-child {
+          font-size: 1rem;
+        }
+      }
+    }
   }
   .support {
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: 700;
-    padding: 0.5rem 2rem;
+    padding: 0.5rem 5rem 0.5rem 2rem;
     border: 3px solid #000000;
     border-radius: 1.25rem;
     background-color: white;
     position: relative;
-    z-index: 3;
-    transition: all 0.25s ease;
-    transform:rotate(0) scale(1);
+    @media (min-width: 1400px) {
+      transition: all 0.25s ease;
+      transform: rotate(0) scale(1);
+      padding: 0.5rem 2rem;
+      font-size: 3rem;
+      z-index: 6;
+    }
   }
   &:hover {
     .support {
       background-color: #ffd700;
-      transform:rotate(0) scale(1.2);
-
+      @media (min-width: 1400px) {
+        transform:rotate(0) scale(1.2);
+      }
     }
     .star img {
       animation-play-state: running;

@@ -12,7 +12,7 @@
           </p>
         </div>
       </div>
-      <img src="~/assets/images/novdan.png" alt="novdan big text" />
+      <img src="~/assets/images/novdan.png" alt="novdan big text">
     </div>
   </section>
 </template>
@@ -32,7 +32,10 @@
   }
   p {
     text-align: center;
-    font-size: 2rem;
+    font-size: 1.25rem;
+    @media (min-width: 1200px) {
+      font-size: 2rem;
+    }
     a {
       color: #1103b1;
       text-decoration: none;

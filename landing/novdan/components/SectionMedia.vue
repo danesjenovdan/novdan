@@ -41,7 +41,7 @@
         </div>
         <div class="support-section">
           <div class="support-wrapper">
-            <div class="button">
+            <a href="#how-section" class="button">
               <div class="support">
                 Pridruži se!
               </div>
@@ -52,12 +52,12 @@
                   <span>eur/<br>mes</span>
                 </div>
               </div>
-            </div>
+            </a>
             <div class="subtitle">
               <p>Podpri <span>neodvisno</span> novinarstvo.</p>
             </div>
           </div>
-          <div class="yellow-bg" />
+          <div v-if="windowWidth > 1200" class="yellow-bg" />
         </div>
       </div>
     </div>
@@ -66,6 +66,12 @@
 
 <script>
 export default {
+  props: {
+    windowWidth: {
+      type: Number,
+      default: 0
+    }
+  },
   data () {
     return {
       tilted: 0
@@ -85,12 +91,21 @@ export default {
 
 <style scoped lang="scss">
 .media {
-  padding: 6rem 0;
+  padding: 6rem 1rem;
+  .row {
+    display: block;
+    @media (min-width: 1200px) {
+      display: flex;
+    }
+  }
   h2 {
-    font-size: 4rem;
+    font-size: 2rem;
     font-weight: 800;
     line-height: 1;
     margin: 0;
+    @media (min-width: 1200px) {
+      font-size: 4rem;
+    }
   }
   ul {
     list-style-type: none;
@@ -101,20 +116,29 @@ export default {
         text-decoration: none;
         text-transform: uppercase;
         color: black;
-        font-size: 2rem;
+        font-size: 1.5rem;
         font-weight: 700;
-        //padding: 0.5rem 0;
-        display: inline-block;
+        display: flex;
+        align-items: center;
+        max-width: 90%;
         position: relative;
+        @media (min-width: 1200px) {
+          max-width: unset;
+          font-size: 2rem;
+          display: inline-block;
+        }
       }
       span {
         padding-right: 2rem;
       }
       img {
-        height: 5rem;
-        //transition:all .3s cubic-bezier(.28,.05,.65,.97);
-        position: absolute;
-        top: -1.5rem;
+        height: 3rem;
+
+        @media (min-width: 1200px) {
+          height: 5rem;
+          position: absolute;
+          top: -1.5rem;
+        }
       }
     }
   }
@@ -123,63 +147,94 @@ export default {
 .support-section {
   display: flex;
   align-items: center;
-  margin-left: 12rem;
-  .yellow-bg {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 622px;
-    height: 622px;
-    background-image: radial-gradient(circle 311px at center, #ffd700 0%, rgba(255, 215, 0, 0) 100%);
-    opacity: 0.4;
-    z-index: 1;
+
+  @media (min-width: 1200px) {
+    margin-left: 12rem;
+
+    .yellow-bg {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 622px;
+      height: 622px;
+      background-image: radial-gradient(circle 311px at center, #ffd700 0%, rgba(255, 215, 0, 0) 100%);
+      opacity: 0.4;
+      z-index: 1;
+    }
   }
 }
 
 .support-wrapper {
   z-index: 2;
+  margin-top: 2rem;
+  @media (min-width: 1200px) {
+    margin-top: 0;
+  }
   .button {
+    text-decoration: none;
+    color: black;
     position: relative;
     display: flex;
     align-items: center;
     .support {
-      font-size: 3rem;
+      font-size: 1.5rem;
       font-weight: 700;
-      padding: 0.5rem 7rem 0.5rem 2rem;
+      padding: 0.5rem 5rem 0.5rem 2rem;
       border: 3px solid #000000;
       border-radius: 1.25rem;
       background-color: white;
       position: relative;
       z-index: 3;
       transition: all 0.25s ease;
-      transform:rotate(0) scale(1);
+      transform: rotate(0) scale(1);
+      @media (min-width: 1200px) {
+        font-size: 3rem;
+        padding: 0.5rem 7rem 0.5rem 2rem;
+      }
     }
     .star {
       position: absolute;
       z-index: 3;
-      right: -4rem;
+      right: 1rem;
       img {
-        height: 11rem;
+        height: 8rem;
         animation: rotate360 3s linear infinite;  /* animation set */
         animation-play-state: paused;
       }
       div {
         position: absolute;
-        top: 3.5rem;
-        left: 3.5rem;
+        top: 2.75rem;
+        left: 2.5rem;
         z-index: 4;
         display: flex;
         align-items: flex-end;
         span:first-child {
-          font-size: 3rem;
+          font-size: 2rem;
           font-weight: 700;
           line-height: 1;
         }
         span:last-child {
+          font-size: 0.75rem;
           font-style: italic;
           display: inline-block;
           font-family: 'Syne Tactile', cursive;
+        }
+      }
+      @media (min-width: 1200px) {
+        right: -4rem;
+        img {
+          height: 11rem;
+        }
+        div {
+          top: 3.5rem;
+          left: 3.5rem;
+          span:first-child {
+            font-size: 3rem;
+          }
+          span:last-child {
+            font-size: 1rem;
+          }
         }
       }
     }
@@ -190,7 +245,9 @@ export default {
       }
       .support {
         background-color: #ffd700;
-        transform:rotate(0) scale(1.1);
+        @media (min-width: 1200px) {
+          transform:rotate(0) scale(1.1);
+        }
       }
     }
   }
@@ -205,14 +262,5 @@ export default {
       font-family: 'Syne Tactile', cursive;
     }
   }
-}
-
-@keyframes shake{
-  0%{ transform:rotate(3deg) scale(1.2) }
-  20%{ transform:rotate(-3deg) scale(1.2) }
-  40%{ transform:rotate(3deg) scale(1.2) }
-  60%{ transform:rotate(-3deg) scale(1.2) }
-  80%{ transform:rotate(3deg) scale(1.2) }
-  100%{ transform:rotate(0) scale(1.2) }
 }
 </style>
