@@ -1,7 +1,7 @@
 from django.db.models import Sum
 from django.utils import timezone
 
-from .models import Transaction
+from .models import SubscriptionTimeRange, Transaction, Subscription
 
 
 def get_start_of_month(datetime):
@@ -39,3 +39,15 @@ def generate_this_months_tokens(to_wallet):
 
     to_wallet.amount = seconds
     to_wallet.save()
+
+
+def generate_this_months_subscription_ranges():
+    now = timezone.now()
+
+    all_subscriptions = Subscription.objects.all()
+    for subscription in all_subscriptions:
+        SubscriptionTimeRange.objects.create(
+            starts_at=get_start_of_month(now),
+            ends_at=get_end_of_month(now),
+            subscription=subscription,
+        )

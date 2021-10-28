@@ -16,9 +16,9 @@ class WalletAdmin(admin.ModelAdmin):
     search_fields = ('id', 'user__username')
 
 
-class IsSubscriptionActiveFilter(admin.SimpleListFilter):
-    title = 'is active'
-    parameter_name = 'is_active'
+class IsSubscriptionPayedFilter(admin.SimpleListFilter):
+    title = 'is payed'
+    parameter_name = 'is_payed'
 
     def lookups(self, request, model_admin):
         return (
@@ -28,23 +28,23 @@ class IsSubscriptionActiveFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == '1':
-            return queryset.active()
+            return queryset.active().payed()
         if self.value() == '0':
-            return queryset.exclude(id__in=queryset.active())
+            return queryset.exclude(id__in=queryset.active().payed())
         return queryset
 
 
 class SubscriptionTimeRangeStackedInline(admin.StackedInline):
     model = SubscriptionTimeRange
-    readonly_fields = ('start_at',)
-    fields = ('start_at', 'end_at')
+    readonly_fields = ('starts_at',)
+    fields = ('starts_at', 'ends_at')
     extra = 0
 
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'is_active')
-    list_filter = ('user__is_staff', IsSubscriptionActiveFilter)
+    list_display = ('id', 'user', 'is_payed')
+    list_filter = ('user__is_staff', IsSubscriptionPayedFilter)
     search_fields = ('id', 'user__username')
     inlines = [SubscriptionTimeRangeStackedInline]
 
