@@ -4,6 +4,14 @@ from django.utils import timezone
 from .models import Transaction
 
 
+def get_start_of_month(datetime):
+    return timezone.datetime(datetime.year, datetime.month, 1, tzinfo=datetime.tzinfo)
+
+
+def get_end_of_month(datetime):
+    return timezone.datetime(datetime.year, datetime.month + 1, 1, tzinfo=datetime.tzinfo) - timezone.timedelta(seconds=1)
+
+
 def calculate_receivers_percentage(from_wallet):
     now = timezone.now()
     year = now.year
@@ -27,9 +35,7 @@ def calculate_receivers_percentage(from_wallet):
 
 def generate_this_months_tokens(to_wallet):
     now = timezone.now()
-    start_of_month = timezone.datetime(now.year, now.month, 1, tzinfo=now.tzinfo)
-    end_of_month = timezone.datetime(now.year, now.month + 1, 1, tzinfo=now.tzinfo) - timezone.timedelta(seconds=1)
-    seconds = int((end_of_month - start_of_month).total_seconds())
+    seconds = int((get_end_of_month(now) - get_start_of_month(now)).total_seconds())
 
     to_wallet.amount = seconds
     to_wallet.save()

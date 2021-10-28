@@ -26,8 +26,8 @@ class Wallet(models.Model):
 class SubscriptionQuerySet(models.QuerySet):
     def active(self):
         return self.filter(
-            Q(active_range__started_at__lte=timezone.now()),
-            Q(active_range__ended_at__gte=timezone.now()) | Q(active_range__ended_at__isnull=True),
+            Q(active_range__start_at__lte=timezone.now()),
+            Q(active_range__end_at__gte=timezone.now()) | Q(active_range__end_at__isnull=True),
         )
 
 
@@ -50,8 +50,8 @@ class Subscription(models.Model):
     @property
     def is_active(self):
         return self.active_ranges.filter(
-            Q(started_at__lte=timezone.now()),
-            Q(ended_at__gte=timezone.now()) | Q(ended_at__isnull=True),
+            Q(start_at__lte=timezone.now()),
+            Q(end_at__gte=timezone.now()) | Q(end_at__isnull=True),
         ).exists()
 
     def __str__(self):
@@ -59,8 +59,8 @@ class Subscription(models.Model):
 
 
 class SubscriptionTimeRange(models.Model):
-    started_at = models.DateTimeField(auto_now_add=True)
-    ended_at = models.DateTimeField(blank=True, null=True)
+    start_at = models.DateTimeField(auto_now_add=True)
+    end_at = models.DateTimeField(blank=True, null=True)
     subscription = models.ForeignKey(
         Subscription,
         on_delete=models.CASCADE,

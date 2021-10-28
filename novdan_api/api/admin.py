@@ -36,8 +36,8 @@ class IsSubscriptionActiveFilter(admin.SimpleListFilter):
 
 class SubscriptionTimeRangeStackedInline(admin.StackedInline):
     model = SubscriptionTimeRange
-    readonly_fields = ('started_at',)
-    fields = ('started_at', 'ended_at')
+    readonly_fields = ('start_at',)
+    fields = ('start_at', 'end_at')
     extra = 0
 
 
