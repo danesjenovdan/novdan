@@ -91,7 +91,10 @@ export default {
 
 <style scoped lang="scss">
 .media {
-  padding: 6rem 1rem;
+  padding: 4rem 30px;
+  @media (min-width: 1200px) {
+    padding: 6rem 0;
+  }
   .row {
     display: block;
     @media (min-width: 1200px) {
@@ -118,18 +121,22 @@ export default {
         color: black;
         font-size: 1.5rem;
         font-weight: 700;
+        position: relative;
         display: flex;
         align-items: center;
-        max-width: 90%;
-        position: relative;
+        flex-direction: row-reverse;
+        justify-content: flex-start;
         @media (min-width: 1200px) {
+          display: inline-block;
           max-width: unset;
           font-size: 2rem;
-          display: inline-block;
         }
       }
       span {
-        padding-right: 2rem;
+        padding-left: 2rem;
+        @media (min-width: 1200px) {
+          padding-right: 2rem;
+        }
       }
       img {
         height: 3rem;
@@ -200,7 +207,9 @@ export default {
       img {
         height: 8rem;
         animation: rotate360 3s linear infinite;  /* animation set */
-        animation-play-state: paused;
+        @media (min-width: 1200px) {
+          animation-play-state: paused;
+        }
       }
       div {
         position: absolute;

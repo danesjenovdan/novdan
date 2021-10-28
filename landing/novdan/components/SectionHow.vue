@@ -93,7 +93,7 @@ export default {
 
 <style scoped lang="scss">
 .how {
-  padding: 6rem 1rem;
+  padding: 6rem 30px;
   overflow-x: hidden;
   .row {
     display: block;

@@ -11,7 +11,7 @@
       loop
       poster="~assets/images/gif.png"
     >
-      <source src="~assets/video/back_v2_1.mp4" type="video/mp4">
+      <source src="~assets/video/back_v4.mp4" type="video/mp4">
     </video>
     <div class="container">
       <div class="row">
@@ -75,10 +75,13 @@ export default {
     z-index: -1;
   }
   .container {
-    margin: 6rem 0;
+    margin: 2rem 0;
     .row {
       display: block;
-      @media (min-width: 1200px) {
+    }
+    @media (min-width: 1200px) {
+      margin: 6rem 0;
+      .row {
         display: flex;
         align-items: center;
       }
@@ -93,7 +96,7 @@ export default {
   }
 }
 .yellow-column-wrapper {
-  margin: 1rem;
+  margin: 1.5rem 30px;
   flex-grow: 1;
   flex-basis: 0;
   @media (min-width: 1200px) {
@@ -113,6 +116,7 @@ export default {
     p {
       font-size: 1.25rem;
       margin-top: 0.5rem;
+      margin-bottom: 0;
     }
     @media (min-width: 1200px) {
       padding: 2rem;
@@ -121,6 +125,7 @@ export default {
       }
       p {
         font-size: 1.75rem;
+        margin-bottom: 1.25rem;
       }
     }
   }
