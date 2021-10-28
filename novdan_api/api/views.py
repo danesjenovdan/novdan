@@ -20,12 +20,13 @@ class StatusView(APIView):
 
         active_subscriptions = Subscription.objects.filter(user=self.request.user).active()
 
-        receivers_percentage = calculate_receivers_percentage(wallet)
+        sum, percentages = calculate_receivers_percentage(wallet)
 
         return Response({
             "wallet": wallet_serializer.data,
             "subscription_active": bool(active_subscriptions.first()),
-            "current_split": receivers_percentage,
+            "monetized_split": percentages,
+            "monetized_time": sum,
         })
 
 
@@ -38,24 +39,24 @@ class TransferView(APIView):
         amount_string = self.request.data.get('amount')
 
         if not from_wallet_id or not to_wallet_id or from_wallet_id == to_wallet_id or not amount_string:
-            return Response(None, status=HTTP_400_BAD_REQUEST)
+            return Response({ "success": False }, status=HTTP_400_BAD_REQUEST)
 
         try:
             from_wallet = Wallet.objects.get(id=from_wallet_id)
             to_wallet = Wallet.objects.get(id=to_wallet_id)
             amount = int(amount_string)
         except (ValueError, ValidationError, Wallet.DoesNotExist):
-            return Response(None, status=HTTP_400_BAD_REQUEST)
+            return Response({ "success": False }, status=HTTP_400_BAD_REQUEST)
 
         if not amount or amount < 1:
-            return Response(None, status=HTTP_400_BAD_REQUEST)
+            return Response({ "success": False }, status=HTTP_400_BAD_REQUEST)
 
         if not self.request.user.is_staff and from_wallet.user != self.request.user:
-            return Response(None, status=HTTP_403_FORBIDDEN)
+            return Response({ "success": False }, status=HTTP_403_FORBIDDEN)
 
         with transaction.atomic():
             if from_wallet.amount < amount:
-                return Response(None, status=HTTP_409_CONFLICT)
+                return Response({ "success": False }, status=HTTP_409_CONFLICT)
 
             from_wallet.amount = F('amount') - amount
             to_wallet.amount = F('amount') + amount

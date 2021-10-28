@@ -17,14 +17,12 @@ def calculate_receivers_percentage(from_wallet):
 
     sum = transactions.aggregate(Sum('amount')).get('amount__sum', 0)
     if sum <= 0:
-        return []
+        return 0, []
 
     results = transactions.values('to_wallet').order_by('to_wallet').annotate(sum=Sum('amount'))
+    percentages = [{ 'id': str(result['to_wallet']), 'percentage': result['sum'] / sum } for result in results]
 
-    return [{
-        'id': str(result['to_wallet']),
-        'percentage': result['sum'] / sum,
-    } for result in results]
+    return sum, percentages
 
 
 def generate_this_months_tokens(to_wallet):
