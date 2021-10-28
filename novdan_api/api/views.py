@@ -3,7 +3,7 @@ from django.db import transaction
 from django.db.models import F
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_409_CONFLICT
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN, HTTP_409_CONFLICT
 from rest_framework.views import APIView
 
 from .serializers import WalletSerializer
@@ -25,30 +25,13 @@ class StatusView(APIView):
         })
 
 
-"""
-class IsOwnerOrReadOnly(permissions.BasePermission):
-    "
-    Object-level permission to only allow owners of an object to edit it.
-    Assumes the model instance has an `owner` attribute.
-    "
-
-    def has_object_permission(self, request, view, obj):
-        # Read permissions are allowed to any request,
-        # so we'll always allow GET, HEAD or OPTIONS requests.
-        if request.method in permissions.SAFE_METHODS:
-            return True
-
-        # Instance must have an attribute named `owner`.
-        return obj.owner == request.user
-"""
-
 class TransferView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, format=None):
-        from_wallet_id = self.request.query_params.get('from')
-        to_wallet_id = self.request.query_params.get('to')
-        amount_string = self.request.query_params.get('amount')
+    def post(self, request, format=None):
+        from_wallet_id = self.request.data.get('from')
+        to_wallet_id = self.request.data.get('to')
+        amount_string = self.request.data.get('amount')
 
         if not from_wallet_id or not to_wallet_id or from_wallet_id == to_wallet_id or not amount_string:
             return Response(None, status=HTTP_400_BAD_REQUEST)
@@ -62,6 +45,9 @@ class TransferView(APIView):
 
         if not amount or amount < 1:
             return Response(None, status=HTTP_400_BAD_REQUEST)
+
+        if not self.request.user.is_staff and from_wallet.user != self.request.user:
+            return Response(None, status=HTTP_403_FORBIDDEN)
 
         with transaction.atomic():
             if from_wallet.amount < amount:
@@ -80,8 +66,4 @@ class TransferView(APIView):
             to_wallet.save()
             new_transaction.save()
 
-        return Response({
-            "from": from_wallet_id,
-            "to": to_wallet_id,
-            "amount": amount,
-        })
+        return Response({ "success": True })
