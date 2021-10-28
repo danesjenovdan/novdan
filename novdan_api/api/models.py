@@ -1,9 +1,14 @@
 import uuid
 
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
+
+
+class User(AbstractUser):
+    pass
 
 
 class Wallet(models.Model):

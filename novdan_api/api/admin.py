@@ -1,8 +1,12 @@
 from django.contrib import admin
-from rangefilter.filters import DateTimeRangeFilter
+from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
+from rangefilter.filters import DateTimeRangeFilter
 
-from .models import Wallet, Subscription, SubscriptionTimeRange, Transaction
+from .models import User, Wallet, Subscription, SubscriptionTimeRange, Transaction
+
+
+admin.site.register(User, UserAdmin)
 
 
 @admin.register(Wallet)
