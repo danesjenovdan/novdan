@@ -8,7 +8,7 @@ from django.utils import timezone
 
 
 class User(AbstractUser):
-    pass
+    uid = models.UUIDField(default=uuid.uuid4, unique=True, editable=True)
 
 
 class Wallet(models.Model):
