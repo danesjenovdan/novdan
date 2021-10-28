@@ -6,8 +6,9 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN, HTTP_409_CONFLICT
 from rest_framework.views import APIView
 
-from .serializers import WalletSerializer
 from .models import Wallet, Subscription, Transaction
+from .serializers import WalletSerializer
+from .utils import calculate_receivers_percentage
 
 
 class StatusView(APIView):
@@ -19,9 +20,12 @@ class StatusView(APIView):
 
         active_subscriptions = Subscription.objects.filter(user=self.request.user).active()
 
+        receivers_percentage = calculate_receivers_percentage(wallet)
+
         return Response({
             "wallet": wallet_serializer.data,
             "subscription_active": bool(active_subscriptions.first()),
+            "current_split": receivers_percentage,
         })
 
 
