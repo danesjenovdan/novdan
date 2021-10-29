@@ -4,8 +4,8 @@
       <div class="container">
         <div>
           <p>
-            Projekt razvija <a href="https://danesjenovdan.si/" target="_blank">Danes je nov dan</a> <br>
-            ob podpori fundacije <a href="https://www.grantfortheweb.org/" target="_blank">Grant for the Web</a>.
+            Projekt razvija <br v-if="windowWidth <= 576"> <a href="https://danesjenovdan.si/" target="_blank">Danes je nov dan</a> <br>
+            ob podpori fundacije <br v-if="windowWidth <= 576"><a href="https://www.grantfortheweb.org/" target="_blank">Grant for the Web</a>.
           </p>
           <p>
             <a href="mailto:novdan@djnd.si" target="_blank">novdan@djnd.si</a>
@@ -16,6 +16,17 @@
     </div>
   </section>
 </template>
+
+<script>
+export default {
+  props: {
+    windowWidth: {
+      type: Number,
+      default: 0
+    }
+  }
+}
+</script>
 
 <style scoped lang="scss">
 .background-gradient-pink {
@@ -28,13 +39,18 @@
 .footer {
   padding-bottom: 0;
   .container>div {
-    margin: 6rem 0;
+    margin: 3rem 30px;
+    @media (min-width: 1200px) {
+      margin: 6rem 0;
+    }
   }
   p {
     text-align: center;
     font-size: 1.25rem;
+    line-height: 1.5;
     @media (min-width: 1200px) {
       font-size: 2rem;
+      line-height: 1;
     }
     a {
       color: #1103b1;

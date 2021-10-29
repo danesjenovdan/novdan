@@ -59,7 +59,7 @@ export default {
   overflow-x: hidden;
   overflow-y: visible;
 
-  @media (min-width: 1400px) {
+  @media (min-width: 1200px) {
     padding: 3rem 0 6rem 0;
   }
 
@@ -83,7 +83,7 @@ export default {
       text-align: center;
       margin: 0.5rem 0;
     }
-    @media (min-width: 1400px) {
+    @media (min-width: 1200px) {
       margin: 2rem 0;
       h1 {
         font-size: 12rem;
@@ -119,7 +119,21 @@ export default {
         }
       }
     }
-    @media (min-width: 1400px) {
+    @media (min-width: 992px) {
+      .plate-wrapper {
+        .yellow-plate {
+          padding: 0.5rem 1rem 0 1rem;
+          font-size: 3rem;
+        }
+        &:nth-child(odd) {
+          .yellow-plate {
+            font-size: 3.5rem;
+            padding: 1.5rem 0.75rem 0 0.75rem;
+          }
+        }
+      }
+    }
+    @media (min-width: 1200px) {
       .plate-wrapper {
         .yellow-plate {
           padding: 0.5rem 1rem 0 1rem;
@@ -153,7 +167,7 @@ export default {
     border: 2px solid black;
     border-radius: 50%;
     position: relative;
-    @media (min-width: 1400px) {
+    @media (min-width: 1200px) {
       height: 700px;
       width: 700px;
     }
@@ -179,7 +193,7 @@ export default {
       img {
         width: 50px;
       }
-      @media (min-width: 1400px) {
+      @media (min-width: 1200px) {
         left: 300px;
         top: 300px;
         img {
@@ -215,7 +229,7 @@ export default {
   to   { transform: rotate(610deg) translateX(250px) rotate(-610deg); }
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1200px) {
   @-webkit-keyframes myOrbit {
     from { -webkit-transform: rotate(0deg) translateX(350px) rotate(0deg); }
     to   { -webkit-transform: rotate(360deg) translateX(350px) rotate(-360deg); }

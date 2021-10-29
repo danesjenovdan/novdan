@@ -18,10 +18,10 @@
         <div class="support">
           Podpri
         </div>
-        <div v-if="windowWidth > 1200" class="yellow-bg" />
+        <div class="yellow-bg" />
       </a>
     </div>
-    <div v-if="windowWidth > 1200" class="spinners">
+    <div v-if="windowWidth > 1400" class="spinners">
       <div class="spinning-banner">
         <SpinningBanner class="spinning-text" />
         <SpinningBanner class="spinning-text" />
@@ -53,14 +53,14 @@ export default {
 .what {
   position: relative;
   overflow: hidden;
-  padding: 0 1rem;
-  @media (min-width: 1400px) {
+  padding: 0 30px;
+  @media (min-width: 1200px) {
     padding: 0;
   }
   .container {
     position: relative;
   }
-  @media (min-width: 1400px) {
+  @media (min-width: 1200px) {
     min-height: 60rem;
   }
   h1 {
@@ -68,14 +68,19 @@ export default {
     font-size: 2.25rem;
     line-height: 0.8;
     margin-top: 4rem;
-    @media (min-width: 1400px) {
+    margin-bottom: 3rem;
+    @media (min-width: 992px) {
+      font-size: 4.5rem;
+      margin-top: 4rem;
+    }
+    @media (min-width: 1200px) {
       font-size: 7rem;
       margin-top: 8rem;
     }
   }
   p {
     font-size: 1.5rem;
-    @media (min-width: 1400px) {
+    @media (min-width: 1200px) {
       width: 50%;
       margin-left: 12rem;
       font-size: 1.75rem;
@@ -84,7 +89,7 @@ export default {
   .sun {
     height: 2rem;
     width: 2rem;
-    @media (min-width: 1400px) {
+    @media (min-width: 1200px) {
       height: 5rem;
       width: 5rem;
     }
@@ -95,10 +100,10 @@ export default {
   cursor: pointer;
   display: flex;
   align-items: center;
-  margin: 2rem 0;
+  margin: 3rem 0;
   text-decoration: none;
   color: black;
-  @media (min-width: 1400px) {
+  @media (min-width: 1200px) {
     position: absolute;
     right: 8rem;
     transform: rotate(-10deg);
@@ -107,11 +112,10 @@ export default {
   .star {
     position: absolute;
     z-index: 5;
-    right: 3rem;
+    right: -3rem;
     img {
       animation: rotate360 3s linear infinite;  /* animation set */
-      animation-play-state: paused;
-      height: 8rem;
+      height: 9rem;
     }
     div {
       position: absolute;
@@ -121,44 +125,44 @@ export default {
       display: flex;
       align-items: flex-end;
       span:first-child {
-        font-size: 2rem;
+        font-size: 3rem;
         font-weight: 700;
         line-height: 1;
       }
       span:last-child {
-        font-size: 0.75rem;
+        font-size: 1rem;
         font-style: italic;
         display: inline-block;
         font-family: 'Syne Tactile', cursive;
       }
     }
-    @media (min-width: 1400px) {
+    @media (min-width: 1200px) {
       bottom: 3rem;
       right: 2rem;
       img {
         height: 10rem;
+        animation-play-state: paused;
       }
       div {
         top: 3rem;
         left: 3rem;
-        span:first-child {
-          font-size: 3rem;
-        }
-        span:last-child {
-          font-size: 1rem;
-        }
       }
     }
   }
   .support {
     font-size: 2rem;
     font-weight: 700;
-    padding: 0.5rem 5rem 0.5rem 2rem;
+    padding: 0.5rem;
+    width: 100%;
+    text-align: center;
     border: 3px solid #000000;
     border-radius: 1.25rem;
     background-color: white;
     position: relative;
-    @media (min-width: 1400px) {
+    z-index: 2;
+    @media (min-width: 1200px) {
+      text-align: start;
+      width: unset;
       transition: all 0.25s ease;
       transform: rotate(0) scale(1);
       padding: 0.5rem 2rem;
@@ -169,8 +173,8 @@ export default {
   &:hover {
     .support {
       background-color: #ffd700;
-      @media (min-width: 1400px) {
-        transform:rotate(0) scale(1.2);
+      @media (min-width: 1200px) {
+        transform: rotate(0) scale(1.2);
       }
     }
     .star img {
@@ -180,13 +184,19 @@ export default {
   .yellow-bg {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 90%;
     transform: translateX(-50%) translateY(-50%);
-    width: 622px;
-    height: 622px;
-    background-image: radial-gradient(circle 311px at center, #ffd700 0%, rgba(255, 215, 0, 0) 100%);
+    width: 300px;
+    height: 300px;
+    background-image: radial-gradient(circle 150px at center, #ffd700 0%, rgba(255, 215, 0, 0) 100%);
     opacity: 0.4;
     z-index: 1;
+    @media (min-width: 1200px) {
+      top: 50%;
+      width: 622px;
+      height: 622px;
+      background-image: radial-gradient(circle 311px at center, #ffd700 0%, rgba(255, 215, 0, 0) 100%);
+    }
   }
 }
 
@@ -196,6 +206,12 @@ export default {
   position: absolute;
   right: -40%;
   top: 50%;
+  @media (min-width: 1400px) {
+    right: -50%;
+  }
+  @media (min-width: 1600px) {
+    right: -40%;
+  }
 }
 .spinning-banner {
   width: 100%;

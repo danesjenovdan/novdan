@@ -26,8 +26,9 @@
 
 <style scoped lang="scss">
 .faq {
-  padding: 6rem 1rem;
+  padding: 3rem 30px;
   @media (min-width: 1200px) {
+    padding: 6rem 0;
     .container>div {
       padding-left: 8rem;
       padding-right: 6rem;
@@ -55,7 +56,10 @@
     }
   }
   p {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    @media (min-width: 1200px) {
+      font-size: 1.5rem;
+    }
   }
   hr {
     background-color: #ffd700;
