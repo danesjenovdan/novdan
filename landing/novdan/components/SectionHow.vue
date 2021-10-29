@@ -2,7 +2,7 @@
   <section id="how-section" class="background-gradient-white-yellow how">
     <div class="container">
       <h1>Kako?</h1>
-      <div v-if="windowWidth > 1200">
+      <div v-if="windowWidth > 992">
         <div class="row first">
           <p>
             Inštaliraj si <span>Nov<br> Dan vtičnik</span>.
@@ -61,17 +61,25 @@
           </div>
         </div>
       </div>
-      <div v-if="windowWidth <= 1200" class="how-mobile">
+      <div v-if="windowWidth <= 992" class="how-mobile">
         <div class="row">
           <p>
             Nov dan je eksperimentalna platforma, ki zaenkrat podpira samo Firefox in Chrome računalniške brskalnike.
           </p>
           <div class="subscribe">
             <div class="moneybill">
-              <img src="~assets/images/5-eur.svg" alt="pink spinning star">
-              <div class="effect">
-                <img src="~assets/images/zarki-roza.svg" alt="pink spinning star">
+              <div>
+                <span>obišči</span><br>
+                <span><a href="/">novdan.si</a></span><br>
+                <span>na računalniku</span>
               </div>
+              <div class="effect">
+                <img src="~assets/images/zarki-rumeni.svg" alt="pink spinning star">
+              </div>
+            </div>
+            <div>
+              <p>Spomni se kasneje</p>
+              <div class="support">pošlji si e-mail!</div>
             </div>
           </div>
         </div>
@@ -97,7 +105,7 @@ export default {
   overflow-x: hidden;
   .row {
     display: block;
-    @media (min-width: 1200px) {
+    @media (min-width: 992px) {
       display: flex;
     }
   }
@@ -106,7 +114,10 @@ export default {
     font-weight: 800;
     margin-top: 0;
     margin-bottom: 2rem;
-    text-align: center;
+    @media (min-width: 992px) {
+      font-size: 5rem;
+      text-align: center;
+    }
     @media (min-width: 1200px) {
       font-size: 7rem;
     }
@@ -133,9 +144,26 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    @media (min-width: 1200px) {
+    @media (min-width: 992px) {
       align-items: center;
       justify-content: center;
+    }
+  }
+  .support {
+    text-decoration: none;
+    font-size: 2.5rem;
+    font-weight: 700;
+    padding: 0.25rem 6rem 0.25rem 1rem;
+    border: 3px solid #000000;
+    border-radius: 1.25rem;
+    background-color: white;
+    position: relative;
+    z-index: 3;
+    transition: all 0.25s ease;
+    transform: rotate(0) scale(1);
+    cursor: pointer;
+    @media (min-width: 1200px) {
+      font-size: 3rem;
     }
   }
   .button-browser-wrapper {
@@ -143,26 +171,9 @@ export default {
     display: flex;
     align-items: center;
     margin: 2rem 0;
-    @media (min-width: 1200px) {
+    @media (min-width: 992px) {
       &:first-child {
         margin-left: 8rem;
-      }
-    }
-    .support {
-      text-decoration: none;
-      font-size: 2.5rem;
-      font-weight: 700;
-      padding: 0.25rem 6rem 0.25rem 1rem;
-      border: 3px solid #000000;
-      border-radius: 1.25rem;
-      background-color: white;
-      position: relative;
-      z-index: 3;
-      transition: all 0.25s ease;
-      transform: rotate(0) scale(1);
-      cursor: pointer;
-      @media (min-width: 1200px) {
-        font-size: 3rem;
       }
     }
     .button {
@@ -188,7 +199,7 @@ export default {
     &:hover {
       .support {
         background-color: #ffd700;
-        @media (min-width: 1200px) {
+        @media (min-width: 992px) {
           transform: rotate(0) scale(1.2);
         }
       }
@@ -199,7 +210,7 @@ export default {
   }
 
   .subscribe {
-    @media (min-width: 1200px) {
+    @media (min-width: 992px) {
       display: flex;
       align-items: center;
       margin-left: 8rem;
@@ -226,17 +237,14 @@ export default {
       }
       &:hover {
         .effect {
-          transform: translateY(-50%) translateX(-50%) scale(2);
-          @media (min-width: 1200px) {
-            transform: translateY(-50%) translateX(-50%) scale(3);
-          }
+          transform: translateY(-50%) translateX(-50%) scale(3);
         }
       }
     }
   }
   .read {
     display: flex;
-    @media (min-width: 1200px) {
+    @media (min-width: 992px) {
       margin-left: 16rem;
     }
     &>div {
@@ -268,7 +276,66 @@ export default {
   }
   .how-mobile {
     p {
-      text-align: center;
+      text-transform: none;
+      font-weight: 500;
+      margin: 2rem 0;
+    }
+    .moneybill {
+      margin-left: 0;
+      div:first-child {
+        text-align: center;
+        position: relative;
+        z-index: 5;
+        margin: 5rem 0;
+        span:first-child, span:last-child {
+          text-transform: uppercase;
+          font-weight: 700;
+        }
+        span:first-child {
+          font-size: 2.25rem;
+        }
+        span:nth-of-type(2) {
+          font-size: 2.5rem;
+          font-weight: 900;
+          line-height: 0.75;
+          a {
+            color: #1103b1;
+            text-decoration: none;
+          }
+        }
+        span:last-child {
+          font-size: 1.75rem;
+          line-height: 1.5;
+        }
+      }
+      .effect {
+        transform: translateY(-50%) translateX(-50%) scale(2) rotate(-5deg);
+        img {
+          width: unset;
+        }
+      }
+      &:hover {
+        .effect {
+          transform: translateY(-50%) translateX(-50%) scale(2) rotate(-5deg);
+        }
+      }
+    }
+    .subscribe {
+      div:last-child {
+        text-align: center;
+        p {
+          font-weight: 700;
+          font-size: 1.5rem;
+          margin-bottom: 0.5rem;
+        }
+        .support {
+          font-family: 'Syne Tactile', cursive;
+          font-weight: 400;
+          font-size: 2rem;
+          color: #1103b1;
+          padding: 0.5rem;
+        }
+      }
     }
   }
 }

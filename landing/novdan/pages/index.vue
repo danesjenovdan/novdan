@@ -16,7 +16,7 @@
     <SectionMedia />
     <SectionHow :window-width="windowWidth" />
     <SectionFaq />
-    <Footer />
+    <Footer :window-width="windowWidth" />
   </div>
 </template>
 

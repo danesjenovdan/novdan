@@ -106,7 +106,7 @@ export default {
     font-weight: 800;
     line-height: 1;
     margin: 0;
-    @media (min-width: 1200px) {
+    @media (min-width: 992px) {
       font-size: 4rem;
     }
   }
@@ -125,8 +125,11 @@ export default {
         display: flex;
         align-items: center;
         flex-direction: row-reverse;
-        justify-content: flex-start;
+        justify-content: start;
         @media (min-width: 1200px) {
+          font-size: 1.75rem;
+        }
+        @media (min-width: 1400px) {
           display: inline-block;
           max-width: unset;
           font-size: 2rem;
@@ -134,14 +137,15 @@ export default {
       }
       span {
         padding-left: 2rem;
-        @media (min-width: 1200px) {
+        @media (min-width: 1400px) {
+          padding-left: 0;
           padding-right: 2rem;
         }
       }
       img {
         height: 3rem;
 
-        @media (min-width: 1200px) {
+        @media (min-width: 1400px) {
           height: 5rem;
           position: absolute;
           top: -1.5rem;
@@ -154,8 +158,10 @@ export default {
 .support-section {
   display: flex;
   align-items: center;
-
   @media (min-width: 1200px) {
+    margin-left: 4rem;
+  }
+  @media (min-width: 1400px) {
     margin-left: 12rem;
 
     .yellow-bg {
@@ -196,6 +202,9 @@ export default {
       transition: all 0.25s ease;
       transform: rotate(0) scale(1);
       @media (min-width: 1200px) {
+        font-size: 2rem;
+      }
+      @media (min-width: 1400px) {
         font-size: 3rem;
         padding: 0.5rem 7rem 0.5rem 2rem;
       }
@@ -203,11 +212,11 @@ export default {
     .star {
       position: absolute;
       z-index: 3;
-      right: 1rem;
+      left: 12rem;
       img {
         height: 8rem;
         animation: rotate360 3s linear infinite;  /* animation set */
-        @media (min-width: 1200px) {
+        @media (min-width: 992px) {
           animation-play-state: paused;
         }
       }
@@ -231,6 +240,10 @@ export default {
         }
       }
       @media (min-width: 1200px) {
+        left: unset;
+        right: 2rem;
+      }
+      @media (min-width: 1400px) {
         right: -4rem;
         img {
           height: 11rem;

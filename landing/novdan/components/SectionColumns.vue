@@ -79,7 +79,7 @@ export default {
     .row {
       display: block;
     }
-    @media (min-width: 1200px) {
+    @media (min-width: 992px) {
       margin: 6rem 0;
       .row {
         display: flex;

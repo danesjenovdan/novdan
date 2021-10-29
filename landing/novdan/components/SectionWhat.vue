@@ -21,7 +21,7 @@
         <div class="yellow-bg" />
       </a>
     </div>
-    <div v-if="windowWidth > 1200" class="spinners">
+    <div v-if="windowWidth > 1400" class="spinners">
       <div class="spinning-banner">
         <SpinningBanner class="spinning-text" />
         <SpinningBanner class="spinning-text" />
@@ -54,13 +54,13 @@ export default {
   position: relative;
   overflow: hidden;
   padding: 0 30px;
-  @media (min-width: 1400px) {
+  @media (min-width: 1200px) {
     padding: 0;
   }
   .container {
     position: relative;
   }
-  @media (min-width: 1400px) {
+  @media (min-width: 1200px) {
     min-height: 60rem;
   }
   h1 {
@@ -69,14 +69,18 @@ export default {
     line-height: 0.8;
     margin-top: 4rem;
     margin-bottom: 3rem;
-    @media (min-width: 1400px) {
+    @media (min-width: 992px) {
+      font-size: 4.5rem;
+      margin-top: 4rem;
+    }
+    @media (min-width: 1200px) {
       font-size: 7rem;
       margin-top: 8rem;
     }
   }
   p {
     font-size: 1.5rem;
-    @media (min-width: 1400px) {
+    @media (min-width: 1200px) {
       width: 50%;
       margin-left: 12rem;
       font-size: 1.75rem;
@@ -85,7 +89,7 @@ export default {
   .sun {
     height: 2rem;
     width: 2rem;
-    @media (min-width: 1400px) {
+    @media (min-width: 1200px) {
       height: 5rem;
       width: 5rem;
     }
@@ -99,7 +103,7 @@ export default {
   margin: 3rem 0;
   text-decoration: none;
   color: black;
-  @media (min-width: 1400px) {
+  @media (min-width: 1200px) {
     position: absolute;
     right: 8rem;
     transform: rotate(-10deg);
@@ -132,7 +136,7 @@ export default {
         font-family: 'Syne Tactile', cursive;
       }
     }
-    @media (min-width: 1400px) {
+    @media (min-width: 1200px) {
       bottom: 3rem;
       right: 2rem;
       img {
@@ -156,7 +160,7 @@ export default {
     background-color: white;
     position: relative;
     z-index: 2;
-    @media (min-width: 1400px) {
+    @media (min-width: 1200px) {
       text-align: start;
       width: unset;
       transition: all 0.25s ease;
@@ -169,8 +173,8 @@ export default {
   &:hover {
     .support {
       background-color: #ffd700;
-      @media (min-width: 1400px) {
-        transform:rotate(0) scale(1.2);
+      @media (min-width: 1200px) {
+        transform: rotate(0) scale(1.2);
       }
     }
     .star img {
@@ -202,6 +206,12 @@ export default {
   position: absolute;
   right: -40%;
   top: 50%;
+  @media (min-width: 1400px) {
+    right: -50%;
+  }
+  @media (min-width: 1600px) {
+    right: -40%;
+  }
 }
 .spinning-banner {
   width: 100%;
