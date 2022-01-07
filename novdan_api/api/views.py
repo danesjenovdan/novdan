@@ -1,17 +1,21 @@
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import transaction
 from django.db.models import F
 from django.utils import timezone
+from rest_framework.exceptions import ParseError
+from rest_framework.exceptions import ValidationError as RestValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN, HTTP_409_CONFLICT
+from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
-from .models import SubscriptionTimeRange, Wallet, Subscription, Transaction
+from .exceptions import (ActiveSubscriptionExists, LowBalance,
+                         NoActiveSubscription)
+from .models import Subscription, SubscriptionTimeRange, Transaction, Wallet
 from .serializers import WalletSerializer
-from .utils import calculate_receivers_percentage, get_end_of_month, get_start_of_month
-
+from .utils import (calculate_receivers_percentage, get_end_of_month,
+                    get_start_of_month)
 
 User = get_user_model()
 
@@ -28,39 +32,52 @@ class StatusView(APIView):
         sum, percentages = calculate_receivers_percentage(wallet)
 
         return Response({
-            "wallet": wallet_serializer.data,
-            "subscription_payed": bool(active_payed_subscription),
-            "monetized_split": percentages,
-            "monetized_time": sum,
+            'wallet': wallet_serializer.data,
+            'subscription_payed': bool(active_payed_subscription),
+            'monetized_split': percentages,
+            'monetized_time': sum,
         })
 
 
 class TransferView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, format=None):
-        from_wallet_id = self.request.data.get('from')
-        to_wallet_id = self.request.data.get('to')
-        amount_string = self.request.data.get('amount')
-
-        if not from_wallet_id or not to_wallet_id or from_wallet_id == to_wallet_id or not amount_string:
-            return Response({ "success": False }, status=HTTP_400_BAD_REQUEST)
-
+    def _get_amount(self, field_name, amount_value):
+        if amount_value is None or amount_value == '':
+            raise RestValidationError({ field_name: ['This field may not be blank.'] })
         try:
-            from_wallet = Wallet.objects.get(id=from_wallet_id)
-            to_wallet = Wallet.objects.get(id=to_wallet_id)
-            amount = int(amount_string)
-        except (ValueError, ValidationError, Wallet.DoesNotExist):
-            return Response({ "success": False }, status=HTTP_400_BAD_REQUEST)
+            amount = int(amount_value)
+        except ValueError:
+            raise RestValidationError({ field_name: ['This field must be an integer value.'] })
+        if amount < 1:
+            raise RestValidationError({ field_name: ['This field must be a positive non-zero integer value.'] })
+        return amount
 
-        if not amount or amount < 1:
-            return Response({ "success": False }, status=HTTP_400_BAD_REQUEST)
+    def _get_wallet(self, field_name, wallet_id):
+        if wallet_id is None or wallet_id == '':
+            raise RestValidationError({ field_name: ['This field may not be blank.'] })
+        try:
+            wallet = Wallet.objects.get(id=wallet_id)
+        except (ValidationError, Wallet.DoesNotExist):
+            raise RestValidationError({ field_name: ['This field must be a valid Wallet id.'] })
+        return wallet
+
+    def post(self, request, format=None):
+        if not isinstance(self.request.data, dict):
+            raise ParseError
+
+        amount = self._get_amount('amount', self.request.data.get('amount'))
+        from_wallet = self._get_wallet('from', self.request.data.get('from'))
+        to_wallet = self._get_wallet('to', self.request.data.get('to'))
+
+        if from_wallet == to_wallet:
+            raise RestValidationError({ api_settings.NON_FIELD_ERRORS_KEY : ['Wallet ids `from` and `to` must not be the same.'] })
 
         if not self.request.user.is_staff and from_wallet.user != self.request.user:
-            return Response({ "success": False }, status=HTTP_403_FORBIDDEN)
+            raise PermissionDenied
 
         if from_wallet.amount < amount:
-            return Response({ "success": False }, status=HTTP_409_CONFLICT)
+            raise LowBalance
 
         with transaction.atomic():
             from_wallet.amount = F('amount') - amount
@@ -76,30 +93,34 @@ class TransferView(APIView):
             to_wallet.save()
             new_transaction.save()
 
-        return Response({ "success": True })
+        return Response({ 'success': True })
 
 
 class SubscriptionActivateView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated] # TODO: only allow payment server call this
 
-    # TODO: only allow payment server call this
-    def post(self, request, format=None):
-        uid = self.request.data.get('uid')
-        subscription_token = self.request.data.get('subscription_token')
-
-        if not subscription_token:
-            return Response({ "success": False }, status=HTTP_400_BAD_REQUEST)
-
+    def _get_user(self, field_name, uid):
+        if uid is None or uid == '':
+            raise RestValidationError({ field_name: ['This field may not be blank.'] })
         try:
-            user = User.objects.get(uid=uid)
-        except (ValueError, ValidationError, User.DoesNotExist):
-            return Response({ "success": False }, status=HTTP_400_BAD_REQUEST)
+            user = User.objects.get(id=uid)
+        except (ValidationError, User.DoesNotExist):
+            raise RestValidationError({ field_name: ['This field must be a valid User id.'] })
+        return user
 
-        user_subscriptions = Subscription.objects.filter(user=self.request.user)
+    def post(self, request, format=None):
+        if not isinstance(self.request.data, dict):
+            raise ParseError
 
-        active_payed_subscription = user_subscriptions.active().payed().first()
+        user = self._get_user('uid', self.request.data.get('uid'))
+
+        subscription_token = self.request.data.get('subscription_token')
+        if subscription_token is None or subscription_token == '':
+            raise RestValidationError({ 'subscription_token': ['This field may not be blank.'] })
+
+        active_payed_subscription = Subscription.objects.filter(user=self.request.user).active().payed().first()
         if active_payed_subscription:
-            return Response({ "success": False }, status=HTTP_409_CONFLICT)
+            raise ActiveSubscriptionExists
 
         with transaction.atomic():
             subscription, created = Subscription.objects.get_or_create(user=user)
@@ -121,7 +142,7 @@ class SubscriptionActivateView(APIView):
             time_range.payment_id = subscription_token
             time_range.save()
 
-        return Response({ "success": True })
+        return Response({ 'success': True })
 
 
 class SubscriptionCancelView(APIView):
@@ -129,12 +150,12 @@ class SubscriptionCancelView(APIView):
 
     def post(self, request, format=None):
         active_payed_subscription = Subscription.objects.filter(user=self.request.user).active().payed().first()
-
         if not active_payed_subscription:
-            return Response({ "success": False }, status=HTTP_409_CONFLICT)
+            raise NoActiveSubscription
 
         # TODO: cancel payment
 
         active_payed_subscription.canceled_at = timezone.now()
         active_payed_subscription.save()
-        return Response({ "success": True })
+
+        return Response({ 'success': True })
