@@ -3,7 +3,6 @@ import uuid
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models import Q
 from django.utils import timezone
 
 
@@ -37,19 +36,8 @@ class SubscriptionQuerySet(models.QuerySet):
         )
 
 
-class SubscriptionManager(models.Manager):
-    def get_queryset(self):
-        return SubscriptionQuerySet(self.model, using=self._db)
-
-    def active(self):
-        return self.get_queryset().active()
-
-    def payed(self):
-        return self.get_queryset().payed()
-
-
 class Subscription(models.Model):
-    objects = SubscriptionManager()
+    objects = SubscriptionQuerySet.as_manager()
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
