@@ -19,13 +19,13 @@ spec:
           image: novdan-frontend
           ports:
             - containerPort: 3000
-          # resources:
-          #   requests:
-          #     memory: 500Mi
-          #     cpu: 200m
-          #   limits:
-          #     memory: 500Mi
-          #     cpu: 200m
+          resources:
+            requests:
+              memory: 100Mi
+              cpu: 100m
+            limits:
+              memory: 100Mi
+              cpu: 100m
 ---
 apiVersion: v1
 kind: Service
@@ -36,7 +36,7 @@ spec:
     app: novdan-frontend
   ports:
     - protocol: TCP
-      port: 80
+      port: 3000
       targetPort: 3000
 ---
 apiVersion: networking.k8s.io/v1
@@ -60,4 +60,4 @@ spec:
               service:
                 name: novdan-frontend
                 port:
-                  number: 80
+                  number: 3000
