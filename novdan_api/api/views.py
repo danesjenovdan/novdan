@@ -155,7 +155,8 @@ class SubscriptionCancelView(APIView):
 
         # TODO: cancel payment
 
-        active_payed_subscription.canceled_at = timezone.now()
-        active_payed_subscription.save()
+        # FIXME: canceled_at is on subscriptiontimerange not on subscription
+        # active_payed_subscription.canceled_at = timezone.now()
+        # active_payed_subscription.save()
 
         return Response({ 'success': True })
