@@ -35,8 +35,7 @@ spec:
   selector:
     app: novdan-frontend
   ports:
-    - name: novdan-frontend
-      protocol: TCP
+    - protocol: TCP
       port: 3000
       targetPort: 3000
 ---
