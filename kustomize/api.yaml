@@ -94,8 +94,7 @@ spec:
   selector:
     app: novdan-api
   ports:
-    - name: novdan-api
-      protocol: TCP
+    - protocol: TCP
       port: 8000
       targetPort: 8000
 ---
