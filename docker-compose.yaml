@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: novdanapi
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  novdan_api:
+    build: ./novdan_api
+    ports:
+      - 8000:8000
+    environment:
+      PYTHONUNBUFFERED: "1"
+      DJANGO_DEBUG: "true"
+      DJANGO_SETTINGS_MODULE: novdan_api.settings.k8s
+      DJANGO_DATABASE_HOST: db
+      DJANGO_DATABASE_NAME: novdanapi
+      DJANGO_DATABASE_USERNAME: postgres
+      DJANGO_DATABASE_PASSWORD: postgres
+    volumes:
+      - ./novdan_api:/app
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

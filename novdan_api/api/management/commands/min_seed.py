@@ -12,7 +12,6 @@ class Command(BaseCommand):
     help = 'Minimal database seed'
 
     def handle(self, *args, **options):
-        self.stdout.write('\n')
         self.stdout.write('Starting ...')
 
         admin = User.objects.create(
@@ -51,5 +50,4 @@ class Command(BaseCommand):
         user2.set_password('changeme')
         user2.save()
 
-        self.stdout.write('\n')
         self.stdout.write('Done')

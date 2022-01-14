@@ -23,11 +23,10 @@ class Wallet(models.Model):
 
 
 class SubscriptionQuerySet(models.QuerySet):
-    def active(self):
-        now = timezone.now()
+    def active(self, time=timezone.now()):
         return self.filter(
-            time_range__starts_at__lte=now,
-            time_range__ends_at__gte=now,
+            time_range__starts_at__lte=time,
+            time_range__ends_at__gte=time,
         )
 
     def payed(self):
