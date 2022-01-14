@@ -1,9 +1,13 @@
 import uuid
 
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models import Q
 from django.utils import timezone
+
+
+class User(AbstractUser):
+    uid = models.UUIDField(default=uuid.uuid4, unique=True, editable=True)
 
 
 class Wallet(models.Model):
@@ -20,22 +24,20 @@ class Wallet(models.Model):
 
 class SubscriptionQuerySet(models.QuerySet):
     def active(self):
+        now = timezone.now()
         return self.filter(
-            Q(active_range__started_at__lte=timezone.now()),
-            Q(active_range__ended_at__gte=timezone.now()) | Q(active_range__ended_at__isnull=True),
+            time_range__starts_at__lte=now,
+            time_range__ends_at__gte=now,
+        )
+
+    def payed(self):
+        return self.filter(
+            time_range__payed_at__isnull=False,
         )
 
 
-class SubscriptionManager(models.Manager):
-    def get_queryset(self):
-        return SubscriptionQuerySet(self.model, using=self._db)
-
-    def active(self):
-        return self.get_queryset().active()
-
-
 class Subscription(models.Model):
-    objects = SubscriptionManager()
+    objects = SubscriptionQuerySet.as_manager()
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -43,10 +45,12 @@ class Subscription(models.Model):
     )
 
     @property
-    def is_active(self):
-        return self.active_ranges.filter(
-            Q(started_at__lte=timezone.now()),
-            Q(ended_at__gte=timezone.now()) | Q(ended_at__isnull=True),
+    def is_payed(self):
+        now = timezone.now()
+        return self.time_ranges.filter(
+            starts_at__year=now.year, starts_at__month=now.month,
+            ends_at__year=now.year, ends_at__month=now.month,
+            payed_at__isnull=False,
         ).exists()
 
     def __str__(self):
@@ -54,15 +58,17 @@ class Subscription(models.Model):
 
 
 class SubscriptionTimeRange(models.Model):
-    started_at = models.DateTimeField(auto_now_add=True)
-    ended_at = models.DateTimeField(blank=True, null=True)
+    starts_at = models.DateTimeField()
+    ends_at = models.DateTimeField()
+    canceled_at = models.DateTimeField(blank=True, null=True)
+    payed_at = models.DateTimeField(blank=True, null=True)
+    payment_id = models.CharField(max_length=128, blank=True, null=True)
     subscription = models.ForeignKey(
         Subscription,
         on_delete=models.CASCADE,
-        related_name="active_ranges",
-        related_query_name="active_range",
+        related_name='time_ranges',
+        related_query_name='time_range',
     )
-    # TODO: add some kind of payment id from "podpri" api
 
 
 class Transaction(models.Model):
@@ -71,12 +77,12 @@ class Transaction(models.Model):
     from_wallet = models.ForeignKey(
         Wallet,
         on_delete=models.CASCADE,
-        related_name="outgoing_transactions",
-        related_query_name="outgoing_transaction",
+        related_name='outgoing_transactions',
+        related_query_name='outgoing_transaction',
     )
     to_wallet = models.ForeignKey(
         Wallet,
         on_delete=models.CASCADE,
-        related_name="incoming_transactions",
-        related_query_name="incoming_transaction",
+        related_name='incoming_transactions',
+        related_query_name='incoming_transaction',
     )
