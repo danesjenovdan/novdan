@@ -12,11 +12,29 @@ from rest_framework.views import APIView
 from .exceptions import (ActiveSubscriptionExists, LowBalance,
                          NoActiveSubscription)
 from .models import Subscription, Transaction, Wallet
-from .serializers import WalletSerializer
+from .serializers import ChangePasswordSerializer, WalletSerializer
 from .utils import (activate_subscription, calculate_receivers_percentage,
                     cancel_subscription)
 
 User = get_user_model()
+
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        if not isinstance(self.request.data, dict):
+            raise ParseError
+
+        serializer = ChangePasswordSerializer(
+            self.request.user,
+            data=self.request.data,
+            context={ 'request': self.request },
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({ 'success': True })
 
 
 class StatusView(APIView):
