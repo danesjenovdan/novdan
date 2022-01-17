@@ -43,12 +43,10 @@ class Subscription(models.Model):
         on_delete=models.CASCADE,
     )
 
-    @property
-    def is_payed(self):
-        now = timezone.now()
+    def is_payed(self, time=timezone.now()):
         return self.time_ranges.filter(
-            starts_at__year=now.year, starts_at__month=now.month,
-            ends_at__year=now.year, ends_at__month=now.month,
+            starts_at__year=time.year, starts_at__month=time.month,
+            ends_at__year=time.year, ends_at__month=time.month,
             payed_at__isnull=False,
         ).exists()
 
@@ -61,7 +59,7 @@ class SubscriptionTimeRange(models.Model):
     ends_at = models.DateTimeField()
     canceled_at = models.DateTimeField(blank=True, null=True)
     payed_at = models.DateTimeField(blank=True, null=True)
-    payment_id = models.CharField(max_length=128, blank=True, null=True)
+    payment_token = models.CharField(max_length=128, blank=True, null=True)
     subscription = models.ForeignKey(
         Subscription,
         on_delete=models.CASCADE,

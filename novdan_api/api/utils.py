@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.db.models import Q, Sum
 from django.utils import timezone
 
@@ -49,6 +50,17 @@ def generate_tokens_for_month(time=timezone.now()):
         wallet.save()
 
 
+def _create_subscription_time_range(time, subscription_id):
+    starts_at = get_start_of_month(time)
+    ends_at = get_end_of_month(time)
+
+    return SubscriptionTimeRange.objects.create(
+        starts_at=starts_at,
+        ends_at=ends_at,
+        subscription_id=subscription_id,
+    )
+
+
 def generate_subscription_time_ranges_for_month(time=timezone.now()):
     """
     Creates a new SubscriptionTimeRange for the current month for all
@@ -75,12 +87,40 @@ def generate_subscription_time_ranges_for_month(time=timezone.now()):
         .filter(pk__in=last_time_ranges, canceled_at__isnull=True) \
         .values_list('subscription_id', flat=True)
 
-    starts_at = get_start_of_month(time)
-    ends_at = get_end_of_month(time)
-
     for subscription_id in non_canceled_subscription_ids:
-        SubscriptionTimeRange.objects.create(
-            starts_at=starts_at,
-            ends_at=ends_at,
-            subscription_id=subscription_id,
-        )
+        _create_subscription_time_range(time, subscription_id)
+
+
+def activate_subscription(user, payment_token):
+    """
+    Activates payed subscription for user.
+
+    Asserts if payment token is none or empty!
+    Asserts if subscription is already payed!
+    """
+    time = timezone.now()
+
+    # make sure payment token is not empty
+    assert payment_token is not None and payment_token != ''
+
+    with transaction.atomic():
+        subscription, _ = Subscription.objects.get_or_create(user=user)
+
+        # make sure subscription is not already payed
+        assert not subscription.is_payed(time)
+
+        # try getting current unpayed subscription time range if it exists
+        time_range = subscription.time_ranges.filter(
+            starts_at__year=time.year, starts_at__month=time.month,
+            ends_at__year=time.year, ends_at__month=time.month,
+            payed_at__isnull=True,
+        ).first()
+
+        # create new time range if it does not exist
+        if not time_range:
+            time_range = _create_subscription_time_range(time, subscription.id)
+
+        # add and save payment data
+        time_range.payed_at = time
+        time_range.payment_token = payment_token
+        time_range.save()

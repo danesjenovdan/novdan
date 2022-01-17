@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import transaction
 from django.db.models import F
-from django.utils import timezone
 from rest_framework.exceptions import ParseError
 from rest_framework.exceptions import ValidationError as RestValidationError
 from rest_framework.permissions import IsAuthenticated
@@ -12,10 +11,9 @@ from rest_framework.views import APIView
 
 from .exceptions import (ActiveSubscriptionExists, LowBalance,
                          NoActiveSubscription)
-from .models import Subscription, SubscriptionTimeRange, Transaction, Wallet
+from .models import Subscription, Transaction, Wallet
 from .serializers import WalletSerializer
-from .utils import (calculate_receivers_percentage, get_end_of_month,
-                    get_start_of_month)
+from .utils import activate_subscription, calculate_receivers_percentage
 
 User = get_user_model()
 
@@ -42,7 +40,9 @@ class StatusView(APIView):
 class TransferView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def _get_amount(self, field_name, amount_value):
+    @staticmethod
+    def _get_amount(data, field_name):
+        amount_value = data.get(field_name)
         if amount_value is None or amount_value == '':
             raise RestValidationError({ field_name: ['This field may not be blank.'] })
         try:
@@ -53,7 +53,9 @@ class TransferView(APIView):
             raise RestValidationError({ field_name: ['This field must be a positive non-zero integer value.'] })
         return amount
 
-    def _get_wallet(self, field_name, wallet_id):
+    @staticmethod
+    def _get_wallet(data, field_name):
+        wallet_id = data.get(field_name)
         if wallet_id is None or wallet_id == '':
             raise RestValidationError({ field_name: ['This field may not be blank.'] })
         try:
@@ -66,9 +68,9 @@ class TransferView(APIView):
         if not isinstance(self.request.data, dict):
             raise ParseError
 
-        amount = self._get_amount('amount', self.request.data.get('amount'))
-        from_wallet = self._get_wallet('from', self.request.data.get('from'))
-        to_wallet = self._get_wallet('to', self.request.data.get('to'))
+        amount = self._get_amount(self.request.data, 'amount')
+        from_wallet = self._get_wallet(self.request.data, 'from')
+        to_wallet = self._get_wallet(self.request.data, 'to')
 
         if from_wallet == to_wallet:
             raise RestValidationError({ api_settings.NON_FIELD_ERRORS_KEY : ['Wallet ids `from` and `to` must not be the same.'] })
@@ -99,11 +101,13 @@ class TransferView(APIView):
 class SubscriptionActivateView(APIView):
     permission_classes = [IsAuthenticated] # TODO: only allow payment server call this
 
-    def _get_user(self, field_name, uid):
-        if uid is None or uid == '':
+    @staticmethod
+    def _get_user(data, field_name):
+        user_id = data.get(field_name)
+        if user_id is None or user_id == '':
             raise RestValidationError({ field_name: ['This field may not be blank.'] })
         try:
-            user = User.objects.get(id=uid)
+            user = User.objects.get(id=user_id)
         except (ValidationError, User.DoesNotExist):
             raise RestValidationError({ field_name: ['This field must be a valid User id.'] })
         return user
@@ -112,7 +116,7 @@ class SubscriptionActivateView(APIView):
         if not isinstance(self.request.data, dict):
             raise ParseError
 
-        user = self._get_user('uid', self.request.data.get('uid'))
+        user = self._get_user(self.request.data, 'user_id')
 
         subscription_token = self.request.data.get('subscription_token')
         if subscription_token is None or subscription_token == '':
@@ -122,25 +126,7 @@ class SubscriptionActivateView(APIView):
         if active_payed_subscription:
             raise ActiveSubscriptionExists
 
-        with transaction.atomic():
-            subscription, created = Subscription.objects.get_or_create(user=user)
-
-            now = timezone.now()
-            time_range = subscription.time_ranges.filter(
-                starts_at__year=now.year, starts_at__month=now.month,
-                ends_at__year=now.year, ends_at__month=now.month,
-                payed_at__isnull=True,
-            ).first()
-            if not time_range:
-                time_range = SubscriptionTimeRange.objects.create(
-                    starts_at=get_start_of_month(now),
-                    ends_at=get_end_of_month(now),
-                    subscription=subscription,
-                )
-
-            time_range.payed_at = now
-            time_range.payment_id = subscription_token
-            time_range.save()
+        activate_subscription(user, subscription_token)
 
         return Response({ 'success': True })
 

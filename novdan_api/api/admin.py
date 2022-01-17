@@ -36,7 +36,7 @@ class IsSubscriptionPayedFilter(admin.SimpleListFilter):
 
 class SubscriptionTimeRangeStackedInline(admin.StackedInline):
     model = SubscriptionTimeRange
-    fields = ('starts_at', 'ends_at', 'canceled_at', 'payed_at', 'payment_id')
+    fields = ('starts_at', 'ends_at', 'canceled_at', 'payed_at', 'payment_token')
     extra = 0
 
 
