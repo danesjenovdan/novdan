@@ -25,13 +25,13 @@ class StatusView(APIView):
         wallet = Wallet.objects.filter(user=self.request.user).first()
         wallet_serializer = WalletSerializer(wallet)
 
-        active_payed_subscription = Subscription.objects.filter(user=self.request.user).active().payed().first()
+        current_payed_subscription = Subscription.objects.filter(user=self.request.user).current().payed().first()
 
         sum, percentages = calculate_receivers_percentage(wallet)
 
         return Response({
             'wallet': wallet_serializer.data,
-            'subscription_payed': bool(active_payed_subscription),
+            'subscription_payed': bool(current_payed_subscription),
             'monetized_split': percentages,
             'monetized_time': sum,
         })
@@ -122,8 +122,8 @@ class SubscriptionActivateView(APIView):
         if subscription_token is None or subscription_token == '':
             raise RestValidationError({ 'subscription_token': ['This field may not be blank.'] })
 
-        active_payed_subscription = Subscription.objects.filter(user=self.request.user).active().payed().first()
-        if active_payed_subscription:
+        current_payed_subscription = Subscription.objects.filter(user=self.request.user).current().payed().first()
+        if current_payed_subscription:
             raise ActiveSubscriptionExists
 
         activate_subscription(user, subscription_token)
@@ -135,8 +135,8 @@ class SubscriptionCancelView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
-        active_payed_subscription = Subscription.objects.filter(user=self.request.user).active().payed().first()
-        if not active_payed_subscription:
+        current_payed_subscription = Subscription.objects.filter(user=self.request.user).current().payed().first()
+        if not current_payed_subscription:
             raise NoActiveSubscription
 
         # TODO: cancel payment

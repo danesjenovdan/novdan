@@ -1,5 +1,5 @@
 from django.db import transaction
-from django.db.models import Q, Sum
+from django.db.models import Sum
 from django.utils import timezone
 
 from .models import Subscription, SubscriptionTimeRange, Transaction, Wallet
@@ -36,18 +36,15 @@ def calculate_receivers_percentage(from_wallet):
 
 def generate_tokens_for_month(time=timezone.now()):
     """
-    Fills wallets of all users that have an active subscription with tokens for
+    Fills wallets of all users that have a valid subscription with tokens for
     the current month. The amount of tokens in each wallet is set to the number
     of seconds in the current month.
     """
     seconds = int((get_end_of_month(time) - get_start_of_month(time)).total_seconds())
 
-    user_ids_with_active_subscription = Subscription.objects.active().values_list('user_id', flat=True)
-    active_wallets = Wallet.objects.filter(user_id__in=user_ids_with_active_subscription)
+    user_ids_with_subscription = Subscription.objects.current(time).values_list('user_id', flat=True)
 
-    for wallet in active_wallets:
-        wallet.amount = seconds
-        wallet.save()
+    Wallet.objects.filter(user_id__in=user_ids_with_subscription).update(amount=seconds)
 
 
 def _create_subscription_time_range(time, subscription_id):
@@ -69,12 +66,9 @@ def generate_subscription_time_ranges_for_month(time=timezone.now()):
     Asserts if any ranges for current month already exist!
     """
 
-    # make sure there are not any time ranges for this months already
-    this_month_time_ranges = SubscriptionTimeRange.objects.filter(
-        (Q(starts_at__year=time.year) & Q(starts_at__month=time.month)) |
-        (Q(ends_at__year=time.year) & Q(ends_at__month=time.month))
-    )
-    assert not this_month_time_ranges.exists(), "A SubscriptionTimeRange for current month already exists!"
+    # make sure there are not any time ranges for this month already
+    month_has_time_ranges = SubscriptionTimeRange.objects.current(time).exists()
+    assert not month_has_time_ranges, "A SubscriptionTimeRange for current month already exists!"
 
     # get last time range for each subscription
     last_time_ranges = SubscriptionTimeRange.objects.all() \
@@ -101,20 +95,16 @@ def activate_subscription(user, payment_token):
     time = timezone.now()
 
     # make sure payment token is not empty
-    assert payment_token is not None and payment_token != ''
+    assert payment_token is not None and payment_token != '', "Payment token is none or empty!"
 
     with transaction.atomic():
         subscription, _ = Subscription.objects.get_or_create(user=user)
 
         # make sure subscription is not already payed
-        assert not subscription.is_payed(time)
+        assert not subscription.is_payed(time), "Subscription is already payed!"
 
         # try getting current unpayed subscription time range if it exists
-        time_range = subscription.time_ranges.filter(
-            starts_at__year=time.year, starts_at__month=time.month,
-            ends_at__year=time.year, ends_at__month=time.month,
-            payed_at__isnull=True,
-        ).first()
+        time_range = subscription.time_ranges.current(time).unpayed().first()
 
         # create new time range if it does not exist
         if not time_range:

@@ -23,16 +23,14 @@ class Wallet(models.Model):
 
 
 class SubscriptionQuerySet(models.QuerySet):
-    def active(self, time=timezone.now()):
+    def current(self, time=timezone.now()):
         return self.filter(
             time_range__starts_at__lte=time,
             time_range__ends_at__gte=time,
         )
 
     def payed(self):
-        return self.filter(
-            time_range__payed_at__isnull=False,
-        )
+        return self.filter(time_range__payed_at__isnull=False)
 
 
 class Subscription(models.Model):
@@ -44,17 +42,26 @@ class Subscription(models.Model):
     )
 
     def is_payed(self, time=timezone.now()):
-        return self.time_ranges.filter(
-            starts_at__year=time.year, starts_at__month=time.month,
-            ends_at__year=time.year, ends_at__month=time.month,
-            payed_at__isnull=False,
-        ).exists()
+        return self.time_ranges.current(time).payed().exists()
 
     def __str__(self):
         return f'Subscription ({self.id})'
 
 
+class SubscriptionTimeRangeQuerySet(models.QuerySet):
+    def current(self, time=timezone.now()):
+        return self.filter(starts_at__lte=time, ends_at__gte=time)
+
+    def payed(self):
+        return self.filter(payed_at__isnull=False)
+
+    def unpayed(self):
+        return self.filter(payed_at__isnull=True)
+
+
 class SubscriptionTimeRange(models.Model):
+    objects = SubscriptionTimeRangeQuerySet.as_manager()
+
     starts_at = models.DateTimeField()
     ends_at = models.DateTimeField()
     canceled_at = models.DateTimeField(blank=True, null=True)
