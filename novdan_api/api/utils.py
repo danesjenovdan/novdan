@@ -110,7 +110,31 @@ def activate_subscription(user, payment_token):
         if not time_range:
             time_range = _create_subscription_time_range(time, subscription.id)
 
-        # add and save payment data
+        # add payment data and save
         time_range.payed_at = time
         time_range.payment_token = payment_token
+        time_range.save()
+
+
+def cancel_subscription(user):
+    """
+    Cancels subscription for user.
+
+    Asserts if subscription is not active!
+    """
+    time = timezone.now()
+
+    with transaction.atomic():
+        subscription = Subscription.objects.get(user=user)
+
+        # make sure subscription is payed
+        assert subscription.is_payed(time), "Subscription is not payed!"
+
+        # get current payed subscription time range
+        time_range = subscription.time_ranges.current(time).payed().first()
+
+        # TODO: cancel payment in podpri api
+
+        # add cancelation data and save
+        time_range.canceled_at = time
         time_range.save()

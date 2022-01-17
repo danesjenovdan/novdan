@@ -13,7 +13,8 @@ from .exceptions import (ActiveSubscriptionExists, LowBalance,
                          NoActiveSubscription)
 from .models import Subscription, Transaction, Wallet
 from .serializers import WalletSerializer
-from .utils import activate_subscription, calculate_receivers_percentage
+from .utils import (activate_subscription, calculate_receivers_percentage,
+                    cancel_subscription)
 
 User = get_user_model()
 
@@ -25,13 +26,13 @@ class StatusView(APIView):
         wallet = Wallet.objects.filter(user=self.request.user).first()
         wallet_serializer = WalletSerializer(wallet)
 
-        current_payed_subscription = Subscription.objects.filter(user=self.request.user).current().payed().first()
+        active_subscription_exists = Subscription.objects.filter(user=self.request.user).current().payed().exists()
 
         sum, percentages = calculate_receivers_percentage(wallet)
 
         return Response({
             'wallet': wallet_serializer.data,
-            'subscription_payed': bool(current_payed_subscription),
+            'active_subscription': active_subscription_exists,
             'monetized_split': percentages,
             'monetized_time': sum,
         })
@@ -101,32 +102,18 @@ class TransferView(APIView):
 class SubscriptionActivateView(APIView):
     permission_classes = [IsAuthenticated] # TODO: only allow payment server call this
 
-    @staticmethod
-    def _get_user(data, field_name):
-        user_id = data.get(field_name)
-        if user_id is None or user_id == '':
-            raise RestValidationError({ field_name: ['This field may not be blank.'] })
-        try:
-            user = User.objects.get(id=user_id)
-        except (ValidationError, User.DoesNotExist):
-            raise RestValidationError({ field_name: ['This field must be a valid User id.'] })
-        return user
-
     def post(self, request, format=None):
         if not isinstance(self.request.data, dict):
             raise ParseError
-
-        user = self._get_user(self.request.data, 'user_id')
 
         subscription_token = self.request.data.get('subscription_token')
         if subscription_token is None or subscription_token == '':
             raise RestValidationError({ 'subscription_token': ['This field may not be blank.'] })
 
-        current_payed_subscription = Subscription.objects.filter(user=self.request.user).current().payed().first()
-        if current_payed_subscription:
+        if Subscription.objects.filter(user=self.request.user).current().payed().exists():
             raise ActiveSubscriptionExists
 
-        activate_subscription(user, subscription_token)
+        activate_subscription(self.request.user, subscription_token)
 
         return Response({ 'success': True })
 
@@ -135,14 +122,9 @@ class SubscriptionCancelView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
-        current_payed_subscription = Subscription.objects.filter(user=self.request.user).current().payed().first()
-        if not current_payed_subscription:
+        if not Subscription.objects.filter(user=self.request.user).current().payed().exists():
             raise NoActiveSubscription
 
-        # TODO: cancel payment
-
-        # FIXME: canceled_at is on subscriptiontimerange not on subscription
-        # active_payed_subscription.canceled_at = timezone.now()
-        # active_payed_subscription.save()
+        cancel_subscription(self.request.user)
 
         return Response({ 'success': True })
