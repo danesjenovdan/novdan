@@ -51,6 +51,14 @@ export default {
   build: {
   },
 
+  // Runtime config: https://nuxtjs.org/docs/configuration-glossary/configuration-runtime-config/
+  publicRuntimeConfig: {
+    apiBase: process.env.NUXT_API_BASE_CLIENT || process.env.NUXT_API_BASE
+  },
+  privateRuntimeConfig: {
+    apiBase: process.env.NUXT_API_BASE
+  },
+
   // Server configuration: https://nuxtjs.org/docs/configuration-glossary/configuration-server/
   server: {
     port: 3000, // default: 3000

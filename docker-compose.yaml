@@ -35,6 +35,8 @@ services:
       - 3000:3000
     environment:
       NODE_ENV: development
+      NUXT_API_BASE: http://novdan_api:8000
+      NUXT_API_BASE_CLIENT: http://localhost:8000
     command: npm run dev
     volumes:
       - ./novdan_frontend:/app
