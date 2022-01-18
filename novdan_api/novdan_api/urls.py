@@ -13,13 +13,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from api.urls import spsp4_urlpatterns
 from django.contrib import admin
 from django.urls import include, path
-from oauth2_provider.urls import base_urlpatterns as oauth2_base_urlpatterns, app_name as oauth2_app_name
-
+from oauth2_provider.urls import app_name as oauth2_app_name
+from oauth2_provider.urls import base_urlpatterns as oauth2_base_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('o/', include((oauth2_base_urlpatterns, oauth2_app_name), namespace='oauth2_provider')),
     path('api/', include('api.urls')),
+    path('', include(spsp4_urlpatterns)),
 ]

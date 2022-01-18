@@ -1,16 +1,21 @@
+import base64
+
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import transaction
 from django.db.models import F
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework.exceptions import ParseError
 from rest_framework.exceptions import ValidationError as RestValidationError
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
 from .exceptions import (ActiveSubscriptionExists, LowBalance,
-                         NoActiveSubscription)
+                         NoActiveSubscription, invalid_receiver_error)
 from .models import Subscription, Transaction, Wallet
 from .serializers import ChangePasswordSerializer, WalletSerializer
 from .utils import (activate_subscription, calculate_receivers_percentage,
@@ -22,7 +27,7 @@ User = get_user_model()
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, format=None):
+    def post(self, request):
         if not isinstance(self.request.data, dict):
             raise ParseError
 
@@ -40,7 +45,7 @@ class ChangePasswordView(APIView):
 class StatusView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, format=None):
+    def get(self, request):
         wallet = Wallet.objects.filter(user=self.request.user).first()
         wallet_serializer = WalletSerializer(wallet)
 
@@ -83,7 +88,7 @@ class TransferView(APIView):
             raise RestValidationError({ field_name: ['This field must be a valid Wallet id.'] })
         return wallet
 
-    def post(self, request, format=None):
+    def post(self, request):
         if not isinstance(self.request.data, dict):
             raise ParseError
 
@@ -120,7 +125,7 @@ class TransferView(APIView):
 class SubscriptionActivateView(APIView):
     permission_classes = [IsAuthenticated] # TODO: only allow payment server call this
 
-    def post(self, request, format=None):
+    def post(self, request):
         if not isinstance(self.request.data, dict):
             raise ParseError
 
@@ -139,10 +144,55 @@ class SubscriptionActivateView(APIView):
 class SubscriptionCancelView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, format=None):
+    def post(self, request):
         if not Subscription.objects.filter(user=self.request.user).current().payed().exists():
             raise NoActiveSubscription
 
         cancel_subscription(self.request.user)
 
         return Response({ 'success': True })
+
+
+class Spsp4View(APIView):
+    renderer_classes = [JSONRenderer]
+    permission_classes = []
+
+    @staticmethod
+    def _get_user(uid, username):
+        if not uid and not username:
+            return None
+        elif uid:
+            kwargs = { 'uid': uid }
+        elif username:
+            kwargs = { 'username': username }
+        try:
+            return User.objects.get(**kwargs)
+        except (ValidationError, User.DoesNotExist):
+            return None
+
+    @staticmethod
+    def _get_wallet(user):
+        if not user:
+            return None
+        try:
+            return Wallet.objects.get(user=user)
+        except (ValidationError, Wallet.DoesNotExist):
+            return None
+
+    @method_decorator(cache_page(60 * 60 * 1))
+    def get(self, request, uid=None, username=None):
+        user = self._get_user(uid, username)
+        if not user:
+            return invalid_receiver_error()
+
+        wallet = self._get_wallet(user)
+        if not wallet:
+            return invalid_receiver_error()
+
+        return Response(
+            {
+                'destination_account': f'g.novdan.{wallet.id}.transfer',
+                'shared_secret': base64.b64encode('TransferDoesNotUseSTREAMProtocol'.encode()), # We don't use STREAM.
+            },
+            content_type='application/spsp4+json',
+        )
