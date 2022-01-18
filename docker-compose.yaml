@@ -29,5 +29,15 @@ services:
     depends_on:
       - db
 
+  novdan_frontend:
+    build: ./novdan_frontend
+    ports:
+      - 3000:3000
+    environment:
+      NODE_ENV: development
+    command: npm run dev
+    volumes:
+      - ./novdan_frontend:/app
+
 volumes:
   pgdata:
