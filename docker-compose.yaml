@@ -29,5 +29,18 @@ services:
     depends_on:
       - db
 
+  novdan_frontend:
+    build: ./novdan_frontend
+    ports:
+      - 3000:3000
+    environment:
+      NODE_ENV: development
+      NUXT_API_BASE: http://novdan_api:8000
+      NUXT_API_BASE_BROWSER: http://localhost:8000
+      NUXT_API_CLIENT_ID: 7h2tSZ5KheLlyItxJ6mbTqXXik8MGqiiVdd2zv0a
+    command: npm run dev
+    volumes:
+      - ./novdan_frontend:/app
+
 volumes:
   pgdata:

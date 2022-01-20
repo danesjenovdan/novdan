@@ -3,8 +3,8 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 from rangefilter.filters import DateTimeRangeFilter
 
-from .models import User, Wallet, Subscription, SubscriptionTimeRange, Transaction
-
+from .models import (Subscription, SubscriptionTimeRange, Transaction, User,
+                     Wallet)
 
 admin.site.register(User, UserAdmin)
 
@@ -28,15 +28,16 @@ class IsSubscriptionPayedFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == '1':
-            return queryset.active().payed()
+            return queryset.current().payed()
         if self.value() == '0':
-            return queryset.exclude(id__in=queryset.active().payed())
+            # don't use .unpayed(), it's not the same
+            return queryset.exclude(id__in=queryset.current().payed())
         return queryset
 
 
 class SubscriptionTimeRangeStackedInline(admin.StackedInline):
     model = SubscriptionTimeRange
-    fields = ('starts_at', 'ends_at', 'canceled_at', 'payed_at', 'payment_id')
+    fields = ('starts_at', 'ends_at', 'canceled_at', 'payed_at', 'payment_token')
     extra = 0
 
 
