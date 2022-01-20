@@ -53,7 +53,8 @@ export default {
 
   // Runtime config: https://nuxtjs.org/docs/configuration-glossary/configuration-runtime-config/
   publicRuntimeConfig: {
-    apiBase: process.env.NUXT_API_BASE_CLIENT || process.env.NUXT_API_BASE
+    apiClientId: process.env.NUXT_API_CLIENT_ID,
+    apiBase: process.env.NUXT_API_BASE_BROWSER || process.env.NUXT_API_BASE
   },
   privateRuntimeConfig: {
     apiBase: process.env.NUXT_API_BASE

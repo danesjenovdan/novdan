@@ -18,5 +18,6 @@ Dockerfile
 .eslintrc.js
 .eslintignore
 .editorconfig
+.prettierrc.json
 node_modules/
 .nuxt/

@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from rest_framework.exceptions import ParseError
 from rest_framework.exceptions import ValidationError as RestValidationError
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
@@ -155,7 +155,7 @@ class SubscriptionCancelView(APIView):
 
 class Spsp4View(APIView):
     renderer_classes = [JSONRenderer]
-    permission_classes = []
+    permission_classes = [AllowAny]
 
     @staticmethod
     def _get_user(uid, username):
