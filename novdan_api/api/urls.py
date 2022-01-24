@@ -15,5 +15,5 @@ urlpatterns = [
 
 spsp4_urlpatterns = [
     path('~<str:username>', Spsp4View.as_view()),
-    path('<str:uid>', Spsp4View.as_view()),
+    path('=<str:uid>', Spsp4View.as_view()),
 ]
