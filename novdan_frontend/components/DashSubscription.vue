@@ -1,0 +1,432 @@
+<template>
+  <section id="how-section" class="background-gradient-yellow-white subscription">
+    <div class="container">
+      <div class="content-narrow">
+        <h3>Naročnina</h3>
+        <div class="row">
+          <div class="subscribe">
+            <div class="moneybill" :class="{'disabled': !isSubscribed}">
+              <img src="~assets/images/5-eur.svg" alt="pink spinning star">
+              <div class="effect">
+                <img src="~assets/images/zarki-roza.svg" alt="pink spinning star">
+              </div>
+            </div>
+            <div v-if="isSubscribed">
+              <h6>Tvoja <span>naročnina</span> je aktivna.</h6>
+              <p>Obračunamo jo vsakega 1. v mesecu.</p>
+            </div>
+            <div v-if="!isSubscribed">
+              <h6>Tvoja <span>naročnina</span> še ni aktivna.</h6>
+              <p>Obračunamo jo vsakega 1. v mesecu.</p>
+            </div>
+          </div>
+          <div class="support-wrapper">
+            <a v-if="!isSubscribed" href="#how-section" class="button">
+              <div class="support">
+                Aktiviraj
+              </div>
+              <div class="star">
+                <img src="~assets/images/star.png" alt="pink spinning star">
+              </div>
+            </a>
+            <div v-if="isSubscribed" class="payment-method">
+              <button>Zamenjaj plačilno sredstvo</button>
+              <span>Prekini naročnino</span>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <h3>Uporabniški račun</h3>
+        <form>
+          <div class="input-group">
+            <label for="email">Uporabniški račun</label>
+            <input type="email" name="email" id="email" /><span>Spremeni</span>
+          </div>
+          <div class="input-group">
+            <label for="password">Geslo</label>
+            <input type="password" name="password" id="password" /><span>Spremeni</span>
+          </div>
+        </form>
+        <button class="logout-button" @click="logout">Odjavi se</button>
+
+        <hr v-if="isSubscribed" />
+
+        <div v-if="isSubscribed" style="position:relative;">
+          <h3>Tvoja razporeditev</h3>
+          <p class="text-small">Ta mesec si medijem doniral <span>12094 sekund</span> svoje pozornosti</p>
+          <div class="pink-bg" />
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script>
+import api from '~/mixins/api.js'
+
+export default {
+  mixins: [api],
+  props: {
+    windowWidth: {
+      type: Number,
+      default: 0
+    },
+    status: {
+      type: Object,
+      default: null
+    }
+  },
+  data() {
+    return {}
+  },
+  computed: {
+    isSubscribed() {
+      if (this.status && this.status.active_subscription) {
+        return true
+      }
+      return false
+    }
+  },
+  methods: {
+    async logout() {
+      console.log('logging out...')
+      try {
+        await this.$api.logout()
+        this.$router.push('/dash/login')
+      } catch (error) {
+        // TODO: show error
+      }
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.subscription {
+  padding: 4rem 1rem;
+  overflow: hidden;
+  @media (min-width: 992px) {
+    padding: 6rem 30px;
+  }
+  .row {
+    display: block;
+    @media (min-width: 992px) {
+      display: flex;
+    }
+  }
+  h3 {
+    font-size: 3rem;
+    font-weight: 400;
+    font-family: "Le Murmure";
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-top: 0;
+    margin-bottom: 2rem;
+  }
+  .subscribe {
+    margin: 4rem 0;
+    text-align: center;
+    @media (min-width: 992px) {
+      padding-left: 5rem;
+      margin: 1rem;
+      margin-right: 12rem;
+      transform: rotate(-5deg);
+    }
+    .moneybill {
+      position: relative;
+      &>img {
+        z-index: 2;
+        position: relative;
+        width: 16rem;
+        @media (min-width: 1200px) {
+          width: 20rem;
+        }
+      }
+      .effect {
+        width: 16rem;
+        height: auto;
+        top: 50%;
+        left: 50%;
+        position: absolute;
+        transition: all 0.25s ease;
+        transform: translateY(-50%) translateX(-50%) scale(2.25);
+      }
+      &.disabled {
+        opacity: 0.6;
+        .effect {
+          transform: translateY(-50%) translateX(-50%) scale(1.625);
+        }
+      }
+      // &:hover {
+      //   .effect {
+      //     transform: translateY(-50%) translateX(-50%) scale(2.5);
+      //   }
+      // }
+    }
+    h6 {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 0.6;
+      margin-bottom: 0;
+      text-align: center;
+      span {
+        font-family: 'Syne Tactile', cursive;
+        color: #1103b1;
+      }
+    }
+    p {
+      margin-top: 0.5rem;
+      font-size: 12px;
+      text-align: center;
+    }
+  }
+
+  .support-wrapper {
+    z-index: 2;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    @media (min-width: 992px) {
+      display: block;
+    }
+    .button {
+      text-decoration: none;
+      color: black;
+      position: relative;
+      display: flex;
+      align-items: center;
+      .support {
+        font-size: 1.5rem;
+        font-weight: 700;
+        padding: 0.5rem 5rem 0.5rem 2rem;
+        border: 3px solid #000000;
+        border-radius: 1.25rem;
+        background-color: white;
+        position: relative;
+        z-index: 3;
+        transition: all 0.25s ease;
+        transform: rotate(0) scale(1);
+        @media (min-width: 1200px) {
+          font-size: 2rem;
+        }
+        @media (min-width: 1400px) {
+          font-size: 3rem;
+          padding: 0.5rem 7rem 0.5rem 2rem;
+        }
+      }
+      .star {
+        position: absolute;
+        z-index: 3;
+        left: 10rem;
+        img {
+          height: 8rem;
+          animation: rotate360 3s linear infinite;  /* animation set */
+          @media (min-width: 992px) {
+            animation-play-state: paused;
+          }
+        }
+        div {
+          position: absolute;
+          top: 2.75rem;
+          left: 2.5rem;
+          z-index: 4;
+          display: flex;
+          align-items: flex-end;
+          span:first-child {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+          }
+          span:last-child {
+            font-size: 0.75rem;
+            font-style: italic;
+            display: inline-block;
+            font-family: 'Syne Tactile', cursive;
+          }
+        }
+        @media (min-width: 768px) {
+          left: 10rem;
+        }
+        @media (min-width: 1200px) {
+          left: unset;
+          right: 2rem;
+        }
+        @media (min-width: 1400px) {
+          right: -4rem;
+          img {
+            height: 11rem;
+          }
+          div {
+            top: 3.5rem;
+            left: 3.5rem;
+            span:first-child {
+              font-size: 3rem;
+            }
+            span:last-child {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+      &:hover {
+        cursor: pointer;
+        .star img {
+          animation-play-state: running;
+        }
+        .support {
+          background-color: #ffd700;
+          @media (min-width: 1200px) {
+            transform:rotate(0) scale(1.1);
+          }
+        }
+      }
+    }
+    .subtitle {
+      margin-top: 2rem;
+      margin-left: 3rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      span {
+        color: #1103b1;
+        font-weight: 400;
+        font-family: 'Syne Tactile', cursive;
+      }
+    }
+    .payment-method {
+      button {
+        background-color: white;
+        border: 2px solid #000000;
+        border-radius: 10px;
+        padding: 8px 20px;
+        font-family: "Syne", sans-serif;
+        font-size: 20px;
+        font-weight: 500;
+        display: block;
+        margin: 10px 0;
+        width: 100%;
+        @media (min-width: 768px) {
+          width: unset;
+        }
+        cursor: pointer;
+        &:hover {
+          background-color: #1103b1;
+          border-color: #1103b1;
+          color: white;
+        }
+      }
+      span {
+        text-decoration: underline;
+        cursor: pointer;
+        display: block;
+        text-align: center;
+        @media (min-width: 768px) {
+          text-align: left;
+          margin-left: 22px;
+        }
+        &:hover {
+          color: #1103b1;
+        }
+      }
+    }
+  }
+  hr {
+    border: 1px solid #ffd700;
+    margin: 4rem 0;
+  }
+  form {
+    .input-group {
+      margin-bottom: 30px;
+      @media (min-width: 992px) {
+        margin-bottom: 20px;
+      }
+    }
+    label {
+      display: block;
+      color: #1103b1;
+      font-family: 'Syne Tactile', cursive;
+      font-size: 20px;
+      line-height: 0.8;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    span {
+      text-decoration: underline;
+      margin: 5px 0;
+      display: block;
+      cursor: pointer;
+      @media (min-width: 992px) {
+        margin: 0 0 0 16px;
+        display: inline;
+      }
+      &:hover {
+        color: #1103b1;
+      }
+    }
+    input {
+      border-radius: 10px;
+      border: 2px solid #1103b1;
+      padding: 8px 16px;
+      font-size: 20px;
+      width: 90%;
+      @media (min-width: 576px) {
+        width: 480px;
+      }
+      @media (min-width: 992px) {
+        width: 480px;
+      }
+    }
+  }
+  .logout-button {
+    border: 2px solid #000000;
+    border-radius: 10px;
+    background-color: #ffffff;
+    font-family: 'Syne', sans-serif;
+    font-size: 25px;
+    font-weight: 700;
+    padding: 8px 24px;
+    margin: 10px 0;
+    cursor: pointer;
+    &:hover {
+      background-color: #1103b1;
+      border-color: #1103b1;
+      color: white;
+    }
+  }
+  .text-small {
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+    span {
+      font-weight: 800;
+    }
+    @media (min-width: 992px) {
+      margin: 1rem 9rem 2rem 9rem;
+      font-size: 2rem;
+      line-height: 2.5rem;
+    }
+  }
+  .pink-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 300px;
+    height: 300px;
+    background-image: radial-gradient(circle 150px at center, #ff5ccb 0%, rgba(255, 92, 203, 0) 100%);
+    opacity: 0.4;
+    z-index: -1;
+    @media (min-width: 768px) {
+      top: -10%;
+      left: 40%;
+    }
+    @media (min-width: 992px) {
+      top: -11rem;
+      left: 31rem;
+      width: 622px;
+      height: 622px;
+      background-image: radial-gradient(circle 311px at center, #ff5ccb 0%, rgba(255, 92, 203, 0) 100%);
+    }
+  }
+}
+
+</style>
