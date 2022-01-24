@@ -9,3 +9,4 @@ from .models import Wallet
 def post_user_save(sender, instance, created, **kwargs):
     if created:
         Wallet.objects.create(user=instance)
+        # TODO: call podpri api to create user and send email

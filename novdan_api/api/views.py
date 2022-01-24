@@ -144,20 +144,34 @@ class TransferView(APIView):
 
 
 class SubscriptionActivateView(APIView):
-    permission_classes = [IsAuthenticated] # TODO: only allow payment server call this
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # TODO: kliči podpri
+
+        return Response({
+            'token': 'fake_token',
+            'customer_id': 'fake_customer_id',
+        })
 
     def post(self, request):
         if not isinstance(self.request.data, dict):
             raise ParseError
 
-        subscription_token = self.request.data.get('subscription_token')
-        if subscription_token is None or subscription_token == '':
-            raise RestValidationError({ 'subscription_token': ['This field may not be blank.'] })
-
         if Subscription.objects.filter(user=self.request.user).current().payed().exists():
             raise ActiveSubscriptionExists
 
-        activate_subscription(self.request.user, subscription_token)
+        nonce = self.request.data.get('nonce')
+        if nonce is None or nonce == '':
+            raise RestValidationError({ 'nonce': ['This field may not be blank.'] })
+
+        customer_id = self.request.data.get('customer_id')
+        if customer_id is None or customer_id == '':
+            raise RestValidationError({ 'customer_id': ['This field may not be blank.'] })
+
+        # TODO: kliči podpri
+
+        activate_subscription(self.request.user, nonce)
 
         return Response({ 'success': True })
 
