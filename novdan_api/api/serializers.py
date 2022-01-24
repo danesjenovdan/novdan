@@ -1,11 +1,48 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
 from oauth2_provider.models import get_refresh_token_model
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError as RestValidationError
 
 from .models import Wallet
 
+User = get_user_model()
 RefreshToken = get_refresh_token_model()
+
+
+class RegisterSerializer(serializers.Serializer):
+    email = serializers.EmailField(write_only=True, required=True)
+    username = serializers.CharField(write_only=True, required=True)
+    password = serializers.CharField(write_only=True, required=True)
+    confirm_password = serializers.CharField(write_only=True, required=True)
+
+    def validate(self, data):
+        if User.objects.filter(email=data['email']).exists():
+            raise RestValidationError({ 'email': ['User with this email already exists.'] })
+
+        if User.objects.filter(username=data['username']).exists():
+            raise RestValidationError({ 'username': ['User with this username already exists.'] })
+
+        try:
+            validate_password(data['password'], User(email=data['email'], username=data['username']))
+        except DjangoValidationError as validation_error:
+            raise RestValidationError({ 'password': validation_error.messages })
+
+        if data['password'] != data['confirm_password']:
+            raise RestValidationError({ 'confirm_password': ['Passwords do not match.'] })
+
+        return data
+
+    def create(self, validated_data):
+        new_user = User.objects.create(
+            email=validated_data['email'],
+            username=validated_data['username'],
+        )
+        new_user.set_password(validated_data['password'])
+        new_user.save()
+
+        return new_user
 
 
 class ChangePasswordSerializer(serializers.Serializer):
@@ -15,7 +52,7 @@ class ChangePasswordSerializer(serializers.Serializer):
     def validate_old_password(self, value):
         user = self.context['request'].user
         if not user.check_password(value):
-            raise ValidationError('The password is not correct.')
+            raise RestValidationError('The password is not correct.')
         return value
 
     def validate_new_password(self, value):

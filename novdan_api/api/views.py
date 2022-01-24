@@ -1,12 +1,12 @@
 import base64
 
 from django.contrib.auth import get_user_model
-from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db import transaction
 from django.db.models import F
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from rest_framework.exceptions import ParseError
+from rest_framework.exceptions import ParseError, PermissionDenied
 from rest_framework.exceptions import ValidationError as RestValidationError
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.renderers import JSONRenderer
@@ -17,11 +17,32 @@ from rest_framework.views import APIView
 from .exceptions import (ActiveSubscriptionExists, LowBalance,
                          NoActiveSubscription, invalid_receiver_error)
 from .models import Subscription, Transaction, Wallet
-from .serializers import ChangePasswordSerializer, WalletSerializer
+from .serializers import (ChangePasswordSerializer, RegisterSerializer,
+                          WalletSerializer)
 from .utils import (activate_subscription, calculate_receivers_percentage,
                     cancel_subscription)
 
 User = get_user_model()
+
+
+class RegisterView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        if not isinstance(self.request.data, dict):
+            raise ParseError
+
+        if self.request.auth:
+            raise PermissionDenied
+
+        serializer = RegisterSerializer(
+            data=self.request.data,
+            context={ 'request': self.request },
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({ 'success': True })
 
 
 class ChangePasswordView(APIView):
@@ -84,7 +105,7 @@ class TransferView(APIView):
             raise RestValidationError({ field_name: ['This field may not be blank.'] })
         try:
             wallet = Wallet.objects.get(id=wallet_id)
-        except (ValidationError, Wallet.DoesNotExist):
+        except (DjangoValidationError, Wallet.DoesNotExist):
             raise RestValidationError({ field_name: ['This field must be a valid Wallet id.'] })
         return wallet
 
@@ -167,7 +188,7 @@ class Spsp4View(APIView):
             kwargs = { 'username': username }
         try:
             return User.objects.get(**kwargs)
-        except (ValidationError, User.DoesNotExist):
+        except (DjangoValidationError, User.DoesNotExist):
             return None
 
     @staticmethod
@@ -176,7 +197,7 @@ class Spsp4View(APIView):
             return None
         try:
             return Wallet.objects.get(user=user)
-        except (ValidationError, Wallet.DoesNotExist):
+        except (DjangoValidationError, Wallet.DoesNotExist):
             return None
 
     @method_decorator(cache_page(60 * 60 * 1))
