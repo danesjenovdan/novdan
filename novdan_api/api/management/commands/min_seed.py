@@ -58,6 +58,8 @@ class Command(BaseCommand):
         generate_tokens_for_month_for_wallet(admin_wallet)
 
         transfer_tokens(admin_wallet, user1_wallet, 5)
+        admin_wallet.refresh_from_db() # get updated values from db not CombinedExpression
         transfer_tokens(admin_wallet, user2_wallet, 10)
+        admin_wallet.refresh_from_db() # get updated values from db not CombinedExpression
 
         self.stdout.write('Done')
