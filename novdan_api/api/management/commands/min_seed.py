@@ -16,7 +16,7 @@ class Command(BaseCommand):
         self.stdout.write('Starting ...')
 
         admin = User.objects.create(
-            first_name='djnd',
+            first_name='Danes je nov dan',
             username='djnd',
             email='test@test.com',
             is_active=True,
@@ -34,7 +34,8 @@ class Command(BaseCommand):
         )
 
         user1 = User.objects.create(
-            first_name='user1',
+            first_name='First',
+            last_name='User',
             username='user1',
             email='user1@test.com',
             is_active=True,
@@ -43,7 +44,7 @@ class Command(BaseCommand):
         user1.save()
 
         user2 = User.objects.create(
-            first_name='user2',
+            first_name='User2',
             username='user2',
             email='user2@test.com',
             is_active=True,

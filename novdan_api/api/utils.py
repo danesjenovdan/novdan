@@ -3,6 +3,7 @@ from django.db.models import F, Sum
 from django.utils import timezone
 
 from .models import Subscription, SubscriptionTimeRange, Transaction, Wallet
+from .serializers import UserSerializer
 
 
 def get_start_of_month(datetime):
@@ -29,7 +30,10 @@ def calculate_receivers_percentage(from_wallet):
         return 0, []
 
     results = transactions.values('to_wallet').order_by('to_wallet').annotate(sum=Sum('amount'))
-    percentages = [{ 'id': str(result['to_wallet']), 'percentage': result['sum'] / sum } for result in results]
+    percentages = [{
+        'user': UserSerializer(Wallet.objects.get(id=result['to_wallet']).user).data,
+        'percentage': result['sum'] / sum,
+    } for result in results]
 
     return sum, percentages
 
