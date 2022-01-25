@@ -2,8 +2,6 @@ import base64
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError as DjangoValidationError
-from django.db import transaction
-from django.db.models import F
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from rest_framework.exceptions import ParseError, PermissionDenied
@@ -16,11 +14,11 @@ from rest_framework.views import APIView
 
 from .exceptions import (ActiveSubscriptionExists, LowBalance,
                          NoActiveSubscription, invalid_receiver_error)
-from .models import Subscription, Transaction, Wallet
+from .models import Subscription, Wallet
 from .serializers import (ChangePasswordSerializer, RegisterSerializer,
                           WalletSerializer)
 from .utils import (activate_subscription, calculate_receivers_percentage,
-                    cancel_subscription)
+                    cancel_subscription, transfer_tokens)
 
 User = get_user_model()
 
@@ -118,7 +116,7 @@ class TransferView(APIView):
         to_wallet = self._get_wallet(self.request.data, 'to')
 
         if from_wallet == to_wallet:
-            raise RestValidationError({ api_settings.NON_FIELD_ERRORS_KEY : ['Wallet ids `from` and `to` must not be the same.'] })
+            raise RestValidationError({ api_settings.NON_FIELD_ERRORS_KEY: ['Wallet ids `from` and `to` must not be the same.'] })
 
         if not self.request.user.is_staff and from_wallet.user != self.request.user:
             raise PermissionDenied
@@ -126,19 +124,7 @@ class TransferView(APIView):
         if from_wallet.amount < amount:
             raise LowBalance
 
-        with transaction.atomic():
-            from_wallet.amount = F('amount') - amount
-            to_wallet.amount = F('amount') + amount
-
-            new_transaction = Transaction(
-                from_wallet=from_wallet,
-                to_wallet=to_wallet,
-                amount=amount,
-            )
-
-            from_wallet.save()
-            to_wallet.save()
-            new_transaction.save()
+        transfer_tokens(from_wallet, to_wallet, amount)
 
         return Response({ 'success': True })
 

@@ -1,5 +1,5 @@
 from django.db import transaction
-from django.db.models import Sum
+from django.db.models import F, Sum
 from django.utils import timezone
 
 from .models import Subscription, SubscriptionTimeRange, Transaction, Wallet
@@ -34,17 +34,27 @@ def calculate_receivers_percentage(from_wallet):
     return sum, percentages
 
 
+def _get_number_of_seconds_in_month(time=timezone.now()):
+    return int((get_end_of_month(time) - get_start_of_month(time)).total_seconds())
+
+
 def generate_tokens_for_month(time=timezone.now()):
     """
     Fills wallets of all users that have a valid subscription with tokens for
     the current month. The amount of tokens in each wallet is set to the number
     of seconds in the current month.
     """
-    seconds = int((get_end_of_month(time) - get_start_of_month(time)).total_seconds())
+    seconds = _get_number_of_seconds_in_month(time)
 
     user_ids_with_subscription = Subscription.objects.current(time).values_list('user_id', flat=True)
 
     Wallet.objects.filter(user_id__in=user_ids_with_subscription).update(amount=seconds)
+
+
+def generate_tokens_for_month_for_wallet(wallet, time=timezone.now()):
+    seconds = _get_number_of_seconds_in_month(time)
+    wallet.amount = seconds
+    wallet.save()
 
 
 def _create_subscription_time_range(time, subscription_id):
@@ -116,8 +126,7 @@ def activate_subscription(user, payment_token):
         time_range.save()
 
         # fill wallet with tokens for this month
-        seconds = int((get_end_of_month(time) - get_start_of_month(time)).total_seconds())
-        Wallet.objects.filter(user=user).update(amount=seconds)
+        generate_tokens_for_month_for_wallet(Wallet.objects.get(user=user), time)
 
 
 def cancel_subscription(user):
@@ -142,3 +151,26 @@ def cancel_subscription(user):
         # add cancelation data and save
         time_range.canceled_at = time
         time_range.save()
+
+
+def transfer_tokens(from_wallet, to_wallet, amount):
+    """
+    Transfers tokens from one wallet to another and creates a transaction.
+
+    Asserts if sending wallet balance is too low!
+    """
+    assert from_wallet.amount >= amount, "Wallet balance too low!"
+
+    with transaction.atomic():
+        from_wallet.amount = F('amount') - amount
+        to_wallet.amount = F('amount') + amount
+
+        new_transaction = Transaction(
+            from_wallet=from_wallet,
+            to_wallet=to_wallet,
+            amount=amount,
+        )
+
+        from_wallet.save()
+        to_wallet.save()
+        new_transaction.save()
