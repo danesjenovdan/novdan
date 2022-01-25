@@ -115,6 +115,10 @@ def activate_subscription(user, payment_token):
         time_range.payment_token = payment_token
         time_range.save()
 
+        # fill wallet with tokens for this month
+        seconds = int((get_end_of_month(time) - get_start_of_month(time)).total_seconds())
+        Wallet.objects.filter(user=user).update(amount=seconds)
+
 
 def cancel_subscription(user):
     """
