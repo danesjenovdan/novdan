@@ -1,10 +1,13 @@
 import base64
 
+import requests
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from rest_framework.exceptions import ParseError, PermissionDenied
+from rest_framework.exceptions import (APIException, ParseError,
+                                       PermissionDenied)
 from rest_framework.exceptions import ValidationError as RestValidationError
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.renderers import JSONRenderer
@@ -133,12 +136,28 @@ class SubscriptionActivateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # TODO: kliči podpri
+        if Subscription.objects.filter(user=self.request.user).current().payed().exists():
+            raise ActiveSubscriptionExists
 
-        return Response({
-            'token': 'fake_token',
-            'customer_id': 'fake_customer_id',
-        })
+        try:
+            r = requests.get(
+                f'{settings.PAYMENT_API_BASE}/api/generic-donation/{settings.PAYMENT_CAMPAIGN_ID}/',
+                params={ 'customer_id': self.request.user.customer_id },
+                timeout=30,
+            )
+            data = r.json()
+            token = data['token']
+            customer_id = data['customer_id']
+        except Exception as e:
+            print('Exception in SubscriptionActivateView GET:')
+            print(e)
+            raise APIException
+
+        if not self.request.user.customer_id:
+            self.request.user.customer_id = customer_id
+            self.request.user.save()
+
+        return Response({ 'token': token })
 
     def post(self, request):
         if not isinstance(self.request.data, dict):
@@ -151,13 +170,24 @@ class SubscriptionActivateView(APIView):
         if nonce is None or nonce == '':
             raise RestValidationError({ 'nonce': ['This field may not be blank.'] })
 
-        customer_id = self.request.data.get('customer_id')
-        if customer_id is None or customer_id == '':
-            raise RestValidationError({ 'customer_id': ['This field may not be blank.'] })
+        try:
+            r = requests.post(
+                f'{settings.PAYMENT_API_BASE}/api/generic-donation/subscription/{settings.PAYMENT_CAMPAIGN_ID}/',
+                json={
+                    'nonce': nonce,
+                    'amount': 5,
+                    'email': self.request.user.email,
+                },
+                timeout=30,
+            )
+            data = r.json()
+            payment_token = data['subscription_id']
+        except Exception as e:
+            print('Exception in SubscriptionActivateView POST:')
+            print(e)
+            raise APIException
 
-        # TODO: kliči podpri
-
-        activate_subscription(self.request.user, nonce)
+        activate_subscription(self.request.user, payment_token)
 
         return Response({ 'success': True })
 
@@ -168,6 +198,25 @@ class SubscriptionCancelView(APIView):
     def post(self, request):
         if not Subscription.objects.filter(user=self.request.user).current().payed().exists():
             raise NoActiveSubscription
+
+        subscription = Subscription.objects.get(user=self.request.user)
+        time_range = subscription.time_ranges.current().payed().first()
+
+        try:
+            r = requests.post(
+                f'{settings.PAYMENT_API_BASE}/api/generic-donation/cancel-subscription/',
+                json={
+                    'customer_id': self.request.user.customer_id,
+                    'subscription_id': time_range.payment_token,
+                },
+                timeout=30,
+            )
+            data = r.json()
+            assert data['msg'] == 'subscription canceled', "bad response msg"
+        except Exception as e:
+            print('Exception in SubscriptionCancelView POST:')
+            print(e)
+            raise APIException
 
         cancel_subscription(self.request.user)
 
