@@ -1,16 +1,24 @@
 <template>
   <div>
-    <h3>PRIJAVA</h3>
+    <h3>REGISTRACIJA </h3>
     <form @submit.prevent="onSubmit">
       <div class="input-group">
         <label>Uporabniško ime</label>
         <input v-model="username" type="text" />
       </div>
       <div class="input-group">
+        <label>E-pošta</label>
+        <input v-model="email" type="email" />
+      </div>
+      <div class="input-group">
         <label>Geslo</label>
         <input v-model="password" type="password" />
       </div>
-      <input type="submit" value="Prijava" />
+      <div class="input-group">
+        <label>Potrdite geslo</label>
+        <input v-model="confirm_password" type="password" />
+      </div>
+      <input type="submit" value="Ustvari račun" />
     </form>
   </div>
 </template>
@@ -24,7 +32,9 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      email: '',
+      password: '',
+      confirm_password: ''
     }
   },
   async mounted() {
@@ -36,8 +46,8 @@ export default {
   methods: {
     async onSubmit() {
       try {
-        await this.$api.login(this.username, this.password)
-        this.$router.push('/dash')
+        await this.$api.register(this.username, this.email, this.password, this.confirm_password)
+        this.$router.push('/dash') // na placilo sajt
       } catch (error) {
         // TODO: show error
       }

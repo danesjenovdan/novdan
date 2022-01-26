@@ -72,6 +72,27 @@ function api() {
       localStorage.setItem('dash_access_token', data.access_token)
       localStorage.setItem('dash_refresh_token', data.refresh_token)
     },
+    async register(username, email, password, confirmPassword) {
+      // using URLSearchParams forces content type `application/x-www-form-urlencoded`
+      const params = new URLSearchParams()
+      params.append('client_id', tokens.clientId)
+      params.append('grant_type', 'password')
+      params.append('username', username)
+      params.append('email', email)
+      params.append('password', password)
+      params.append('confirm_password', confirmPassword)
+
+      /* eslint-disable no-unused-vars */
+      const response = await plainApi.$post('/api/register', params)
+      // localStorage.setItem('dash_access_token', data.access_token)
+      // localStorage.setItem('dash_refresh_token', data.refresh_token)
+
+      console.log(response)
+
+      // login
+      await this.login(username, password)
+      // redirect to payment
+    },
     async logout() {
       const token = tokens.refreshToken || tokens.accessToken
       if (!token) {
@@ -91,6 +112,9 @@ function api() {
     },
     getStatus() {
       return authedApi.$get('/api/status')
+    },
+    cancelSubscription() {
+      return authedApi.$post('/api/subscription/cancel')
     }
     // TODO:
     // changePassword() {

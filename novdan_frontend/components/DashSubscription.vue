@@ -31,7 +31,33 @@
             </a>
             <div v-if="isSubscribed" class="payment-method">
               <button>Zamenjaj plačilno sredstvo</button>
-              <span>Prekini naročnino</span>
+              <span @click="cancelSubscription">Prekini naročnino</span>
+            </div>
+            <div v-if="extensionNotInstalled" class="no-extension">
+              <p>Vtičnik še ni inštaliran.</p>
+              <div class="browsers">
+                <div class="button-browser-wrapper">
+                  <div class="support">
+                    Chrome
+                  </div>
+                  <div class="button">
+                    <img src="~assets/images/chrome.png" class="browser" alt="pink spinning star">
+                    <img src="~assets/images/modra-zvezda.svg" class="spinning-star" alt="pink spinning star">
+                  </div>
+                </div>
+                <div class="button-browser-wrapper">
+                  <div class="support">
+                    Firefox
+                  </div>
+                  <div class="button">
+                    <img src="~assets/images/mozilla.png" class="browser" alt="pink spinning star">
+                    <img src="~assets/images/modra-zvezda.svg" class="spinning-star" alt="pink spinning star">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="extensionError" class="warning">
+              <p>Prijava v vtičnik ni uspela.</p>
             </div>
           </div>
         </div>
@@ -49,13 +75,15 @@
             <input type="password" name="password" id="password" /><span>Spremeni</span>
           </div>
         </form>
-        <button class="logout-button" @click="logout">Odjavi se</button>
+        <nuxt-link to="/dash/login?logout=true" class="logout-button">Odjavi se</nuxt-link>
 
         <hr v-if="isSubscribed" />
 
         <div v-if="isSubscribed" style="position:relative;">
           <h3>Tvoja razporeditev</h3>
-          <p class="text-small">Ta mesec si medijem doniral <span>12094 sekund</span> svoje pozornosti</p>
+          <p class="text-small">Ta mesec si medijem doniral <span>{{ status.monetized_time }} sekund</span> svoje pozornosti</p>
+          <pie-chart :section-data="status.monetized_split" class="pie-chart"></pie-chart>
+          <p>{{ status.monetized_split }}</p>
           <div class="pink-bg" />
         </div>
       </div>
@@ -64,9 +92,11 @@
 </template>
 
 <script>
+import PieChart from './PieChart.vue'
 import api from '~/mixins/api.js'
 
 export default {
+  components: { PieChart },
   mixins: [api],
   props: {
     windowWidth: {
@@ -87,16 +117,31 @@ export default {
         return true
       }
       return false
+    },
+    extensionNotInstalled() {
+      return true
+    },
+    extensionError() {
+      return false
     }
   },
   methods: {
-    async logout() {
-      console.log('logging out...')
-      try {
-        await this.$api.logout()
-        this.$router.push('/dash/login')
-      } catch (error) {
-        // TODO: show error
+    // async logout() {
+    //   try {
+    //     await this.$api.logout()
+    //     this.$router.push('/dash/login')
+    //   } catch (error) {
+    //     // TODO: show error
+    //   }
+    // },
+    async cancelSubscription() {
+      if (window.confirm('Ste prepričani, da želite preklicati naročnino?')) {
+        try {
+          const response = await this.$api.cancelSubscription()
+          console.log(response)
+        } catch (error) {
+          console.log(error)
+        }
       }
     }
   }
@@ -330,6 +375,88 @@ export default {
         }
       }
     }
+    .warning {
+      margin: 40px 0;
+      p {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: red;
+      }
+    }
+    .no-extension {
+      margin: 40px 0;
+      p {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      .browsers {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        @media (min-width: 992px) {
+          // align-items: center;
+          justify-content: center;
+        }
+      }
+      .support {
+        text-decoration: none;
+        font-size: 2.5rem;
+        font-weight: 700;
+        padding: 0.25rem 4rem 0.25rem 1rem;
+        border: 3px solid #000000;
+        border-radius: 1.25rem;
+        background-color: white;
+        position: relative;
+        z-index: 3;
+        transition: all 0.25s ease;
+        transform: rotate(0) scale(1);
+        cursor: pointer;
+        @media (min-width: 1200px) {
+          font-size: 2rem;
+        }
+      }
+      .button-browser-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin: 1rem 0;
+        @media (min-width: 992px) {
+        }
+        .button {
+          position: absolute;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 5;
+          right: 0;
+          transform: translateX(50%);
+          cursor: pointer;
+          .browser {
+            position: absolute;
+            z-index: 6;
+            height: 2.5rem;
+          }
+          .spinning-star {
+            width: 6rem;
+            animation: rotate360 3s linear infinite;
+            animation-play-state: paused;
+          }
+        }
+        &:hover {
+          .support {
+            background-color: #ffd700;
+            // @media (min-width: 992px) {
+            //   transform: rotate(0) scale(1.2);
+            // }
+          }
+          .spinning-star {
+            animation-play-state: running;
+          }
+        }
+      }
+    }
   }
   hr {
     border: 1px solid #ffd700;
@@ -385,8 +512,11 @@ export default {
     font-family: 'Syne', sans-serif;
     font-size: 25px;
     font-weight: 700;
+    color: black;
     padding: 8px 24px;
     margin: 10px 0;
+    text-decoration: none;
+    display: inline-block;
     cursor: pointer;
     &:hover {
       background-color: #1103b1;
@@ -405,6 +535,11 @@ export default {
       font-size: 2rem;
       line-height: 2.5rem;
     }
+  }
+  .pie-chart {
+    height: 200px;
+    float: right;
+    margin-right: 10rem;
   }
   .pink-bg {
     position: absolute;
