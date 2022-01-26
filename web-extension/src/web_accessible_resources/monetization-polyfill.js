@@ -1,10 +1,12 @@
 (function () {
+  console.log('[novdan] monetization polyfill started');
+
   /**
    * Polyfill `document.monetization`.
    */
   if (!document.monetization) {
     // `document.monetization` needs to be of type `EventTarget` and elements are
-    document.monetization = document.createElement('div');
+    document.monetization = document.createElement('span');
     document.monetization.state = 'stopped';
   }
 
@@ -48,6 +50,7 @@
 
     const headObserver = new MutationObserver(onHeadChildListChanged);
     headObserver.observe(document.head, { childList: true });
+    // TODO: detect meta attibute change
   }
 
   function onHeadChildListChanged(records) {
@@ -70,7 +73,7 @@
   }
 
   function onMonetizationMetaTagAdded(metaTag) {
-    console.log('added', metaTag.content);
+    console.log('[novdan] detected added meta tag', metaTag.content);
     window.postMessage({
       name: 'monetization',
       event: {
@@ -81,7 +84,7 @@
   }
 
   function onMonetizationMetaTagRemoved(metaTag) {
-    console.log('removed', metaTag.content);
+    console.log('[novdan] detected removed meta tag', metaTag.content);
     window.postMessage({
       name: 'monetization',
       event: {
@@ -90,4 +93,6 @@
       },
     });
   }
+
+  console.log('[novdan] monetization polyfill finished');
 })();
