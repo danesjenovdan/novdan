@@ -1,25 +1,34 @@
 <template>
   <div>
-    <h3>REGISTRACIJA </h3>
+    <h3>REGISTRACIJA</h3>
     <form @submit.prevent="onSubmit">
       <div class="input-group">
         <label>Uporabniško ime</label>
-        <input v-model="username" type="text" />
+        <input v-model="username" type="text" :disabled="processing" />
       </div>
       <div class="input-group">
         <label>E-pošta</label>
-        <input v-model="email" type="email" />
+        <input v-model="email" type="email" :disabled="processing" />
       </div>
       <div class="input-group">
         <label>Geslo</label>
-        <input v-model="password" type="password" />
+        <input v-model="password" type="password" :disabled="processing" />
       </div>
       <div class="input-group">
         <label>Potrdite geslo</label>
-        <input v-model="confirm_password" type="password" />
+        <input v-model="confirm_password" type="password" :disabled="processing" />
       </div>
-      <input type="submit" value="Ustvari račun" />
+      <p v-if="processing">
+        Pošiljanje...
+      </p>
+      <input type="submit" value="Ustvari račun" :disabled="processing" />
+      <nuxt-link to="/dash/login">
+        Prijavi se
+      </nuxt-link>
     </form>
+    <p v-if="error" class="error">
+      Prišlo je do napake.
+    </p>
   </div>
 </template>
 
@@ -34,7 +43,9 @@ export default {
       username: '',
       email: '',
       password: '',
-      confirm_password: ''
+      confirm_password: '',
+      processing: false,
+      error: false
     }
   },
   async mounted() {
@@ -45,12 +56,17 @@ export default {
   },
   methods: {
     async onSubmit() {
+      this.processing = true
       try {
         await this.$api.register(this.username, this.email, this.password, this.confirm_password)
-        this.$router.push('/dash') // na placilo sajt
+        // redirect to payment
+        this.$router.replace('/payment')
       } catch (error) {
         // TODO: show error
+        this.error = true
+        console.log(error)
       }
+      this.processing = false
     }
   }
 }

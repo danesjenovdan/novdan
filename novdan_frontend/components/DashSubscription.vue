@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="support-wrapper">
-            <a v-if="!isSubscribed" href="#how-section" class="button">
+            <a v-if="!isSubscribed" class="button" @click="activate">
               <div class="support">
                 Aktiviraj
               </div>
@@ -67,21 +67,25 @@
         <h3>Uporabniški račun</h3>
         <form>
           <div class="input-group">
-            <label for="email">Uporabniški račun</label>
-            <input type="email" name="email" id="email" /><span>Spremeni</span>
+            <label for="username">Uporabniški račun</label>
+            <input id="username" type="text" name="username" /><span>Spremeni</span>
           </div>
           <div class="input-group">
             <label for="password">Geslo</label>
-            <input type="password" name="password" id="password" /><span>Spremeni</span>
+            <input id="password" type="password" name="password" /><span>Spremeni</span>
           </div>
         </form>
-        <nuxt-link to="/dash/login?logout=true" class="logout-button">Odjavi se</nuxt-link>
+        <nuxt-link to="/dash/login?logout=true" class="logout-button">
+          Odjavi se
+        </nuxt-link>
 
         <hr v-if="isSubscribed" />
 
         <div v-if="isSubscribed" style="position:relative;">
           <h3>Tvoja razporeditev</h3>
-          <p class="text-small">Ta mesec si medijem doniral <span>{{ status.monetized_time }} sekund</span> svoje pozornosti</p>
+          <p class="text-small">
+            Ta mesec si medijem doniral <span>{{ status.monetized_time }} sekund</span> svoje pozornosti
+          </p>
           <pie-chart :section-data="status.monetized_split" class="pie-chart"></pie-chart>
           <p>{{ status.monetized_split }}</p>
           <div class="pink-bg" />
@@ -134,6 +138,9 @@ export default {
     //     // TODO: show error
     //   }
     // },
+    activate() {
+      this.$router.push('/payment')
+    },
     async cancelSubscription() {
       if (window.confirm('Ste prepričani, da želite preklicati naročnino?')) {
         try {
@@ -231,8 +238,11 @@ export default {
   .support-wrapper {
     z-index: 2;
     margin-top: 2rem;
-    display: flex;
-    justify-content: center;
+    @media (min-width: 576px) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
     @media (min-width: 992px) {
       display: block;
     }
@@ -295,10 +305,10 @@ export default {
           left: 10rem;
         }
         @media (min-width: 1200px) {
-          left: unset;
-          right: 2rem;
+          left: 12rem;
         }
         @media (min-width: 1400px) {
+          left: unset;
           right: -4rem;
           img {
             height: 11rem;

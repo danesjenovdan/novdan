@@ -11,7 +11,13 @@
         <input v-model="password" type="password" />
       </div>
       <input type="submit" value="Prijava" />
+      <nuxt-link to="/dash/register">
+        Ustvari račun
+      </nuxt-link>
     </form>
+    <p v-if="error" class="error">
+      Prišlo je do napake.
+    </p>
   </div>
 </template>
 
@@ -24,7 +30,8 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      error: false
     }
   },
   async mounted() {
@@ -40,6 +47,7 @@ export default {
         this.$router.push('/dash')
       } catch (error) {
         // TODO: show error
+        this.error = true
       }
     }
   }

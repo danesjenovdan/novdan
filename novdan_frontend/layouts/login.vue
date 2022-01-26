@@ -115,6 +115,12 @@ body {
         color: white;
       }
     }
+    a {
+      margin-left: 10px;
+    }
+  }
+  .error {
+    color: red;
   }
 }
 </style>

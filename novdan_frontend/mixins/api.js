@@ -84,14 +84,9 @@ function api() {
 
       /* eslint-disable no-unused-vars */
       const response = await plainApi.$post('/api/register', params)
-      // localStorage.setItem('dash_access_token', data.access_token)
-      // localStorage.setItem('dash_refresh_token', data.refresh_token)
-
-      console.log(response)
 
       // login
       await this.login(username, password)
-      // redirect to payment
     },
     async logout() {
       const token = tokens.refreshToken || tokens.accessToken
@@ -113,6 +108,15 @@ function api() {
     getStatus() {
       return authedApi.$get('/api/status')
     },
+    activateSubscription() {
+      return authedApi.$get('/api/subscription/activate')
+    },
+    activateSubscription2(nonce) {
+      const params = new URLSearchParams()
+      params.append('client_id', tokens.clientId)
+      params.append('nonce', nonce)
+      return authedApi.$post('/api/subscription/activate', params)
+    },
     cancelSubscription() {
       return authedApi.$post('/api/subscription/cancel')
     }
@@ -122,9 +126,6 @@ function api() {
     //     new_password: '',
     //     old_password: ''
     //   })
-    // },
-    // cancelSubscription() {
-    //   return authedApi.$post('/api/subscription/cancel')
     // },
     // etc...
   }
