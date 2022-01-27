@@ -87,7 +87,6 @@
             Ta mesec si medijem doniral <span>{{ status.monetized_time }} sekund</span> svoje pozornosti
           </p>
           <pie-chart :section-data="status.monetized_split" class="pie-chart"></pie-chart>
-          <p>{{ status.monetized_split }}</p>
           <div class="pink-bg" />
         </div>
       </div>

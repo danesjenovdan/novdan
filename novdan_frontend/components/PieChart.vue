@@ -1,11 +1,23 @@
 <template>
-  <svg viewBox="0 0 2 2" xmlns="http://www.w3.org/2000/svg">
-    <path
+  <svg viewBox="-0.05 -0.05 2.1 2.1" xmlns="http://www.w3.org/2000/svg">
+    <g
       v-for="sector in sectors"
-      :key="sector.username"
-      :d="`M${sector.L},${sector.L} L${sector.L},0 A${sector.L},${sector.L} 0 ${sector.arcSweep},1 ${sector.X}, ${sector.Y} z`"
+      :key="sector.text"
       :transform="`rotate(${sector.R}, ${sector.L}, ${sector.L})`"
-    />
+    >
+      <path
+        :d="`M${sector.L},${sector.L} L${sector.L},0 A${sector.L},${sector.L} 0 ${sector.arcSweep},1 ${sector.X}, ${sector.Y} z`"
+      />
+      {{ sector }}
+      <text
+        font-size="0.15"
+        x="1"
+        y="0.3"
+        text-anchor="middle"
+        transform-origin="50% 50%"
+        :transform="`rotate(${sector.a / 2})`"
+      >{{ sector.text }}</text>
+    </g>
   </svg>
 </template>
 
@@ -16,11 +28,6 @@ export default {
     sectionData: {
       type: Array,
       default: () => []
-    }
-  },
-  data() {
-    return {
-      size: 100
     }
   },
   computed: {
@@ -65,7 +72,9 @@ export default {
           L: 1,
           X,
           Y,
-          R: oldR
+          R: oldR,
+          a,
+          text: item.user.full_name
         }
       })
     }
