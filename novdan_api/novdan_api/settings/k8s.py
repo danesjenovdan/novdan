@@ -8,7 +8,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'secret_key_changeme')
 
 DEBUG = bool(os.getenv('DJANGO_DEBUG', False))
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'api.novdan.lb.djnd.si']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'api.novdan.lb.djnd.si', 'denarnica.novdan.si']
 
 STATIC_ROOT = os.getenv('DJANGO_STATIC_ROOT', BASE_DIR / 'static')
 STATIC_URL = os.getenv('DJANGO_STATIC_URL_BASE', '/static/')
