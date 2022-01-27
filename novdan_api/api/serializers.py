@@ -48,6 +48,7 @@ class RegisterSerializer(serializers.Serializer):
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(write_only=True, required=True)
     new_password = serializers.CharField(write_only=True, required=True)
+    confirm_password = serializers.CharField(write_only=True, required=True)
 
     def validate_old_password(self, value):
         user = self.context['request'].user
@@ -59,6 +60,11 @@ class ChangePasswordSerializer(serializers.Serializer):
         user = self.context['request'].user
         validate_password(value, user)
         return value
+
+    def validate(self, data):
+        if data['new_password'] != data['confirm_password']:
+            raise RestValidationError({ 'confirm_password': ['Passwords do not match.'] })
+        return data
 
     def update(self, instance, validated_data):
         # revoking the refresh token also revokes the associated access token
