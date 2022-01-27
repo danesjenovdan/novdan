@@ -38,6 +38,46 @@ const STATE = {
   timerTimestamp: 0,
 };
 
+const SETTINGS = {
+  access_token: null,
+  refresh_token: null,
+  wallet_id: null,
+  active_subscription: null,
+};
+
+// load settings from storage
+browser.storage.sync.get(SETTINGS).then((settings) => {
+  Object.keys(settings).forEach((key) => {
+    SETTINGS[key] = settings[key];
+  });
+});
+
+// listen to changes in storage
+browser.storage.onChanged.addListener((changes, area) => {
+  let hasChanges = false;
+  let walletChanged = false;
+  if (area === 'sync') {
+    Object.keys(changes).forEach((key) => {
+      const { oldValue, newValue } = changes[key];
+      if (SETTINGS[key] !== newValue) {
+        SETTINGS[key] = newValue;
+        hasChanges = true;
+        if (key === 'wallet_id') {
+          walletChanged = true;
+        }
+      }
+    });
+  }
+  if (hasChanges) {
+    // restart monetization if wallet changed
+    if (walletChanged && STATE.isMonetized) {
+      const paymentPointer = STATE.paymentPointer;
+      stopMonetization(paymentPointer);
+      startMonetization(paymentPointer);
+    }
+  }
+});
+
 document.addEventListener('visibilitychange', onVisibilityChange, false);
 
 function onVisibilityChange() {
@@ -80,7 +120,7 @@ function onMessage(messageEvent) {
 function onMetaTagAdded({ content: paymentPointer }) {
   const url = getUrlFromPaymentPointer(paymentPointer);
   if (isValidPaymentUrl(url)) {
-    if (STATE.paymentPointer) {
+    if (STATE.paymentPointer && STATE.isMonetized) {
       stopMonetization(STATE.paymentPointer);
     }
     startMonetization(paymentPointer);
@@ -130,6 +170,8 @@ async function fetchSpsp4(url) {
 }
 
 async function startMonetization(paymentPointer) {
+  STATE.paymentPointer = paymentPointer;
+
   const url = getUrlFromPaymentPointer(paymentPointer);
   const json = await fetchSpsp4(url);
   if (!json || !json.destination_account) {
@@ -149,7 +191,6 @@ async function startMonetization(paymentPointer) {
 
     emitMonetizationEvent('pending', paymentPointer);
     STATE.isMonetized = true;
-    STATE.paymentPointer = paymentPointer;
     STATE.requestId = uuidv4();
 
     // clear any old timers and start paying
@@ -215,7 +256,8 @@ async function pay() {
   STATE.timerId = setTimeout(pay, PAYMENT_INTERVAL_SECONDS * 1000);
 
   // dont pay if page is hidden (background tab, minimized window, etc.)
-  if (!STATE.isVisible) {
+  // or there is no active subcription
+  if (!STATE.isVisible || !SETTINGS.active_subscription) {
     return;
   }
 
@@ -236,7 +278,7 @@ async function pay() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: '', // TODO: get users wallet
+      from: SETTINGS.wallet_id,
       to: STATE.destinationWallet,
       amount: 5,
     }),
