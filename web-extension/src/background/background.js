@@ -3,11 +3,14 @@ console.log('[novdan] background started');
 browser.browserAction.setBadgeText({ text: '?' });
 browser.browserAction.setBadgeBackgroundColor({ color: '#fd0' });
 
+const UPDATE_STATUS_INTERVAL_SECONDS = 60 * 60 * 24;
+
 const SETTINGS = {
   access_token: null,
   refresh_token: null,
   wallet_id: null,
   active_subscription: null,
+  fetch_status_timestamp: null,
 };
 
 // Load settings from storage
@@ -57,11 +60,14 @@ async function fetchStatus() {
 async function updateStatus() {
   try {
     const status = await fetchStatus();
+    const timestamp = Date.now();
     SETTINGS.wallet_id = status.wallet;
     SETTINGS.active_subscription = status.active_subscription;
+    SETTINGS.fetch_status_timestamp = timestamp;
     browser.storage.sync.set({
       wallet_id: status.wallet,
       active_subscription: status.active_subscription,
+      fetch_status_timestamp: timestamp,
     });
   } catch (error) {
     SETTINGS.wallet_id = null;
@@ -83,3 +89,8 @@ function updateBadge() {
     browser.browserAction.setBadgeBackgroundColor({ color: '#d00' });
   }
 }
+
+// Update status periodically
+setInterval(async () => {
+  updateStatus();
+}, UPDATE_STATUS_INTERVAL_SECONDS * 1000);
