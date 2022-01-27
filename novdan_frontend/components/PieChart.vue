@@ -88,4 +88,7 @@ path {
   stroke: #1103b1;
   stroke-width: 0.03;
 }
+text {
+  fill: #1103b1;
+}
 </style>

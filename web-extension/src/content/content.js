@@ -61,6 +61,11 @@ function onVisibilityChange() {
 window.addEventListener('message', onMessage, false);
 
 function onMessage(messageEvent) {
+  // only accept messages from the current page
+  if (messageEvent.source != window && messageEvent.data) {
+    return;
+  }
+
   const { name, event } = messageEvent.data;
   if (name === 'monetization' && event) {
     const { type, detail } = event;
@@ -127,6 +132,9 @@ async function fetchSpsp4(url) {
 async function startMonetization(paymentPointer) {
   const url = getUrlFromPaymentPointer(paymentPointer);
   const json = await fetchSpsp4(url);
+  if (!json || !json.destination_account) {
+    return;
+  }
 
   // check if destination account is supported
   const [scheme, ...segments] = json.destination_account.split('.');

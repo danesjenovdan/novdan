@@ -18,7 +18,7 @@
     "96": "img/icon_96.png",
     "128": "img/icon_128.png"
   },
-  "permissions": ["<all_urls>"],
+  "permissions": ["<all_urls>", "storage"],
   "background": {
     "page": "background/background.html"
   },
@@ -37,8 +37,7 @@
       "64": "img/icon_64.png",
       "96": "img/icon_96.png",
       "128": "img/icon_128.png"
-    },
-    "default_popup": "popup/popup.html"
+    }
   },
   "web_accessible_resources": ["/web_accessible_resources/*"]
 }

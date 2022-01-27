@@ -2,8 +2,7 @@
   <div>
     <!-- <h1>DASH</h1>
     <div>api base: {{ $config.apiBase }}</div>
-    <div>{{ status }}</div>
-    <nuxt-link to="/dash/login?logout=true"> Logout </nuxt-link> -->
+    <div>{{ status }}</div> -->
     <div class="content">
       <video
         id="bgvid"
@@ -38,7 +37,12 @@ export default {
     if (!this.$api.hasToken()) {
       this.$router.replace('/dash/login')
     }
-    this.status = await this.$api.getStatus()
+    try {
+      this.status = await this.$api.getStatus()
+      console.log(this.status)
+    } catch (e) {
+      this.$router.replace('/dash/login')
+    }
 
     this.windowWidth = window.innerWidth
     window.addEventListener('resize', () => {

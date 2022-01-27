@@ -81,6 +81,7 @@ export default {
       this.nonce = nonce
       try {
         const response = await this.$api.activateSubscription2(this.nonce)
+        console.log(response)
         this.$router.push('/dash')
         this.paymentInProgress = false
         // this.$router.push(
@@ -88,7 +89,6 @@ export default {
         //     ? `/doniraj/hvala?token=${response.upload_token}`
         //     : '/doniraj/hvala'
         // )
-        console.log(response)
         // this.paymentInProgress = true
       } catch (error) {
         // eslint-disable-next-line no-console

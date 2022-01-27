@@ -119,15 +119,13 @@ function api() {
     },
     cancelSubscription() {
       return authedApi.$post('/api/subscription/cancel')
+    },
+    changePassword(oldPassword, newPassword) {
+      return authedApi.$post('/api/change-password', {
+        new_password: newPassword,
+        old_password: oldPassword
+      })
     }
-    // TODO:
-    // changePassword() {
-    //   return authedApi.$post('/api/change-password', {
-    //     new_password: '',
-    //     old_password: ''
-    //   })
-    // },
-    // etc...
   }
 }
 
