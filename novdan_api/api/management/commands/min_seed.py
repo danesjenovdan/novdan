@@ -1,8 +1,9 @@
-from django.core.management.base import BaseCommand, CommandError
-from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.management.base import BaseCommand
 from oauth2_provider.models import get_application_model
 
+from ...models import Wallet
+from ...utils import generate_tokens_for_month_for_wallet, transfer_tokens
 
 User = get_user_model()
 Application = get_application_model()
@@ -15,7 +16,7 @@ class Command(BaseCommand):
         self.stdout.write('Starting ...')
 
         admin = User.objects.create(
-            first_name='djnd',
+            first_name='Danes je nov dan',
             username='djnd',
             email='test@test.com',
             is_active=True,
@@ -33,7 +34,8 @@ class Command(BaseCommand):
         )
 
         user1 = User.objects.create(
-            first_name='user1',
+            first_name='First',
+            last_name='User',
             username='user1',
             email='user1@test.com',
             is_active=True,
@@ -42,12 +44,23 @@ class Command(BaseCommand):
         user1.save()
 
         user2 = User.objects.create(
-            first_name='user2',
+            first_name='User2',
             username='user2',
             email='user2@test.com',
             is_active=True,
         )
         user2.set_password('changeme')
         user2.save()
+
+        admin_wallet = Wallet.objects.get(user=admin)
+        user1_wallet = Wallet.objects.get(user=user1)
+        user2_wallet = Wallet.objects.get(user=user2)
+
+        generate_tokens_for_month_for_wallet(admin_wallet)
+
+        transfer_tokens(admin_wallet, user1_wallet, 5)
+        admin_wallet.refresh_from_db() # get updated values from db not CombinedExpression
+        transfer_tokens(admin_wallet, user2_wallet, 10)
+        admin_wallet.refresh_from_db() # get updated values from db not CombinedExpression
 
         self.stdout.write('Done')

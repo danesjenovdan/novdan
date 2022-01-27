@@ -1,4 +1,4 @@
-console.log('Content started!');
+console.log('[novdan] content script started');
 
 /**
  * Load a script in full page context.
@@ -18,27 +18,74 @@ loadScript(
   browser.runtime.getURL('/web_accessible_resources/monetization-polyfill.js')
 );
 
+const TESTING_HOSTNAMES = [
+  'testwebmonetization.com',
+  'localhost',
+  '127.0.0.1',
+  '0.0.0.0',
+];
+
+const PAYMENT_INTERVAL_SECONDS = 5;
+
 const STATE = {
   isMonetized: false,
   paymentPointer: null,
+  destinationWallet: null,
   monetizationState: 'stopped',
-  requestId: uuidv4(),
+  requestId: null,
   isVisible: true,
   timerId: null,
+  timerTimestamp: 0,
 };
 
 document.addEventListener('visibilitychange', onVisibilityChange, false);
+
+function onVisibilityChange() {
+  STATE.isVisible = document.visibilityState === 'visible';
+
+  // tab just became visible and is monetized
+  if (STATE.isVisible && STATE.isMonetized) {
+    const timestamp = Date.now();
+    const timeDiff = timestamp - STATE.timerTimestamp;
+    // add 1.5sec; browsers throttle timers to 1/sec or 1/min when in background
+    const maxDiff = PAYMENT_INTERVAL_SECONDS * 1000 + 1500;
+    // last payment was more than 1.5sec behind schedule
+    if (timeDiff > maxDiff) {
+      // clear any old timers and start paying immediately
+      clearTimeout(STATE.timerId);
+      pay();
+    }
+  }
+}
+
 window.addEventListener('message', onMessage, false);
 
 function onMessage(messageEvent) {
   const { name, event } = messageEvent.data;
-  if (name === 'monetization') {
+  if (name === 'monetization' && event) {
     const { type, detail } = event;
     if (type === 'meta-tag-added') {
       onMetaTagAdded(detail);
-    } else if (type === 'meta-tag-remove') {
+    } else if (type === 'meta-tag-removed') {
       onMetaTagRemoved(detail);
     }
+  }
+}
+
+function onMetaTagAdded({ content: paymentPointer }) {
+  const url = getUrlFromPaymentPointer(paymentPointer);
+  if (isValidPaymentUrl(url)) {
+    if (STATE.paymentPointer) {
+      stopMonetization(STATE.paymentPointer);
+    }
+    startMonetization(paymentPointer);
+  }
+}
+
+function onMetaTagRemoved({ content: paymentPointer }) {
+  const url = getUrlFromPaymentPointer(paymentPointer);
+  if (isValidPaymentUrl(url)) {
+    stopMonetization(paymentPointer);
   }
 }
 
@@ -52,41 +99,66 @@ function getUrlFromPaymentPointer(pp) {
 }
 
 function isValidPaymentUrl(url) {
-  return true;
-  // TODO: actual hostname
-  // return url.hostname === 'denarnica.djnd.si';
-}
-
-function getPayeeIdFromUrl(url) {
-  if (isValidPaymentUrl(url)) {
-    return url.pathname.replace(/^\//, '');
+  // for testing allow all
+  if (TESTING_HOSTNAMES.includes(window.location.hostname)) {
+    return true;
   }
+  // otherwise only allow our wallet domain
+  return url.hostname === 'denarnica.novdan.si';
 }
 
-function onMetaTagAdded(detail) {
-  const url = getUrlFromPaymentPointer(detail.content);
-  if (isValidPaymentUrl(url)) {
-    emitMonetizationEvent('pending', detail.content);
-    STATE.isMonetized = true;
-    STATE.paymentPointer = detail.content;
+async function fetchSpsp4(url) {
+  const acceptMimeTypes = ['application/spsp4+json', 'application/spsp+json'];
+  const responseMimeTypes = [...acceptMimeTypes, 'application/json'];
+
+  const response = await fetch(url, {
+    headers: { Accept: acceptMimeTypes.join(',') },
+  });
+
+  const contentType = response.headers.get('content-type');
+  if (response.status !== 200 || !responseMimeTypes.includes(contentType)) {
+    console.log('[novdan] bad spsp4 response', response.status, contentType);
+    return;
+  }
+
+  return response.json();
+}
+
+async function startMonetization(paymentPointer) {
+  const url = getUrlFromPaymentPointer(paymentPointer);
+  const json = await fetchSpsp4(url);
+
+  // check if destination account is supported
+  const [scheme, ...segments] = json.destination_account.split('.');
+  if (scheme === 'g' && segments.length >= 2 && segments[0] === 'novdan') {
+    // get wallet id
+    STATE.destinationWallet = segments[1];
+    console.log('[novdan] got destination wallet', STATE.destinationWallet);
 
     // force update visibility
+    STATE.isMonetized = false;
     onVisibilityChange();
 
-    // start paying
-    if (STATE.timerId === null) {
-      STATE.timerId = 0;
-      pay();
-    }
+    emitMonetizationEvent('pending', paymentPointer);
+    STATE.isMonetized = true;
+    STATE.paymentPointer = paymentPointer;
+    STATE.requestId = uuidv4();
+
+    // clear any old timers and start paying
+    clearTimeout(STATE.timerId);
+    pay();
   }
 }
 
-function onMetaTagRemoved(detail) {
-  const url = getUrlFromPaymentPointer(detail.content);
-  if (isValidPaymentUrl(url)) {
-    emitMonetizationEvent('stop', detail.content);
+function stopMonetization(paymentPointer) {
+  if (STATE.paymentPointer === paymentPointer) {
+    emitMonetizationEvent('stop', paymentPointer, true);
+    clearTimeout(STATE.timerId);
+    STATE.timerId = null;
     STATE.isMonetized = false;
     STATE.paymentPointer = null;
+    STATE.destinationWallet = null;
+    STATE.requestId = null;
   }
 }
 
@@ -97,15 +169,18 @@ function emitMonetizationEvent(state, content, finalized) {
 
     STATE.monetizationState = stateString;
 
+    const type = 'monetizationstatechange';
+    const detail = { state: stateString };
+
+    // console.log('[novdan] posting event', type); //, detail);
+
     window.postMessage({
       name: 'monetization',
-      event: {
-        type: 'monetizationstatechange',
-        detail: { state: stateString },
-      },
+      event: { type, detail },
     });
   }
 
+  const type = `monetization${state}`;
   const detail = {
     paymentPointer: content,
     requestId: STATE.requestId,
@@ -114,57 +189,58 @@ function emitMonetizationEvent(state, content, finalized) {
     detail.finalized = Boolean(finalized);
   }
   if (state === 'progress') {
-    detail.assetCode = 'XXX'; // TODO: actual currency code
-    detail.amount = '5';
+    detail.assetCode = 'NOV';
+    detail.amount = String(PAYMENT_INTERVAL_SECONDS);
     detail.assetScale = 0;
-    // TODO: maybe add `receipt: String`
   }
+
+  // console.log('[novdan] posting event', type); //, detail);
 
   window.postMessage({
     name: 'monetization',
-    event: {
-      type: `monetization${state}`,
-      detail,
-    },
+    event: { type, detail },
   });
 }
 
-function onVisibilityChange() {
-  STATE.isVisible = document.visibilityState === 'visible';
-}
-
 async function pay() {
-  STATE.timerId = null;
-  if (!STATE.isMonetized || !STATE.isVisible) {
+  // schedule next payment
+  STATE.timerId = setTimeout(pay, PAYMENT_INTERVAL_SECONDS * 1000);
+
+  // dont pay if page is hidden (background tab, minimized window, etc.)
+  if (!STATE.isVisible) {
     return;
   }
 
-  const url = getUrlFromPaymentPointer(STATE.paymentPointer);
-  const payeeId = getPayeeIdFromUrl(url);
+  // track last timer timestamp (to detect background timer throttling by browsers)
+  const timestamp = Date.now();
+  const timeDiff = timestamp - STATE.timerTimestamp;
+  const minDiff = PAYMENT_INTERVAL_SECONDS * 1000;
+  if (timeDiff < minDiff) {
+    return;
+  }
+  STATE.timerTimestamp = timestamp;
 
-  console.log('payeeId', payeeId);
+  console.log('[novdan] pay', Date.now(), STATE.destinationWallet);
 
-  // TODO: call actual api
-  const response = await fetch(
-    `http://localhost:3000/accounts/${payeeId}/settlement`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        scale: 0,
-        amount: 5,
-      }),
-    }
-  );
-  const text = await response.text();
-  console.log('after pay', text);
+  const response = await fetch('https://denarnica.novdan.si/api/transfer', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: '', // TODO: get users wallet
+      to: STATE.destinationWallet,
+      amount: 5,
+    }),
+  });
+
+  if (response.status !== 200) {
+    console.log('[novdan] bad transfer response', response.status);
+    return;
+  }
 
   if (STATE.monetizationState !== 'started') {
     emitMonetizationEvent('start', STATE.paymentPointer);
   }
   emitMonetizationEvent('progress', STATE.paymentPointer);
-
-  STATE.timerId = setTimeout(pay, 5000);
 }

@@ -48,13 +48,26 @@ metadata:
   name: novdan-frontend
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-production"
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
 spec:
   tls:
     - hosts:
         - novdan.lb.djnd.si
+        - novdan.si
+        - www.novdan.si
       secretName: novdan-frontend-tls
   rules:
     - host: novdan.lb.djnd.si
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: novdan-frontend
+                port:
+                  number: 3000
+    - host: novdan.si
       http:
         paths:
           - path: /

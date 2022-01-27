@@ -1,11 +1,23 @@
 <template>
   <div>
-    <h1>Login</h1>
+    <h3>PRIJAVA</h3>
     <form @submit.prevent="onSubmit">
-      <input v-model="username" type="text" />
-      <input v-model="password" type="password" />
-      <input type="submit" />
+      <div class="input-group">
+        <label>Uporabniško ime</label>
+        <input v-model="username" type="text" />
+      </div>
+      <div class="input-group">
+        <label>Geslo</label>
+        <input v-model="password" type="password" />
+      </div>
+      <input type="submit" value="Prijava" />
+      <nuxt-link to="/dash/register">
+        Ustvari račun
+      </nuxt-link>
     </form>
+    <p v-if="error" class="error">
+      Prišlo je do napake.
+    </p>
   </div>
 </template>
 
@@ -14,10 +26,12 @@ import api from '~/mixins/api.js'
 
 export default {
   mixins: [api],
+  layout: 'login',
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      error: false
     }
   },
   async mounted() {
@@ -33,10 +47,9 @@ export default {
         this.$router.push('/dash')
       } catch (error) {
         // TODO: show error
+        this.error = true
       }
     }
   }
 }
 </script>
-
-<style lang="scss" scoped></style>
