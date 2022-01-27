@@ -178,6 +178,7 @@ class SubscriptionActivateView(APIView):
                     'nonce': nonce,
                     'amount': 5,
                     'email': self.request.user.email,
+                    'customer_id': self.request.user.customer_id,
                 },
                 timeout=30,
             )
