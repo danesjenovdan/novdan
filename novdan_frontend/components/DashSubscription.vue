@@ -64,20 +64,32 @@
 
         <hr />
 
-        <h3>Uporabniški račun</h3>
-        <form>
-          <div class="input-group">
+        <div class="user-settings">
+          <h3>Uporabniški račun</h3>
+          <nuxt-link to="/dash/login?logout=true" class="logout-button">
+            Odjavi se
+          </nuxt-link>
+        </div>
+        <h2>Sprememba gesla</h2>
+        <form @submit.prevent="changePassword">
+          <!-- <div class="input-group">
             <label for="username">Uporabniški račun</label>
             <input id="username" type="text" name="username" /><span>Spremeni</span>
+          </div> -->
+          <div class="input-group">
+            <label for="password-old">Staro geslo</label>
+            <input id="password-old" type="password" name="password-old" v-model="oldPassword" />
           </div>
           <div class="input-group">
-            <label for="password">Geslo</label>
-            <input id="password" type="password" name="password" /><span>Spremeni</span>
+            <label for="password-new">Novo geslo</label>
+            <input id="password-new" type="password" name="password-new" v-model="newPassword" />
           </div>
+          <div class="input-group">
+            <label for="password-confirm">Potrdi novo geslo</label>
+            <input id="password-confirm" type="password" name="password-confirm" v-model="confirmNewPassword" />
+          </div>
+          <button id="password-submit" type="submit" class="logout-button">Pošlji</button>
         </form>
-        <nuxt-link to="/dash/login?logout=true" class="logout-button">
-          Odjavi se
-        </nuxt-link>
 
         <hr v-if="isSubscribed" />
 
@@ -112,7 +124,11 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      oldPassword: '',
+      newPassword: '',
+      confirmNewPassword: ''
+    }
   },
   computed: {
     isSubscribed() {
@@ -147,6 +163,18 @@ export default {
           console.log(response)
         } catch (error) {
           console.log(error)
+        }
+      }
+    },
+    async changePassword() {
+      if (this.oldPassword.length > 0 && this.newPassword.length > 0 && this.confirmNewPassword.length > 0) {
+        if (this.newPassword === this.confirmNewPassword) {
+          try {
+            const response = await this.$api.changePassword(this.oldPassword, this.newPassword)
+            console.log(response)
+          } catch (error) {
+            console.log(error)
+          }
         }
       }
     }
@@ -465,6 +493,14 @@ export default {
           }
         }
       }
+    }
+  }
+  .user-settings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h3 {
+      margin-bottom: 0;
     }
   }
   hr {
