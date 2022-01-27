@@ -1,4 +1,5 @@
 import base64
+import traceback
 
 import requests
 from django.conf import settings
@@ -150,7 +151,7 @@ class SubscriptionActivateView(APIView):
             customer_id = data['customer_id']
         except Exception as e:
             print('Exception in SubscriptionActivateView GET:')
-            print(e)
+            traceback.print_exc()
             raise APIException
 
         if not self.request.user.customer_id:
@@ -184,7 +185,7 @@ class SubscriptionActivateView(APIView):
             payment_token = data['subscription_id']
         except Exception as e:
             print('Exception in SubscriptionActivateView POST:')
-            print(e)
+            traceback.print_exc()
             raise APIException
 
         activate_subscription(self.request.user, payment_token)
@@ -215,7 +216,7 @@ class SubscriptionCancelView(APIView):
             assert data['msg'] == 'subscription canceled', "bad response msg"
         except Exception as e:
             print('Exception in SubscriptionCancelView POST:')
-            print(e)
+            traceback.print_exc()
             raise APIException
 
         cancel_subscription(self.request.user)
