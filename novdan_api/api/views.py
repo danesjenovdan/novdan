@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from oauth2_provider.contrib.rest_framework.permissions import TokenHasScope
 from rest_framework.exceptions import (APIException, ParseError,
                                        PermissionDenied)
 from rest_framework.exceptions import ValidationError as RestValidationError
@@ -48,8 +49,6 @@ class RegisterView(APIView):
 
 
 class ChangePasswordView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def post(self, request):
         if not isinstance(self.request.data, dict):
             raise ParseError
@@ -66,8 +65,6 @@ class ChangePasswordView(APIView):
 
 
 class StatusView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def get(self, request):
         wallet = Wallet.objects.filter(user=self.request.user).first()
         wallet_serializer = WalletSerializer(wallet)
@@ -85,7 +82,8 @@ class StatusView(APIView):
 
 
 class TransferView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, TokenHasScope]
+    required_scopes = ['transfer']
 
     @staticmethod
     def _get_amount(data, field_name):
@@ -134,8 +132,6 @@ class TransferView(APIView):
 
 
 class SubscriptionActivateView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def get(self, request):
         if Subscription.objects.filter(user=self.request.user).current().payed().exists():
             raise ActiveSubscriptionExists
@@ -195,8 +191,6 @@ class SubscriptionActivateView(APIView):
 
 
 class SubscriptionCancelView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def post(self, request):
         if not Subscription.objects.filter(user=self.request.user).current().payed().exists():
             raise NoActiveSubscription
