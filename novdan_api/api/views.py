@@ -28,7 +28,7 @@ from .exceptions import (ActiveSubscriptionExists, LowBalance,
                          NoActiveSubscription, invalid_receiver_error)
 from .models import Subscription, Wallet
 from .serializers import (ChangePasswordSerializer, RegisterSerializer,
-                          WalletSerializer)
+                          UserSerializer, WalletSerializer)
 from .utils import (activate_subscription, calculate_receivers_percentage,
                     cancel_subscription, transfer_tokens)
 
@@ -107,6 +107,8 @@ class ConnectExtensionView(APIView):
 
 class StatusView(APIView):
     def get(self, request):
+        user_serializer = UserSerializer(self.request.user)
+
         wallet = Wallet.objects.filter(user=self.request.user).first()
         wallet_serializer = WalletSerializer(wallet)
 
@@ -115,6 +117,7 @@ class StatusView(APIView):
         sum, percentages = calculate_receivers_percentage(wallet)
 
         return Response({
+            'user': user_serializer.data,
             'wallet': wallet_serializer.data,
             'active_subscription': active_subscription_exists,
             'monetized_split': percentages,
