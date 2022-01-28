@@ -1,12 +1,13 @@
 from django.urls import path
 
-from .views import (ChangePasswordView, RegisterView, Spsp4View, StatusView,
-                    SubscriptionActivateView, SubscriptionCancelView,
-                    TransferView)
+from .views import (ChangePasswordView, ConnectExtensionView, RegisterView,
+                    Spsp4View, StatusView, SubscriptionActivateView,
+                    SubscriptionCancelView, TransferView)
 
 urlpatterns = [
     path('register', RegisterView.as_view()),
     path('change-password', ChangePasswordView.as_view()),
+    path('connect-extension', ConnectExtensionView.as_view()),
     path('status', StatusView.as_view()),
     path('transfer', TransferView.as_view()),
     path('subscription/activate', SubscriptionActivateView.as_view()),
