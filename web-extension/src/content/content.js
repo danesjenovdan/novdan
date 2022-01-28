@@ -275,6 +275,7 @@ async function pay() {
   const response = await fetch('https://denarnica.novdan.si/api/transfer', {
     method: 'POST',
     headers: {
+      'Authorization': '', // TODO:
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
