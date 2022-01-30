@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test monetization page</title>
+  <meta name="monetization" content="$denarnica.novdan.si/~user1">
+</head>
+<body>
+  <h1>Test monetization page</h1>
+
+  <pre id="out">
+    No monetization events detected on page.
+  </pre>
+
+  <script>
+    window.addEventListener('message', onMessage, false);
+
+    let monetizationObject = null;
+    const pre = document.getElementById('out');
+    let first = true;
+
+    function onMessage(messageEvent) {
+      if (messageEvent && messageEvent.data && messageEvent.data.name === 'monetization') {
+        if (first) {
+          pre.textContent = '';
+          first = false;
+        }
+        if (!monetizationObject && document.monetization) {
+          monetizationObject = document.monetization;
+          [
+            'monetizationstatechange',
+            'monetizationpending',
+            'monetizationstart',
+            'monetizationprogress',
+            'monetizationstop',
+          ].forEach(eventName => {
+            document.monetization.addEventListener(eventName, onMonetizationEvent);
+          });
+          pre.textContent += 'Detected `document.monetization` object' + '\n';
+        }
+        pre.textContent += 'MSG: ' + JSON.stringify(messageEvent.data) + '\n';
+      }
+    }
+
+    function onMonetizationEvent(event) {
+      if (first) {
+        pre.textContent = '';
+        first = false;
+      }
+      pre.textContent += 'EVENT: ' + event.type + ' ' + JSON.stringify(event.detail) + '\n';
+    }
+  </script>
+</body>
+</html>

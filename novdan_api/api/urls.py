@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import TemplateView
 
 from .views import (ChangePasswordView, ConnectExtensionView, RegisterView,
                     Spsp4View, StatusView, SubscriptionActivateView,
@@ -15,6 +16,7 @@ urlpatterns = [
 ]
 
 spsp4_urlpatterns = [
+    path('testmonetization', TemplateView.as_view(template_name="testmonetization.html")),
     path('~<str:username>', Spsp4View.as_view()),
     path('=<str:uid>', Spsp4View.as_view()),
 ]
