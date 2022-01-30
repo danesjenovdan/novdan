@@ -1,11 +1,22 @@
-console.log('Background started!');
+console.log('[novdan] background started');
 
-browser.browserAction.setBadgeText({ text: '×' });
-browser.browserAction.setBadgeBackgroundColor({ color: '#d00' });
+browser.browserAction.setBadgeText({ text: '?' });
+browser.browserAction.setBadgeBackgroundColor({ color: '#fd0' });
+
+// const CLIENT_ID = 'Li03SQ542sSuIePdgKxw5XYRWLCPdCCgHweo1UVL';
+// const API_URL_BASE = 'http://localhost:8000';
+const CLIENT_ID = '1iOuBUL0JXbogMGDIpU0uC6lH52MqTkCOwj0qhKK';
+const API_URL_BASE = 'https://denarnica.novdan.si';
+
+const UPDATE_STATUS_INTERVAL_SECONDS = 60 * 60 * 24;
 
 const SETTINGS = {
   access_token: null,
   refresh_token: null,
+  username: null,
+  wallet_id: null,
+  active_subscription: null,
+  fetch_status_timestamp: null,
 };
 
 // Load settings from storage
@@ -13,16 +24,23 @@ browser.storage.sync.get(SETTINGS).then((settings) => {
   Object.keys(settings).forEach((key) => {
     SETTINGS[key] = settings[key];
   });
-  updateBadge();
+  updateStatus();
 });
 
 // Listen to changes in storage
 browser.storage.onChanged.addListener((changes, area) => {
+  let hasChanges = false;
   if (area === 'sync') {
     Object.keys(changes).forEach((key) => {
-      SETTINGS[key] = changes[key].newValue;
+      const { oldValue, newValue } = changes[key];
+      if (SETTINGS[key] !== newValue) {
+        SETTINGS[key] = newValue;
+        hasChanges = true;
+      }
     });
-    updateBadge();
+  }
+  if (hasChanges) {
+    updateStatus();
   }
 });
 
@@ -38,8 +56,97 @@ browser.browserAction.onClicked.addListener((tab) => {
   browser.tabs.create({ url: 'https://novdan.si/dash' });
 });
 
-function updateBadge() {
-  // browser.browserAction.setBadgeText({ text: '' });
-  // browser.browserAction.setBadgeText({ text: '✔' });
-  // browser.browserAction.setBadgeBackgroundColor({ color: '#0d0' });
+async function refreshToken() {
+  const formData = new FormData();
+  formData.append('client_id', CLIENT_ID);
+  formData.append('grant_type', 'refresh_token');
+  formData.append('refresh_token', SETTINGS.refresh_token);
+
+  const response = await fetch(`${API_URL_BASE}/o/token/`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to refresh token!');
+  }
+
+  const data = await response.json();
+
+  SETTINGS.access_token = data.access_token;
+  SETTINGS.refresh_token = data.refresh_token;
+  browser.storage.sync.set({
+    access_token: data.access_token,
+    refresh_token: data.refresh_token,
+  });
 }
+
+async function fetchStatus(allowRefresh = true) {
+  if (!SETTINGS.access_token) {
+    throw new Error('No access token!');
+  }
+
+  const response = await fetch(`${API_URL_BASE}/api/status`, {
+    headers: {
+      Authorization: `Bearer ${SETTINGS.access_token}`,
+    },
+  });
+
+  if (response.status === 401 && allowRefresh && SETTINGS.refresh_token) {
+    try {
+      await refreshToken();
+    } catch (error) {
+      return response;
+    }
+    return fetchStatus(false);
+  }
+
+  return response;
+}
+
+async function updateStatus() {
+  try {
+    const response = await fetchStatus();
+    const status = await response.json();
+    const timestamp = Date.now();
+    SETTINGS.username = status.user.username;
+    SETTINGS.wallet_id = status.wallet.id;
+    SETTINGS.active_subscription = status.active_subscription;
+    SETTINGS.fetch_status_timestamp = timestamp;
+    browser.storage.sync.set({
+      username: status.user.username,
+      wallet_id: status.wallet.id,
+      active_subscription: status.active_subscription,
+      fetch_status_timestamp: timestamp,
+    });
+  } catch (error) {
+    SETTINGS.username = null;
+    SETTINGS.wallet_id = null;
+    SETTINGS.active_subscription = null;
+    browser.storage.sync.set({
+      username: null,
+      wallet_id: null,
+      active_subscription: null,
+    });
+  }
+  updateBadge();
+}
+
+function updateBadge() {
+  if (SETTINGS.username && SETTINGS.wallet_id && SETTINGS.active_subscription) {
+    browser.browserAction.setBadgeText({ text: '✔' });
+    browser.browserAction.setBadgeBackgroundColor({ color: '#0d0' });
+    browser.browserAction.setTitle({
+      title: `novdan\n(logged in: ${SETTINGS.username})`,
+    });
+  } else {
+    browser.browserAction.setBadgeText({ text: '×' });
+    browser.browserAction.setBadgeBackgroundColor({ color: '#d00' });
+    browser.browserAction.setTitle({ title: 'novdan\n(login failed)' });
+  }
+}
+
+// Update status periodically
+setInterval(async () => {
+  updateStatus();
+}, UPDATE_STATUS_INTERVAL_SECONDS * 1000);

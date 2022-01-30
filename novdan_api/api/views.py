@@ -1,12 +1,20 @@
 import base64
 import traceback
+from datetime import timedelta
 
 import requests
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from oauth2_provider.contrib.rest_framework.permissions import TokenHasScope
+from oauth2_provider.models import (get_access_token_model,
+                                    get_application_model,
+                                    get_refresh_token_model)
+from oauth2_provider.settings import oauth2_settings
+from oauthlib.common import generate_token
 from rest_framework.exceptions import (APIException, ParseError,
                                        PermissionDenied)
 from rest_framework.exceptions import ValidationError as RestValidationError
@@ -20,11 +28,14 @@ from .exceptions import (ActiveSubscriptionExists, LowBalance,
                          NoActiveSubscription, invalid_receiver_error)
 from .models import Subscription, Wallet
 from .serializers import (ChangePasswordSerializer, RegisterSerializer,
-                          WalletSerializer)
+                          UserSerializer, WalletSerializer)
 from .utils import (activate_subscription, calculate_receivers_percentage,
                     cancel_subscription, transfer_tokens)
 
 User = get_user_model()
+Application = get_application_model()
+AccessToken = get_access_token_model()
+RefreshToken = get_refresh_token_model()
 
 
 class RegisterView(APIView):
@@ -48,8 +59,6 @@ class RegisterView(APIView):
 
 
 class ChangePasswordView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def post(self, request):
         if not isinstance(self.request.data, dict):
             raise ParseError
@@ -65,10 +74,41 @@ class ChangePasswordView(APIView):
         return Response({ 'success': True })
 
 
-class StatusView(APIView):
-    permission_classes = [IsAuthenticated]
+class ConnectExtensionView(APIView):
+    def post(self, request):
+        user = self.request.user
+        application = self.request.auth.application
+        expires = timezone.now() + timedelta(seconds=oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS)
 
+        # generate access token that only has `read transfer` scope (no `write`)
+        access_token = AccessToken.objects.create(
+            user=user,
+            scope='read transfer',
+            expires=expires,
+            token=generate_token(),
+            application=application,
+        )
+
+        refresh_token = RefreshToken.objects.create(
+            user=user,
+            token=generate_token(),
+            application=application,
+            access_token=access_token,
+        )
+
+        return Response({
+            'access_token': access_token.token,
+            'expires_in': oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS,
+            'token_type': 'Bearer',
+            'scope': access_token.scope,
+            'refresh_token': refresh_token.token,
+        })
+
+
+class StatusView(APIView):
     def get(self, request):
+        user_serializer = UserSerializer(self.request.user)
+
         wallet = Wallet.objects.filter(user=self.request.user).first()
         wallet_serializer = WalletSerializer(wallet)
 
@@ -77,6 +117,7 @@ class StatusView(APIView):
         sum, percentages = calculate_receivers_percentage(wallet)
 
         return Response({
+            'user': user_serializer.data,
             'wallet': wallet_serializer.data,
             'active_subscription': active_subscription_exists,
             'monetized_split': percentages,
@@ -85,7 +126,8 @@ class StatusView(APIView):
 
 
 class TransferView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, TokenHasScope]
+    required_scopes = ['transfer']
 
     @staticmethod
     def _get_amount(data, field_name):
@@ -134,8 +176,6 @@ class TransferView(APIView):
 
 
 class SubscriptionActivateView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def get(self, request):
         if Subscription.objects.filter(user=self.request.user).current().payed().exists():
             raise ActiveSubscriptionExists
@@ -195,8 +235,6 @@ class SubscriptionActivateView(APIView):
 
 
 class SubscriptionCancelView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def post(self, request):
         if not Subscription.objects.filter(user=self.request.user).current().payed().exists():
             raise NoActiveSubscription
@@ -225,8 +263,16 @@ class SubscriptionCancelView(APIView):
         return Response({ 'success': True })
 
 
+class Spsp4Renderer(JSONRenderer):
+    media_type = 'application/spsp4+json'
+
+
+class SpspRenderer(JSONRenderer):
+    media_type = 'application/spsp+json'
+
+
 class Spsp4View(APIView):
-    renderer_classes = [JSONRenderer]
+    renderer_classes = [Spsp4Renderer, SpspRenderer, JSONRenderer]
     permission_classes = [AllowAny]
 
     @staticmethod

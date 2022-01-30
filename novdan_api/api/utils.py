@@ -150,8 +150,6 @@ def cancel_subscription(user):
         # get current payed subscription time range
         time_range = subscription.time_ranges.current(time).payed().first()
 
-        # TODO: cancel payment in podpri api
-
         # add cancelation data and save
         time_range.canceled_at = time
         time_range.save()
