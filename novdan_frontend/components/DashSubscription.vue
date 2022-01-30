@@ -127,7 +127,11 @@ export default {
     return {
       oldPassword: '',
       newPassword: '',
-      confirmNewPassword: ''
+      confirmNewPassword: '',
+      extensionNotInstalled: true,
+      extensionError: false,
+      postMessageExpecting: null,
+      postMessageChallenge: null
     }
   },
   computed: {
@@ -136,12 +140,32 @@ export default {
         return true
       }
       return false
-    },
-    extensionNotInstalled() {
-      return true
-    },
-    extensionError() {
-      return false
+    }
+  },
+  watch: {
+    status(value) {
+      if (typeof window !== 'undefined' && value) {
+        const username = value.user.username
+        const walletEnd = value.wallet.id.slice(-12)
+        const challenge = Math.random().toString(36).slice(2)
+        const encoded = btoa(`${username}:${walletEnd}:${challenge}`)
+        this.postMessageChallenge = challenge
+        this.postMessageExpecting = 'extension:hello'
+        window.postMessage({
+          name: 'novdan',
+          event: { type: 'page:hello', detail: { encoded } }
+        })
+      }
+    }
+  },
+  mounted() {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('message', this.onMessage, false)
+    }
+  },
+  beforeDestroy() {
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('message', this.onMessage, false)
     }
   },
   methods: {
@@ -174,6 +198,54 @@ export default {
             console.log(response)
           } catch (error) {
             console.log(error)
+          }
+        }
+      }
+    },
+    async onMessage(messageEvent) {
+      if (messageEvent.source !== window || !messageEvent.data || messageEvent.data.name !== 'novdan' || !this.postMessageChallenge || !this.postMessageExpecting) {
+        return
+      }
+
+      const { type, detail } = messageEvent.data.event
+
+      if (type === 'extension:hello' && this.postMessageExpecting === type) {
+        this.postMessageExpecting = null
+        const [username, challenge] = atob(detail.encoded).split(':')
+        if (challenge === this.postMessageChallenge) {
+          this.postMessageChallenge = null
+          if (username === this.status.user.username) {
+            // we are logged in to the extension already
+            this.extensionNotInstalled = false
+            this.extensionError = false
+          } else {
+            // we are not logged in to the extension
+            const response = await this.$api.connectExtension()
+            const challenge = Math.random().toString(36).slice(2)
+            const encoded = btoa(`${response.access_token}:${response.refresh_token}:${challenge}`)
+            this.postMessageChallenge = challenge
+            this.postMessageExpecting = 'extension:connect'
+            window.postMessage({
+              name: 'novdan',
+              event: { type: 'page:connect', detail: { encoded } }
+            })
+          }
+        }
+      }
+
+      if (type === 'extension:connect' && this.postMessageExpecting === type) {
+        this.postMessageExpecting = null
+        const [resp, challenge] = atob(detail.encoded).split(':')
+        if (challenge === this.postMessageChallenge) {
+          this.postMessageChallenge = null
+          if (resp === 'ack') {
+            // we got acknowledgement, wait for another hello after extensions logs in
+            this.postMessageChallenge = challenge
+            this.postMessageExpecting = 'extension:hello'
+          } else {
+            // get got a nak
+            this.extensionNotInstalled = false
+            this.extensionError = true
           }
         }
       }

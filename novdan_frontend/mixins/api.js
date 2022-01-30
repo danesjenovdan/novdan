@@ -125,6 +125,9 @@ function api() {
         new_password: newPassword,
         old_password: oldPassword
       })
+    },
+    connectExtension() {
+      return authedApi.$post('/api/connect-extension', {})
     }
   }
 }
