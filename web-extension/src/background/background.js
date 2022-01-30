@@ -3,6 +3,11 @@ console.log('[novdan] background started');
 browser.browserAction.setBadgeText({ text: '?' });
 browser.browserAction.setBadgeBackgroundColor({ color: '#fd0' });
 
+// const CLIENT_ID = 'Li03SQ542sSuIePdgKxw5XYRWLCPdCCgHweo1UVL';
+// const API_URL_BASE = 'http://localhost:8000';
+const CLIENT_ID = '1iOuBUL0JXbogMGDIpU0uC6lH52MqTkCOwj0qhKK';
+const API_URL_BASE = 'https://denarnica.novdan.si';
+
 const UPDATE_STATUS_INTERVAL_SECONDS = 60 * 60 * 24;
 
 const SETTINGS = {
@@ -53,11 +58,11 @@ browser.browserAction.onClicked.addListener((tab) => {
 
 async function refreshToken() {
   const formData = new FormData();
-  formData.append('client_id', 'Li03SQ542sSuIePdgKxw5XYRWLCPdCCgHweo1UVL');
+  formData.append('client_id', CLIENT_ID);
   formData.append('grant_type', 'refresh_token');
   formData.append('refresh_token', SETTINGS.refresh_token);
 
-  const response = await fetch('https://denarnica.novdan.si/o/token/', {
+  const response = await fetch(`${API_URL_BASE}/o/token/`, {
     method: 'POST',
     body: formData,
   });
@@ -81,9 +86,9 @@ async function fetchStatus(allowRefresh = true) {
     throw new Error('No access token!');
   }
 
-  const response = await fetch('https://denarnica.novdan.si/api/status', {
+  const response = await fetch(`${API_URL_BASE}/api/status`, {
     headers: {
-      Authorization: SETTINGS.access_token,
+      Authorization: `Bearer ${SETTINGS.access_token}`,
     },
   });
 
@@ -105,12 +110,12 @@ async function updateStatus() {
     const status = await response.json();
     const timestamp = Date.now();
     SETTINGS.username = status.user.username;
-    SETTINGS.wallet_id = status.wallet;
+    SETTINGS.wallet_id = status.wallet.id;
     SETTINGS.active_subscription = status.active_subscription;
     SETTINGS.fetch_status_timestamp = timestamp;
     browser.storage.sync.set({
       username: status.user.username,
-      wallet_id: status.wallet,
+      wallet_id: status.wallet.id,
       active_subscription: status.active_subscription,
       fetch_status_timestamp: timestamp,
     });

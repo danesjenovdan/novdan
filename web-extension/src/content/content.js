@@ -18,6 +18,17 @@ loadScript(
   browser.runtime.getURL('/web_accessible_resources/monetization-polyfill.js')
 );
 
+// const CLIENT_ID = 'Li03SQ542sSuIePdgKxw5XYRWLCPdCCgHweo1UVL';
+// const PAGE_ORIGIN = 'http://localhost:3000';
+// const PAGE_HOSTNAME = 'localhost';
+// const API_URL_BASE = 'http://localhost:8000';
+// const API_HOSTNAME = 'localhost';
+const CLIENT_ID = '1iOuBUL0JXbogMGDIpU0uC6lH52MqTkCOwj0qhKK';
+const PAGE_ORIGIN = 'https://novdan.si';
+const PAGE_HOSTNAME = 'novdan.si';
+const API_URL_BASE = 'https://denarnica.novdan.si';
+const API_HOSTNAME = 'denarnica.novdan.si';
+
 const TESTING_HOSTNAMES = [
   'testwebmonetization.com',
   'localhost',
@@ -87,10 +98,10 @@ browser.storage.onChanged.addListener((changes, area) => {
           name: 'novdan',
           event: {
             type: 'extension:hello',
-            detail: { encoded: atob(`${username}:${challenge}`) },
+            detail: { encoded: btoa(`${username}:${challenge}`) },
           },
         },
-        'https://novdan.si'
+        PAGE_ORIGIN
       );
       tokenResponseChallenge = null;
     }
@@ -172,13 +183,13 @@ function onMetaTagRemoved({ content: paymentPointer }) {
 }
 
 function onHelloFromPage(source, { encoded }) {
-  if (source.location.hostname !== 'novdan.si') {
+  if (source.location.hostname !== PAGE_HOSTNAME) {
     return;
   }
 
   const detail = {};
   try {
-    const [username, walletEnding, challenge] = btoa(encoded).split(':');
+    const [username, walletEnding, challenge] = atob(encoded).split(':');
     if (
       username &&
       walletEnding &&
@@ -187,41 +198,52 @@ function onHelloFromPage(source, { encoded }) {
       username === SETTINGS.username &&
       walletEnding === SETTINGS.wallet_id.slice(-12)
     ) {
-      detail.encoded = atob(`${username}:${challenge}`);
+      detail.encoded = btoa(`${username}:${challenge}`);
     } else {
-      detail.encoded = atob(`null:${challenge}`);
+      detail.encoded = btoa(`null:${challenge}`);
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log('onHelloFromPage', error);
+    const [username, walletEnding, challenge] = atob(encoded).split(':');
+    detail.encoded = btoa(`null:${challenge}`);
+  }
 
   source.postMessage(
     {
       name: 'novdan',
       event: { type: 'extension:hello', detail },
     },
-    'https://novdan.si'
+    PAGE_ORIGIN
   );
 }
 
 function onConnectFromPage(source, { encoded }) {
-  if (source.location.hostname !== 'novdan.si') {
+  if (source.location.hostname !== PAGE_HOSTNAME) {
     return;
   }
 
   const detail = {};
   try {
-    const [accessToken, refreshToken, challenge] = btoa(encoded).split(':');
+    const [accessToken, refreshToken, challenge] = atob(encoded).split(':');
     if (accessToken && refreshToken) {
       SETTINGS.access_token = accessToken;
       SETTINGS.refresh_token = refreshToken;
+      SETTINGS.username = null;
+      SETTINGS.wallet_id = null;
+      SETTINGS.active_subscription = null;
+      console.log('got', SETTINGS.access_token, SETTINGS.refresh_token);
       browser.storage.sync.set({
         access_token: accessToken,
         refresh_token: refreshToken,
+        username: null,
+        wallet_id: null,
+        active_subscription: null,
       });
       tokenResponseChallenge = challenge;
-      detail.encoded = atob(`ack:${challenge}`);
+      detail.encoded = btoa(`ack:${challenge}`);
     } else {
       tokenResponseChallenge = null;
-      detail.encoded = atob(`nak:${challenge}`);
+      detail.encoded = btoa(`nak:${challenge}`);
     }
   } catch (error) {}
 
@@ -230,7 +252,7 @@ function onConnectFromPage(source, { encoded }) {
       name: 'novdan',
       event: { type: 'extension:connect', detail },
     },
-    'https://novdan.si'
+    PAGE_ORIGIN
   );
 }
 
@@ -239,6 +261,9 @@ function getUrlFromPaymentPointer(pp) {
   const url = new URL(ppUrl);
   if (url.pathname === '/') {
     url.pathname = '/.well-known/pay';
+  }
+  if (API_HOSTNAME === 'localhost') {
+    return `${API_URL_BASE}${url.pathname}`;
   }
   return url;
 }
@@ -249,7 +274,7 @@ function isValidPaymentUrl(url) {
     return true;
   }
   // otherwise only allow our wallet domain
-  return url.hostname === 'denarnica.novdan.si';
+  return url.hostname === API_HOSTNAME;
 }
 
 async function fetchSpsp4(url) {
@@ -353,11 +378,11 @@ function emitMonetizationEvent(state, content, finalized) {
 
 async function refreshToken() {
   const formData = new FormData();
-  formData.append('client_id', 'Li03SQ542sSuIePdgKxw5XYRWLCPdCCgHweo1UVL');
+  formData.append('client_id', CLIENT_ID);
   formData.append('grant_type', 'refresh_token');
   formData.append('refresh_token', SETTINGS.refresh_token);
 
-  const response = await fetch('https://denarnica.novdan.si/o/token/', {
+  const response = await fetch(`${API_URL_BASE}/o/token/`, {
     method: 'POST',
     body: formData,
   });
@@ -381,10 +406,10 @@ async function fetchTransfer(allowRefresh = true) {
     throw new Error('No access token!');
   }
 
-  const response = await fetch('https://denarnica.novdan.si/api/transfer', {
+  const response = await fetch(`${API_URL_BASE}/api/transfer`, {
     method: 'POST',
     headers: {
-      Authorization: SETTINGS.access_token,
+      Authorization: `Bearer ${SETTINGS.access_token}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
