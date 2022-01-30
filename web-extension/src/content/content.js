@@ -204,8 +204,6 @@ function onHelloFromPage(source, { encoded }) {
     }
   } catch (error) {
     console.log('onHelloFromPage', error);
-    const [username, walletEnding, challenge] = atob(encoded).split(':');
-    detail.encoded = btoa(`null:${challenge}`);
   }
 
   source.postMessage(
