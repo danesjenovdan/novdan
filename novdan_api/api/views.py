@@ -263,8 +263,16 @@ class SubscriptionCancelView(APIView):
         return Response({ 'success': True })
 
 
+class Spsp4Renderer(JSONRenderer):
+    media_type = 'application/spsp4+json'
+
+
+class SpspRenderer(JSONRenderer):
+    media_type = 'application/spsp+json'
+
+
 class Spsp4View(APIView):
-    renderer_classes = [JSONRenderer]
+    renderer_classes = [Spsp4Renderer, SpspRenderer, JSONRenderer]
     permission_classes = [AllowAny]
 
     @staticmethod
