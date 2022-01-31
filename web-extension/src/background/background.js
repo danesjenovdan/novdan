@@ -1,7 +1,7 @@
 console.log('[novdan] background started');
 
 browser.browserAction.setBadgeText({ text: '?' });
-browser.browserAction.setBadgeBackgroundColor({ color: '#fd0' });
+browser.browserAction.setBadgeBackgroundColor({ color: '#ddd' });
 
 // const CLIENT_ID = 'Li03SQ542sSuIePdgKxw5XYRWLCPdCCgHweo1UVL';
 // const API_URL_BASE = 'http://localhost:8000';
@@ -134,17 +134,28 @@ async function updateStatus() {
 }
 
 function updateBadge() {
+  let badgeText = '';
+  let badgeColor = '';
+  const badgeTooltip = ['nov dan', ''];
   if (SETTINGS.username && SETTINGS.wallet_id) {
-    browser.browserAction.setBadgeText({ text: '✔' });
-    browser.browserAction.setBadgeBackgroundColor({ color: '#0d0' });
-    browser.browserAction.setTitle({
-      title: `novdan\n(logged in: ${SETTINGS.username})\n(active subscription: ${SETTINGS.active_subscription})`,
-    });
+    badgeTooltip.push(`Uporabnik: ${SETTINGS.username}`);
+    if (SETTINGS.active_subscription) {
+      badgeText = '€';
+      badgeColor = '#0d0';
+      badgeTooltip.push('Naročnina: aktivna');
+    } else {
+      badgeText = '✔';
+      badgeColor = '#f80';
+      badgeTooltip.push('Naročnina: ni aktivna');
+    }
   } else {
-    browser.browserAction.setBadgeText({ text: '×' });
-    browser.browserAction.setBadgeBackgroundColor({ color: '#d00' });
-    browser.browserAction.setTitle({ title: 'novdan\n(login failed)' });
+    badgeText = '×';
+    badgeColor = '#d00';
+    badgeTooltip.push('Prijava ni uspela');
   }
+  browser.browserAction.setBadgeText({ text: badgeText });
+  browser.browserAction.setBadgeBackgroundColor({ color: badgeColor });
+  browser.browserAction.setTitle({ title: badgeTooltip.join('\n') });
 }
 
 // Update status periodically
