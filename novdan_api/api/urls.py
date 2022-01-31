@@ -3,7 +3,8 @@ from django.views.generic import TemplateView
 
 from .views import (ChangePasswordView, ConnectExtensionView, RegisterView,
                     Spsp4View, StatusView, SubscriptionActivateView,
-                    SubscriptionCancelView, TransferView)
+                    SubscriptionCancelView, SubscriptionChargedView,
+                    TransferView)
 
 urlpatterns = [
     path('register', RegisterView.as_view()),
@@ -12,6 +13,7 @@ urlpatterns = [
     path('status', StatusView.as_view()),
     path('transfer', TransferView.as_view()),
     path('subscription/activate', SubscriptionActivateView.as_view()),
+    path('subscription/charged', SubscriptionChargedView.as_view()),
     path('subscription/cancel', SubscriptionCancelView.as_view()),
 ]
 
