@@ -53,6 +53,7 @@ browser.runtime.onInstalled.addListener((details) => {
 
 // Open tab on toolbar icon click
 browser.browserAction.onClicked.addListener((tab) => {
+  updateStatus();
   browser.tabs.create({ url: 'https://novdan.si/dash' });
 });
 
@@ -133,11 +134,11 @@ async function updateStatus() {
 }
 
 function updateBadge() {
-  if (SETTINGS.username && SETTINGS.wallet_id && SETTINGS.active_subscription) {
+  if (SETTINGS.username && SETTINGS.wallet_id) {
     browser.browserAction.setBadgeText({ text: '✔' });
     browser.browserAction.setBadgeBackgroundColor({ color: '#0d0' });
     browser.browserAction.setTitle({
-      title: `novdan\n(logged in: ${SETTINGS.username})`,
+      title: `novdan\n(logged in: ${SETTINGS.username})\n(active subscription: ${SETTINGS.active_subscription})`,
     });
   } else {
     browser.browserAction.setBadgeText({ text: '×' });

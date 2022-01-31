@@ -41,3 +41,21 @@ if os.getenv('DJANGO_ENABLE_S3', False):
 
 PAYMENT_API_BASE = os.getenv('DJANGO_PAYMENT_API_BASE', 'https://podpri.lb.djnd.si')
 PAYMENT_CAMPAIGN_ID = int(os.getenv('DJANGO_PAYMENT_CAMPAIGN_ID', 1))
+
+
+# sentry setup
+if sentry_url := os.getenv('DJANGO_SENTRY_URL', False):
+    # imports should only happen if necessary
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        sentry_url,
+        integrations=[DjangoIntegration()],
+
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=0.1,
+        send_default_pii=True,
+    )
