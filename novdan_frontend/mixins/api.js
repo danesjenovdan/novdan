@@ -90,20 +90,24 @@ function api() {
     },
     async logout() {
       const token = tokens.refreshToken || tokens.accessToken
-      if (!token) {
-        return
+      if (token) {
+        // using URLSearchParams forces content type `application/x-www-form-urlencoded`
+        const params = new URLSearchParams()
+        params.append('client_id', tokens.clientId)
+        params.append('token', token)
+
+        try {
+          await plainApi.$post('/o/revoke_token/', params)
+          localStorage.removeItem('dash_access_token')
+          localStorage.removeItem('dash_refresh_token')
+        } catch (e) {}
       }
 
-      // using URLSearchParams forces content type `application/x-www-form-urlencoded`
-      const params = new URLSearchParams()
-      params.append('client_id', tokens.clientId)
-      params.append('token', token)
-
-      try {
-        await plainApi.$post('/o/revoke_token/', params)
-        localStorage.removeItem('dash_access_token')
-        localStorage.removeItem('dash_refresh_token')
-      } catch (e) {}
+      // logout extension
+      window.postMessage({
+        name: 'novdan',
+        event: { type: 'page:logout', detail: {} }
+      })
     },
     getStatus() {
       return authedApi.$get('/api/status')

@@ -161,6 +161,8 @@ function onMessage(messageEvent) {
       onHelloFromPage(messageEvent.source, detail);
     } else if (type === 'page:connect') {
       onConnectFromPage(messageEvent.source, detail);
+    } else if (type === 'page:logout') {
+      onLogoutFromPage(messageEvent.source, detail);
     }
   }
 }
@@ -229,7 +231,6 @@ function onConnectFromPage(source, { encoded }) {
       SETTINGS.username = null;
       SETTINGS.wallet_id = null;
       SETTINGS.active_subscription = null;
-      console.log('got', SETTINGS.access_token, SETTINGS.refresh_token);
       browser.storage.sync.set({
         access_token: accessToken,
         refresh_token: refreshToken,
@@ -252,6 +253,39 @@ function onConnectFromPage(source, { encoded }) {
     },
     PAGE_ORIGIN
   );
+}
+
+function onLogoutFromPage(source, detail) {
+  if (source.location.hostname !== PAGE_HOSTNAME) {
+    return;
+  }
+
+  const token = SETTINGS.refresh_token || SETTINGS.access_token;
+  if (token) {
+    const formData = new FormData();
+    formData.append('client_id', CLIENT_ID);
+    formData.append('token', token);
+
+    try {
+      fetch(`${API_URL_BASE}/o/revoke_token/`, {
+        method: 'POST',
+        body: formData,
+      });
+    } catch (e) {}
+  }
+
+  SETTINGS.access_token = null;
+  SETTINGS.refresh_token = null;
+  SETTINGS.username = null;
+  SETTINGS.wallet_id = null;
+  SETTINGS.active_subscription = null;
+  browser.storage.sync.set({
+    access_token: null,
+    refresh_token: null,
+    username: null,
+    wallet_id: null,
+    active_subscription: null,
+  });
 }
 
 function getUrlFromPaymentPointer(pp) {

@@ -121,6 +121,7 @@ async function updateStatus() {
       fetch_status_timestamp: timestamp,
     });
   } catch (error) {
+    console.log('failed updateStatus', error);
     SETTINGS.username = null;
     SETTINGS.wallet_id = null;
     SETTINGS.active_subscription = null;
