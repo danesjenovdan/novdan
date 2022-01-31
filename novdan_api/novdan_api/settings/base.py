@@ -161,3 +161,5 @@ CORS_ALLOW_HEADERS = list(cors_default_headers) + ['web-monetization-id']
 
 PAYMENT_API_BASE = ''
 PAYMENT_CAMPAIGN_ID = 1
+
+PAYMENT_SUBSCRIPTION_AMOUNT = 5

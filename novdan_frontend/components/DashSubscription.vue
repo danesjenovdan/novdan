@@ -169,14 +169,6 @@ export default {
     }
   },
   methods: {
-    // async logout() {
-    //   try {
-    //     await this.$api.logout()
-    //     this.$router.push('/dash/login')
-    //   } catch (error) {
-    //     // TODO: show error
-    //   }
-    // },
     activate() {
       this.$router.push('/payment')
     },

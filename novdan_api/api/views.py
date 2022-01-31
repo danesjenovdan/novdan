@@ -216,7 +216,7 @@ class SubscriptionActivateView(APIView):
                 f'{settings.PAYMENT_API_BASE}/api/generic-donation/subscription/{settings.PAYMENT_CAMPAIGN_ID}/',
                 json={
                     'nonce': nonce,
-                    'amount': 5,
+                    'amount': settings.PAYMENT_SUBSCRIPTION_AMOUNT,
                     'email': self.request.user.email,
                     'customer_id': self.request.user.customer_id,
                 },
@@ -230,6 +230,54 @@ class SubscriptionActivateView(APIView):
             raise APIException
 
         activate_subscription(self.request.user, payment_token)
+
+        return Response({ 'success': True })
+
+
+class SubscriptionChargedView(APIView):
+    permission_classes = [AllowAny] # TODO: protect?
+
+    @staticmethod
+    def _get_user(data, field_name):
+        customer_id = data.get(field_name)
+        if customer_id is None or customer_id == '':
+            raise RestValidationError({ field_name: ['This field may not be blank.'] })
+        try:
+            user = User.objects.get(customer_id=customer_id)
+        except (DjangoValidationError, User.DoesNotExist):
+            raise RestValidationError({ field_name: ['This field must be a valid customer id.'] })
+        return user
+
+    @staticmethod
+    def _get_correct_string_value(data, field_name, correct_value):
+        value = data.get(field_name)
+        if value is None or value == '':
+            raise RestValidationError({ field_name: ['This field may not be blank.'] })
+        if str(value) != str(correct_value):
+            raise RestValidationError({ field_name: [f'This field must be the correct value ({correct_value}).'] })
+        return str(value)
+
+    @staticmethod
+    def _get_subscription_id(data, field_name, user):
+        subscription_id = data.get(field_name)
+        if subscription_id is None or subscription_id == '':
+            raise RestValidationError({ field_name: ['This field may not be blank.'] })
+        # a past payed subscription must already exist if we want to extend it
+        subscription = Subscription.objects.filter(user=user).first()
+        if not subscription or not subscription.time_ranges.filter(payment_token=subscription_id).exists():
+            raise RestValidationError({ field_name: ['This field must be a valid subscription id.'] })
+        return subscription_id
+
+    def post(self, request):
+        if not isinstance(self.request.data, dict):
+            raise ParseError
+
+        user = self._get_user(self.request.data, 'customer_id')
+        amount = self._get_correct_string_value(self.request.data, 'amount', settings.PAYMENT_SUBSCRIPTION_AMOUNT)
+        kind = self._get_correct_string_value(self.request.data, 'kind', 'subscription_charged_successfully')
+        payment_token = self._get_subscription_id(self.request.data, 'subscription_id', user)
+
+        activate_subscription(user, payment_token)
 
         return Response({ 'success': True })
 
