@@ -249,13 +249,13 @@ class SubscriptionChargedView(APIView):
         return user
 
     @staticmethod
-    def _get_correct_value(data, field_name, correct_value):
+    def _get_correct_string_value(data, field_name, correct_value):
         value = data.get(field_name)
         if value is None or value == '':
             raise RestValidationError({ field_name: ['This field may not be blank.'] })
-        if value != correct_value:
+        if str(value) != str(correct_value):
             raise RestValidationError({ field_name: [f'This field must be the correct value ({correct_value}).'] })
-        return value
+        return str(value)
 
     @staticmethod
     def _get_subscription_id(data, field_name, user):
@@ -273,8 +273,8 @@ class SubscriptionChargedView(APIView):
             raise ParseError
 
         user = self._get_user(self.request.data, 'customer_id')
-        amount = self._get_correct_value(self.request.data, 'amount', settings.PAYMENT_SUBSCRIPTION_AMOUNT)
-        kind = self._get_correct_value(self.request.data, 'kind', 'subscription_charged_successfully')
+        amount = self._get_correct_string_value(self.request.data, 'amount', settings.PAYMENT_SUBSCRIPTION_AMOUNT)
+        kind = self._get_correct_string_value(self.request.data, 'kind', 'subscription_charged_successfully')
         payment_token = self._get_subscription_id(self.request.data, 'subscription_id', user)
 
         activate_subscription(user, payment_token)
