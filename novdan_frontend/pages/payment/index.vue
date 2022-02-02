@@ -1,7 +1,10 @@
 <template>
   <div class="payment">
     <h3>PLAČILO</h3>
-
+    <p>
+      Vpiši podatke za plačilo. Znesek bo obračunan danes in nato vsakega 1. v
+      mesecu. Naročnino lahko kadarkoli prekineš.
+    </p>
     <loading v-if="paymentInProgress" />
 
     <div class="buttons-wrapper links">
@@ -40,14 +43,10 @@
     />
 
     <div class="buttons-wrapper">
-      <button @click="finish">
-        Plačaj
-      </button>
+      <button @click="finish">Plačaj</button>
     </div>
     <div class="buttons-wrapper">
-      <nuxt-link to="/dash">
-        Nazaj
-      </nuxt-link>
+      <nuxt-link to="/dash"> Nazaj </nuxt-link>
     </div>
   </div>
 </template>
@@ -159,5 +158,4 @@ h3 {
     }
   }
 }
-
 </style>

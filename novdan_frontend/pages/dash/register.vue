@@ -2,6 +2,12 @@
   <div>
     <h3>REGISTRACIJA</h3>
     <loading v-if="processing" />
+    <p>
+      Za začetek vas prosimo, da si ustvariš uporabniški profil. Tvoje podatke
+      bo do tvojega preklica hranil
+      <a href="https://danesjenovdan.si">inštitut Danes je nov dan</a> na
+      strežnikih v EU.
+    </p>
     <form @submit.prevent="onSubmit">
       <div class="input-group">
         <label>Uporabniško ime</label>
@@ -17,19 +23,17 @@
       </div>
       <div class="input-group">
         <label>Potrdite geslo</label>
-        <input v-model="confirm_password" type="password" :disabled="processing" />
+        <input
+          v-model="confirm_password"
+          type="password"
+          :disabled="processing"
+        />
       </div>
-      <p v-if="processing">
-        Pošiljanje...
-      </p>
+      <p v-if="processing">Pošiljanje...</p>
       <input type="submit" value="Ustvari račun" :disabled="processing" />
-      <nuxt-link to="/dash/login">
-        Prijavi se
-      </nuxt-link>
+      <nuxt-link to="/dash/login"> Prijavi se </nuxt-link>
     </form>
-    <p v-if="error" class="error">
-      Prišlo je do napake.
-    </p>
+    <p v-if="error" class="error">Prišlo je do napake.</p>
   </div>
 </template>
 
@@ -61,7 +65,12 @@ export default {
     async onSubmit() {
       this.processing = true
       try {
-        await this.$api.register(this.username, this.email, this.password, this.confirm_password)
+        await this.$api.register(
+          this.username,
+          this.email,
+          this.password,
+          this.confirm_password
+        )
         // redirect to payment
         this.$router.replace('/payment')
       } catch (error) {
@@ -74,3 +83,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+p {
+  max-width: 516px;
+}
+</style>
