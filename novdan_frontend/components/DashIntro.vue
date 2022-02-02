@@ -3,11 +3,13 @@
     <div class="container">
       <div class="content-narrow">
         <p class="text-big">
-          <span>Pozdravljeni</span> na novi donatorski platformi za podporo
-          neodvisnim medijem.
+          <span>Pozdravljen_a!</span>
         </p>
         <p class="text-small">
-          Aktiviraj naročnino in začni podpirati slovenske neodvisne medije!
+          Tukaj je tvoja nadzorna plošča. V prihodnosti se bo še razvijala in če
+          bo projekt uspešen kmalu pridobila nove funkcionalnosti. Če imaš
+          kakršno koli vprašanje, pripombe, težave, ali komentarje
+          <a href="mailto:novdan@danesjenovdan.si">nam piši</a>.
         </p>
         <div class="yellow-bg" />
       </div>
