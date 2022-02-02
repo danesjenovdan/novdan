@@ -1,6 +1,11 @@
 <template>
   <div class="payment">
     <h3>PLAČILO</h3>
+    <p>
+      Vpiši podatke za plačilo. Znesek bo obračunan danes in nato vsakega 1. v
+      mesecu. Naročnino lahko kadarkoli prekineš.
+    </p>
+    <loading v-if="paymentInProgress" />
 
     <div class="buttons-wrapper links">
       <button
@@ -38,9 +43,10 @@
     />
 
     <div class="buttons-wrapper">
-      <button @click="finish">
-        Plačaj
-      </button>
+      <button @click="finish">Plačaj</button>
+    </div>
+    <div class="buttons-wrapper">
+      <nuxt-link to="/dash"> Nazaj </nuxt-link>
     </div>
   </div>
 </template>
@@ -83,7 +89,6 @@ export default {
         const response = await this.$api.activateSubscription2(this.nonce)
         console.log(response)
         this.$router.push('/dash')
-        this.paymentInProgress = false
         // this.$router.push(
         //   response.upload_token
         //     ? `/doniraj/hvala?token=${response.upload_token}`
@@ -95,6 +100,7 @@ export default {
         console.error(error.response)
         this.error = error.response
       }
+      this.paymentInProgress = false
     },
     paymentError(argument) {
       // eslint-disable-next-line
@@ -152,5 +158,4 @@ h3 {
     }
   }
 }
-
 </style>

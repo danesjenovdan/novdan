@@ -2,23 +2,41 @@
   <section class="background-gif headline" @mousemove="tiltTiles">
     <div class="container">
       <div class="title">
-        <h1>n<span style="position: absolute; z-index: -2; display: none">o</span><span style="opacity: 0">o</span>v dan</h1>
-        <p>Neposredna podpora neodvisnemu novinarstvu</p>
+        <h1>
+          n<span style="position: absolute; z-index: -2; display: none">o</span
+          ><span style="opacity: 0">o</span>v dan
+        </h1>
+        <p>Neposredna podpora neodvisnim medijem</p>
       </div>
       <div class="plates">
-        <div class="plate-wrapper" :style="`transform: rotate(${tilted * 0.5}deg)`">
-          <YellowPlate text="Pod Črto" bg="bottom" />
+        <div
+          class="plate-wrapper"
+          :style="`transform: rotate(${tilted * 0.5}deg)`"
+        >
+          <YellowPlate text="Agrument" bg="bottom" />
         </div>
-        <div class="plate-wrapper" :style="`transform: rotate(${tilted * 0.25}deg)`">
+        <div
+          class="plate-wrapper"
+          :style="`transform: rotate(${tilted * 0.25}deg)`"
+        >
           <YellowPlate text="Oštro" bg="bottom" />
         </div>
-        <div class="plate-wrapper" :style="`transform: rotate(${tilted * 0.8}deg)`">
+        <div
+          class="plate-wrapper"
+          :style="`transform: rotate(${tilted * 0.8}deg)`"
+        >
           <YellowPlate text="Boris Vezjak - In Media Res" bg="top" />
         </div>
-        <div class="plate-wrapper" :style="`transform: rotate(${tilted * 0.2}deg)`">
-          <YellowPlate text="Radio Študent" bg="bottom" />
+        <div
+          class="plate-wrapper"
+          :style="`transform: rotate(${tilted * 0.2}deg)`"
+        >
+          <YellowPlate text="Mešanec.si" bg="bottom" />
         </div>
-        <div class="plate-wrapper" :style="`transform: rotate(${tilted * 0.4}deg)`">
+        <div
+          class="plate-wrapper"
+          :style="`transform: rotate(${tilted * 0.4}deg)`"
+        >
           <YellowPlate text="Domen Savič - Državljan D" bg="top" />
         </div>
       </div>
@@ -26,7 +44,7 @@
     <div class="container">
       <div class="circle-animation">
         <div class="sun">
-          <img src="~/assets/images/sun.png">
+          <img src="~/assets/images/sun.png" />
         </div>
       </div>
     </div>
@@ -36,17 +54,17 @@
 <script>
 // import { gsap } from 'gsap'
 export default {
-  data () {
+  data() {
     return {
       tilted: 0
     }
   },
   methods: {
-    tiltTiles (event) {
+    tiltTiles(event) {
       const positionX = event.pageX
       const windowWidth = window.innerWidth
       const windowCenter = windowWidth / 2
-      const tilted = (windowCenter - positionX) / windowCenter * -45
+      const tilted = ((windowCenter - positionX) / windowCenter) * -45
       this.tilted = tilted / 10
     }
   }
@@ -113,7 +131,7 @@ export default {
       &:nth-child(odd) {
         .yellow-plate {
           font-size: 2rem;
-          font-family: "Le Murmure", serif;
+          font-family: 'Le Murmure', serif;
           padding: 1rem 0.75rem 0 0.75rem;
           line-height: 0.75;
         }
@@ -210,45 +228,76 @@ export default {
  * points.  Again, remember your vendor-specific prefixes for now!
  */
 @-webkit-keyframes myOrbit {
-  from { -webkit-transform: rotate(0deg) translateX(250px) rotate(0deg); }
-  to   { -webkit-transform: rotate(360deg) translateX(250px) rotate(-360deg); }
+  from {
+    -webkit-transform: rotate(0deg) translateX(250px) rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg) translateX(250px) rotate(-360deg);
+  }
 }
 
 @-moz-keyframes myOrbit {
-  from { -moz-transform: rotate(0deg) translateX(250px) rotate(0deg); }
-  to   { -moz-transform: rotate(360deg) translateX(250px) rotate(-360deg); }
+  from {
+    -moz-transform: rotate(0deg) translateX(250px) rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(360deg) translateX(250px) rotate(-360deg);
+  }
 }
 
 @-o-keyframes myOrbit {
-  from { -o-transform: rotate(0deg) translateX(250px) rotate(0deg); }
-  to   { -o-transform: rotate(360deg) translateX(250px) rotate(-360deg); }
+  from {
+    -o-transform: rotate(0deg) translateX(250px) rotate(0deg);
+  }
+  to {
+    -o-transform: rotate(360deg) translateX(250px) rotate(-360deg);
+  }
 }
 
 @keyframes myOrbit {
-  from { transform: rotate(250deg) translateX(250px) rotate(-250deg); }
-  to   { transform: rotate(610deg) translateX(250px) rotate(-610deg); }
+  from {
+    transform: rotate(250deg) translateX(250px) rotate(-250deg);
+  }
+  to {
+    transform: rotate(610deg) translateX(250px) rotate(-610deg);
+  }
 }
 
 @media (min-width: 1200px) {
   @-webkit-keyframes myOrbit {
-    from { -webkit-transform: rotate(0deg) translateX(350px) rotate(0deg); }
-    to   { -webkit-transform: rotate(360deg) translateX(350px) rotate(-360deg); }
+    from {
+      -webkit-transform: rotate(0deg) translateX(350px) rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg) translateX(350px) rotate(-360deg);
+    }
   }
 
   @-moz-keyframes myOrbit {
-    from { -moz-transform: rotate(0deg) translateX(350px) rotate(0deg); }
-    to   { -moz-transform: rotate(360deg) translateX(350px) rotate(-360deg); }
+    from {
+      -moz-transform: rotate(0deg) translateX(350px) rotate(0deg);
+    }
+    to {
+      -moz-transform: rotate(360deg) translateX(350px) rotate(-360deg);
+    }
   }
 
   @-o-keyframes myOrbit {
-    from { -o-transform: rotate(0deg) translateX(350px) rotate(0deg); }
-    to   { -o-transform: rotate(360deg) translateX(350px) rotate(-360deg); }
+    from {
+      -o-transform: rotate(0deg) translateX(350px) rotate(0deg);
+    }
+    to {
+      -o-transform: rotate(360deg) translateX(350px) rotate(-360deg);
+    }
   }
 
   @keyframes myOrbit {
-    from { transform: rotate(230deg) translateX(350px) rotate(-230deg); }
-    to   { transform: rotate(590deg) translateX(350px) rotate(-590deg); }
+    from {
+      transform: rotate(230deg) translateX(350px) rotate(-230deg);
+    }
+    to {
+      transform: rotate(590deg) translateX(350px) rotate(-590deg);
+    }
   }
 }
-
 </style>

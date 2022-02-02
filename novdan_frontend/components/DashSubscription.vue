@@ -1,14 +1,35 @@
 <template>
-  <section id="how-section" class="background-gradient-yellow-white subscription">
+  <section
+    id="how-section"
+    class="background-gradient-yellow-white subscription"
+  >
     <div class="container">
       <div class="content-narrow">
+        <div class="row">
+          <div v-if="isSubscribed" style="position: relative">
+            <h3>Tvoja razporeditev</h3>
+            <p class="text-small">
+              Ta mesec si medijem doniral
+              <span>{{ status.monetized_time }} sekund</span> svoje pozornosti
+            </p>
+            <pie-chart
+              :section-data="status.monetized_split"
+              class="pie-chart"
+            ></pie-chart>
+            <div class="pink-bg" />
+          </div>
+        </div>
+        <hr v-if="isSubscribed" />
         <h3>Naročnina</h3>
         <div class="row">
           <div class="subscribe">
-            <div class="moneybill" :class="{'disabled': !isSubscribed}">
-              <img src="~assets/images/5-eur.svg" alt="pink spinning star">
+            <div class="moneybill" :class="{ disabled: !isSubscribed }">
+              <img src="~assets/images/5-eur.svg" alt="pink spinning star" />
               <div class="effect">
-                <img src="~assets/images/zarki-roza.svg" alt="pink spinning star">
+                <img
+                  src="~assets/images/zarki-roza.svg"
+                  alt="pink spinning star"
+                />
               </div>
             </div>
             <div v-if="isSubscribed">
@@ -22,11 +43,9 @@
           </div>
           <div class="support-wrapper">
             <a v-if="!isSubscribed" class="button" @click="activate">
-              <div class="support">
-                Aktiviraj
-              </div>
+              <div class="support">Aktiviraj</div>
               <div class="star">
-                <img src="~assets/images/star.png" alt="pink spinning star">
+                <img src="~assets/images/star.png" alt="pink spinning star" />
               </div>
             </a>
             <div v-if="isSubscribed" class="payment-method">
@@ -41,8 +60,16 @@
                     Chrome
                   </div>
                   <div class="button">
-                    <img src="~assets/images/chrome.png" class="browser" alt="pink spinning star">
-                    <img src="~assets/images/modra-zvezda.svg" class="spinning-star" alt="pink spinning star">
+                    <img
+                      src="~assets/images/chrome.png"
+                      class="browser"
+                      alt="pink spinning star"
+                    />
+                    <img
+                      src="~assets/images/modra-zvezda.svg"
+                      class="spinning-star"
+                      alt="pink spinning star"
+                    />
                   </div>
                 </div>
                 <div class="button-browser-wrapper">
@@ -50,8 +77,16 @@
                     Firefox
                   </div>
                   <div class="button">
-                    <img src="~assets/images/mozilla.png" class="browser" alt="pink spinning star">
-                    <img src="~assets/images/modra-zvezda.svg" class="spinning-star" alt="pink spinning star">
+                    <img
+                      src="~assets/images/mozilla.png"
+                      class="browser"
+                      alt="pink spinning star"
+                    />
+                    <img
+                      src="~assets/images/modra-zvezda.svg"
+                      class="spinning-star"
+                      alt="pink spinning star"
+                    />
                   </div>
                 </div>
               </div>
@@ -78,29 +113,35 @@
           </div> -->
           <div class="input-group">
             <label for="password-old">Staro geslo</label>
-            <input id="password-old" type="password" name="password-old" v-model="oldPassword" />
+            <input
+              id="password-old"
+              v-model="oldPassword"
+              type="password"
+              name="password-old"
+            />
           </div>
           <div class="input-group">
             <label for="password-new">Novo geslo</label>
-            <input id="password-new" type="password" name="password-new" v-model="newPassword" />
+            <input
+              id="password-new"
+              v-model="newPassword"
+              type="password"
+              name="password-new"
+            />
           </div>
           <div class="input-group">
             <label for="password-confirm">Potrdi novo geslo</label>
-            <input id="password-confirm" type="password" name="password-confirm" v-model="confirmNewPassword" />
+            <input
+              id="password-confirm"
+              v-model="confirmNewPassword"
+              type="password"
+              name="password-confirm"
+            />
           </div>
-          <button id="password-submit" type="submit" class="logout-button">Pošlji</button>
+          <button id="password-submit" type="submit" class="logout-button">
+            Pošlji
+          </button>
         </form>
-
-        <hr v-if="isSubscribed" />
-
-        <div v-if="isSubscribed" style="position:relative;">
-          <h3>Tvoja razporeditev</h3>
-          <p class="text-small">
-            Ta mesec si medijem doniral <span>{{ status.monetized_time }} sekund</span> svoje pozornosti
-          </p>
-          <pie-chart :section-data="status.monetized_split" class="pie-chart"></pie-chart>
-          <div class="pink-bg" />
-        </div>
       </div>
     </div>
   </section>
@@ -183,10 +224,17 @@ export default {
       }
     },
     async changePassword() {
-      if (this.oldPassword.length > 0 && this.newPassword.length > 0 && this.confirmNewPassword.length > 0) {
+      if (
+        this.oldPassword.length > 0 &&
+        this.newPassword.length > 0 &&
+        this.confirmNewPassword.length > 0
+      ) {
         if (this.newPassword === this.confirmNewPassword) {
           try {
-            const response = await this.$api.changePassword(this.oldPassword, this.newPassword)
+            const response = await this.$api.changePassword(
+              this.oldPassword,
+              this.newPassword
+            )
             console.log(response)
           } catch (error) {
             console.log(error)
@@ -195,7 +243,13 @@ export default {
       }
     },
     async onMessage(messageEvent) {
-      if (messageEvent.source !== window || !messageEvent.data || messageEvent.data.name !== 'novdan' || !this.postMessageChallenge || !this.postMessageExpecting) {
+      if (
+        messageEvent.source !== window ||
+        !messageEvent.data ||
+        messageEvent.data.name !== 'novdan' ||
+        !this.postMessageChallenge ||
+        !this.postMessageExpecting
+      ) {
         return
       }
 
@@ -214,7 +268,9 @@ export default {
             // we are not logged in to the extension
             const response = await this.$api.connectExtension()
             const challenge = Math.random().toString(36).slice(2)
-            const encoded = btoa(`${response.access_token}:${response.refresh_token}:${challenge}`)
+            const encoded = btoa(
+              `${response.access_token}:${response.refresh_token}:${challenge}`
+            )
             this.postMessageChallenge = challenge
             this.postMessageExpecting = 'extension:connect'
             window.postMessage({
@@ -262,7 +318,7 @@ export default {
   h3 {
     font-size: 3rem;
     font-weight: 400;
-    font-family: "Le Murmure";
+    font-family: 'Le Murmure';
     text-transform: uppercase;
     letter-spacing: 3px;
     margin-top: 0;
@@ -279,7 +335,7 @@ export default {
     }
     .moneybill {
       position: relative;
-      &>img {
+      & > img {
         z-index: 2;
         position: relative;
         width: 16rem;
@@ -368,7 +424,7 @@ export default {
         left: 10rem;
         img {
           height: 8rem;
-          animation: rotate360 3s linear infinite;  /* animation set */
+          animation: rotate360 3s linear infinite; /* animation set */
           @media (min-width: 992px) {
             animation-play-state: paused;
           }
@@ -424,7 +480,7 @@ export default {
         .support {
           background-color: #ffd700;
           @media (min-width: 1200px) {
-            transform:rotate(0) scale(1.1);
+            transform: rotate(0) scale(1.1);
           }
         }
       }
@@ -446,7 +502,7 @@ export default {
         border: 2px solid #000000;
         border-radius: 10px;
         padding: 8px 20px;
-        font-family: "Syne", sans-serif;
+        font-family: 'Syne', sans-serif;
         font-size: 20px;
         font-weight: 500;
         display: block;
@@ -656,7 +712,11 @@ export default {
     top: 0;
     width: 300px;
     height: 300px;
-    background-image: radial-gradient(circle 150px at center, #ff5ccb 0%, rgba(255, 92, 203, 0) 100%);
+    background-image: radial-gradient(
+      circle 150px at center,
+      #ff5ccb 0%,
+      rgba(255, 92, 203, 0) 100%
+    );
     opacity: 0.4;
     z-index: -1;
     @media (min-width: 768px) {
@@ -668,9 +728,12 @@ export default {
       left: 31rem;
       width: 622px;
       height: 622px;
-      background-image: radial-gradient(circle 311px at center, #ff5ccb 0%, rgba(255, 92, 203, 0) 100%);
+      background-image: radial-gradient(
+        circle 311px at center,
+        #ff5ccb 0%,
+        rgba(255, 92, 203, 0) 100%
+      );
     }
   }
 }
-
 </style>

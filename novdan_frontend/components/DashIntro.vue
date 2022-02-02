@@ -3,10 +3,13 @@
     <div class="container">
       <div class="content-narrow">
         <p class="text-big">
-          <span>Pozdravljeni</span> na novi donatorski platformi za podporo neodvisnemu novinarstvu.
+          <span>Pozdravljen_a!</span>
         </p>
         <p class="text-small">
-          Aktiviraj naročnino in začni podpirati slovensko neodvisno novinarstvo!
+          Tukaj je tvoja nadzorna plošča. V prihodnosti se bo še razvijala in če
+          bo projekt uspešen kmalu pridobila nove funkcionalnosti. Če imaš
+          kakršno koli vprašanje, pripombe, težave, ali komentarje
+          <a href="mailto:novdan@danesjenovdan.si">nam piši</a>.
         </p>
         <div class="yellow-bg" />
       </div>
@@ -37,7 +40,8 @@ export default {
     position: relative;
   }
   p {
-    @media (min-width: 1200px) {}
+    @media (min-width: 1200px) {
+    }
   }
   .text-big {
     font-weight: 500;
@@ -73,7 +77,11 @@ export default {
     top: 90%;
     width: 300px;
     height: 300px;
-    background-image: radial-gradient(circle 150px at center, #ffd700 0%, rgba(255, 215, 0, 0) 100%);
+    background-image: radial-gradient(
+      circle 150px at center,
+      #ffd700 0%,
+      rgba(255, 215, 0, 0) 100%
+    );
     opacity: 0.4;
     z-index: -1;
     @media (min-width: 1200px) {
@@ -81,9 +89,12 @@ export default {
       left: 2rem;
       width: 622px;
       height: 622px;
-      background-image: radial-gradient(circle 311px at center, #ffd700 0%, rgba(255, 215, 0, 0) 100%);
+      background-image: radial-gradient(
+        circle 311px at center,
+        #ffd700 0%,
+        rgba(255, 215, 0, 0) 100%
+      );
     }
   }
 }
-
 </style>

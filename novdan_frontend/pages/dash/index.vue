@@ -12,7 +12,7 @@
         loop
         poster="~assets/images/gif.png"
       >
-        <source src="~assets/video/back_v1_1.mp4" type="video/mp4">
+        <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
       </video>
       <DashHeadline />
       <DashIntro :window-width="windowWidth" />
@@ -35,13 +35,13 @@ export default {
   },
   async mounted() {
     if (!this.$api.hasToken()) {
-      this.$router.replace('/dash/login')
+      this.$router.replace('/dash/register')
     }
     try {
       this.status = await this.$api.getStatus()
       console.log(this.status)
     } catch (e) {
-      this.$router.replace('/dash/login')
+      this.$router.replace('/dash/register')
     }
 
     this.windowWidth = window.innerWidth
@@ -101,11 +101,19 @@ section {
 }
 .background-gradient-white-yellow {
   background-color: white;
-  background-image: linear-gradient(to top, rgba(255, 215, 0, 0.4) 0%, white 100%);
+  background-image: linear-gradient(
+    to top,
+    rgba(255, 215, 0, 0.4) 0%,
+    white 100%
+  );
 }
 .background-gradient-yellow-white {
   background-color: white;
-  background-image: linear-gradient(to bottom, rgba(255, 215, 0, 0.4) 0%, rgba(255, 215, 0, 0) 67%);
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 215, 0, 0.4) 0%,
+    rgba(255, 215, 0, 0) 67%
+  );
 }
 .background-black {
   background-color: black;
@@ -122,6 +130,8 @@ section {
 
 // animations
 @keyframes rotate360 {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

@@ -2,39 +2,60 @@
   <section class="background-gradient-orange-pink media" @mousemove="tiltTiles">
     <div class="container">
       <h2>
-        Sodelujoči <br> mediji
+        Sodelujoči <br />
+        mediji
       </h2>
       <div class="row">
         <div>
           <ul>
             <li>
               <a href="/" target="_blank">
-                <span>Pod črto</span>
-                <img src="~assets/images/pod-crto.svg" alt="Pod Črto logo" :style="`transform: rotate(${tilted * 0.5}deg)`">
+                <span>Agrument</span>
+                <img
+                  src="~assets/images/djnd.svg"
+                  alt="Agrument logo"
+                  :style="`transform: rotate(${tilted * 0.5}deg)`"
+                />
               </a>
             </li>
             <li>
               <a href="/" target="_blank">
                 <span>Boris Vezjak - In Media Res</span>
-                <img src="~assets/images/imr.svg" alt="Boris Vezjak - In Media Res logo" :style="`transform: rotate(${tilted * 0.8}deg)`">
+                <img
+                  src="~assets/images/imr.svg"
+                  alt="Boris Vezjak - In Media Res logo"
+                  :style="`transform: rotate(${tilted * 0.8}deg)`"
+                />
               </a>
             </li>
             <li>
               <a href="/" target="_blank">
                 <span>Oštro</span>
-                <img src="~assets/images/ostro.svg" alt="Oštro logo" :style="`transform: rotate(${tilted * 0.6}deg)`">
+                <img
+                  src="~assets/images/ostro.svg"
+                  alt="Oštro logo"
+                  :style="`transform: rotate(${tilted * 0.6}deg)`"
+                />
               </a>
             </li>
             <li>
               <a href="/" target="_blank">
-                <span>Radio Študent</span>
-                <img src="~assets/images/rs.svg" alt="Radio Študent logo" :style="`transform: rotate(${tilted * 0.2}deg)`">
+                <span>Mešanec.si</span>
+                <img
+                  src="~assets/images/mesanec.svg"
+                  alt="Mešanec.si logo"
+                  :style="`transform: rotate(${tilted * 0.2}deg)`"
+                />
               </a>
             </li>
             <li>
               <a href="/" target="_blank">
                 <span>Domen Savič - Državljan D</span>
-                <img src="~assets/images/drzavljan-d.svg" alt="Domen Savič - Državljan D logo" :style="`transform: rotate(${tilted * 0.4}deg)`">
+                <img
+                  src="~assets/images/drzavljan-d.svg"
+                  alt="Domen Savič - Državljan D logo"
+                  :style="`transform: rotate(${tilted * 0.4}deg)`"
+                />
               </a>
             </li>
           </ul>
@@ -42,19 +63,17 @@
         <div class="support-section">
           <div class="support-wrapper">
             <a href="#how-section" class="button">
-              <div class="support">
-                Pridruži se!
-              </div>
+              <div class="support">Pridruži se!</div>
               <div class="star">
-                <img src="~assets/images/star.png" alt="pink spinning star">
+                <img src="~assets/images/star.png" alt="pink spinning star" />
                 <div>
                   <span>5</span>
-                  <span>eur/<br>mes</span>
+                  <span>eur/<br />mes</span>
                 </div>
               </div>
             </a>
             <div class="subtitle">
-              <p>Podpri <span>neodvisno</span> novinarstvo.</p>
+              <p>Podpri <span>neodvisne</span> medije.</p>
             </div>
           </div>
           <div v-if="windowWidth > 1200" class="yellow-bg" />
@@ -72,17 +91,17 @@ export default {
       default: 0
     }
   },
-  data () {
+  data() {
     return {
       tilted: 0
     }
   },
   methods: {
-    tiltTiles (event) {
+    tiltTiles(event) {
       const positionX = event.pageX
       const windowWidth = window.innerWidth
       const windowCenter = windowWidth / 2
-      const tilted = (windowCenter - positionX) / windowCenter * -45
+      const tilted = ((windowCenter - positionX) / windowCenter) * -45
       this.tilted = tilted / 2
     }
   }
@@ -171,7 +190,11 @@ export default {
       transform: translateY(-50%);
       width: 622px;
       height: 622px;
-      background-image: radial-gradient(circle 311px at center, #ffd700 0%, rgba(255, 215, 0, 0) 100%);
+      background-image: radial-gradient(
+        circle 311px at center,
+        #ffd700 0%,
+        rgba(255, 215, 0, 0) 100%
+      );
       opacity: 0.4;
       z-index: 1;
     }
@@ -215,7 +238,7 @@ export default {
       left: 12rem;
       img {
         height: 8rem;
-        animation: rotate360 3s linear infinite;  /* animation set */
+        animation: rotate360 3s linear infinite; /* animation set */
         @media (min-width: 992px) {
           animation-play-state: paused;
         }
@@ -268,7 +291,7 @@ export default {
       .support {
         background-color: #ffd700;
         @media (min-width: 1200px) {
-          transform:rotate(0) scale(1.1);
+          transform: rotate(0) scale(1.1);
         }
       }
     }
