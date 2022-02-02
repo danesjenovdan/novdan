@@ -56,7 +56,9 @@
               <p>Vtičnik še ni inštaliran.</p>
               <div class="browsers">
                 <div class="button-browser-wrapper">
-                  <div class="support">Chrome</div>
+                  <div class="support">
+                    Chrome
+                  </div>
                   <div class="button">
                     <img
                       src="~assets/images/chrome.png"
@@ -71,7 +73,9 @@
                   </div>
                 </div>
                 <div class="button-browser-wrapper">
-                  <div class="support">Firefox</div>
+                  <div class="support">
+                    Firefox
+                  </div>
                   <div class="button">
                     <img
                       src="~assets/images/mozilla.png"
@@ -111,27 +115,27 @@
             <label for="password-old">Staro geslo</label>
             <input
               id="password-old"
+              v-model="oldPassword"
               type="password"
               name="password-old"
-              v-model="oldPassword"
             />
           </div>
           <div class="input-group">
             <label for="password-new">Novo geslo</label>
             <input
               id="password-new"
+              v-model="newPassword"
               type="password"
               name="password-new"
-              v-model="newPassword"
             />
           </div>
           <div class="input-group">
             <label for="password-confirm">Potrdi novo geslo</label>
             <input
               id="password-confirm"
+              v-model="confirmNewPassword"
               type="password"
               name="password-confirm"
-              v-model="confirmNewPassword"
             />
           </div>
           <button id="password-submit" type="submit" class="logout-button">
