@@ -6,7 +6,7 @@
           n<span style="position: absolute; z-index: -2; display: none">o</span
           ><span style="opacity: 0">o</span>v dan
         </h1>
-        <p>Neposredna podpora neodvisnemu novinarstvu</p>
+        <p>Neposredna podpora neodvisnim medijem</p>
       </div>
       <div class="plates">
         <div

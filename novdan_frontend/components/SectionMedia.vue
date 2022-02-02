@@ -73,7 +73,7 @@
               </div>
             </a>
             <div class="subtitle">
-              <p>Podpri <span>neodvisno</span> novinarstvo.</p>
+              <p>Podpri <span>neodvisne</span> medije.</p>
             </div>
           </div>
           <div v-if="windowWidth > 1200" class="yellow-bg" />

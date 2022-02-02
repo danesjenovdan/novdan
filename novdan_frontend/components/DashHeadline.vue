@@ -2,8 +2,10 @@
   <section class="background-gif headline" @mousemove="tiltTiles">
     <div class="container">
       <div class="title">
-        <h1>n<img class="sun" src="~assets/images/sun.png" alt="sun icon">v dan</h1>
-        <p>Neposredna podpora neodvisnemu novinarstvu</p>
+        <h1>
+          n<img class="sun" src="~assets/images/sun.png" alt="sun icon" />v dan
+        </h1>
+        <p>Neposredno podpiraj neodvisne medije!</p>
       </div>
     </div>
   </section>
@@ -12,17 +14,17 @@
 <script>
 // import { gsap } from 'gsap'
 export default {
-  data () {
+  data() {
     return {
       tilted: 0
     }
   },
   methods: {
-    tiltTiles (event) {
+    tiltTiles(event) {
       const positionX = event.pageX
       const windowWidth = window.innerWidth
       const windowCenter = windowWidth / 2
-      const tilted = (windowCenter - positionX) / windowCenter * -45
+      const tilted = ((windowCenter - positionX) / windowCenter) * -45
       this.tilted = tilted / 10
     }
   }
@@ -77,5 +79,4 @@ export default {
     }
   }
 }
-
 </style>

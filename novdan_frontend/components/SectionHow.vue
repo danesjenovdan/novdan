@@ -5,38 +5,55 @@
       <div v-if="windowWidth > 992">
         <div class="row first">
           <p>
-            Inštaliraj si <span>Nov<br> Dan vtičnik</span>.
+            Inštaliraj si
+            <span
+              >Nov<br />
+              Dan vtičnik</span
+            >.
           </p>
           <div class="browsers">
             <div class="button-browser-wrapper">
-              <div class="support">
-                Chrome
-              </div>
+              <div class="support">Chrome</div>
               <div class="button">
-                <img src="~assets/images/chrome.png" class="browser" alt="pink spinning star">
-                <img src="~assets/images/modra-zvezda.svg" class="spinning-star" alt="pink spinning star">
+                <img
+                  src="~assets/images/chrome.png"
+                  class="browser"
+                  alt="pink spinning star"
+                />
+                <img
+                  src="~assets/images/modra-zvezda.svg"
+                  class="spinning-star"
+                  alt="pink spinning star"
+                />
               </div>
             </div>
             <div class="button-browser-wrapper">
-              <div class="support">
-                Firefox
-              </div>
+              <div class="support">Firefox</div>
               <div class="button">
-                <img src="~assets/images/mozilla.png" class="browser" alt="pink spinning star">
-                <img src="~assets/images/modra-zvezda.svg" class="spinning-star" alt="pink spinning star">
+                <img
+                  src="~assets/images/mozilla.png"
+                  class="browser"
+                  alt="pink spinning star"
+                />
+                <img
+                  src="~assets/images/modra-zvezda.svg"
+                  class="spinning-star"
+                  alt="pink spinning star"
+                />
               </div>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="subscribe">
-            <p>
-              Plačaj <br>naročnino.
-            </p>
+            <p>Plačaj <br />naročnino.</p>
             <div class="moneybill">
-              <img src="~assets/images/5-eur.svg" alt="pink spinning star">
+              <img src="~assets/images/5-eur.svg" alt="pink spinning star" />
               <div class="effect">
-                <img src="~assets/images/zarki-roza.svg" alt="pink spinning star">
+                <img
+                  src="~assets/images/zarki-roza.svg"
+                  alt="pink spinning star"
+                />
               </div>
             </div>
           </div>
@@ -44,19 +61,24 @@
         <div class="row">
           <div class="read">
             <p>
-              Beri <br><span>neodvisne</span><br> medije.
+              Beri <br /><span>neodvisne</span><br />
+              medije.
             </p>
             <div>
-              <img src="~assets/images/vesoljcek.png" alt="pink spinning star">
+              <img
+                src="~assets/images/vesoljcek.png"
+                alt="pink spinning star"
+              />
             </div>
           </div>
         </div>
         <div class="row forth" style="justify-content: end">
           <div>
             <p style="text-align: end">
-              <span>Tvoj prispevek bo</span><br>
-              <span>med njih razdeljen</span><br>
-              <span>samodejno.</span>
+              <span>Tvoj prispevek bo</span><br />
+              <span>med njih razdeljen</span><br />
+              <span>glede na tvoj</span><br />
+              <span>čas branja.</span>
             </p>
           </div>
         </div>
@@ -64,17 +86,22 @@
       <div v-if="windowWidth <= 992" class="how-mobile">
         <div class="row">
           <p>
-            Nov dan je eksperimentalna platforma, ki zaenkrat podpira samo Firefox in Chrome računalniške brskalnike.
+            Nov dan je eksperimentalna platforma, ki zaenkrat podpira samo
+            Firefox in Chrome računalniške brskalnike.
           </p>
           <div class="subscribe">
             <div class="moneybill">
               <div>
-                <span>obišči</span><br>
-                <span><a href="/">novdan.si</a></span><br>
+                <span>obišči</span><br />
+                <span><a href="/">novdan.si</a></span
+                ><br />
                 <span>na računalniku</span>
               </div>
               <div class="effect">
-                <img src="~assets/images/zarki-rumeni.svg" alt="pink spinning star">
+                <img
+                  src="~assets/images/zarki-rumeni.svg"
+                  alt="pink spinning star"
+                />
               </div>
             </div>
             <div>
@@ -218,7 +245,7 @@ export default {
     .moneybill {
       margin-left: 5rem;
       position: relative;
-      &>img {
+      & > img {
         z-index: 2;
         position: relative;
         width: 16rem;
@@ -247,7 +274,7 @@ export default {
     @media (min-width: 992px) {
       margin-left: 16rem;
     }
-    &>div {
+    & > div {
       margin-top: 5rem;
       margin-left: 3rem;
       transition: all 0.25s ease;
@@ -287,7 +314,8 @@ export default {
         position: relative;
         z-index: 5;
         margin: 5rem 0;
-        span:first-child, span:last-child {
+        span:first-child,
+        span:last-child {
           text-transform: uppercase;
           font-weight: 700;
         }
@@ -339,5 +367,4 @@ export default {
     }
   }
 }
-
 </style>

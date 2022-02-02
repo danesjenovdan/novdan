@@ -2,22 +2,27 @@
   <section class="background-white what">
     <div class="container">
       <h1>
-        Kvalitetno novinarstvo <br>NE M<img class="sun" src="~assets/images/sun.png" alt="sun icon">RE<br> biti zastonj!
+        Kakovostne vsebine <br />NE M<img
+          class="sun"
+          src="~assets/images/sun.png"
+          alt="sun icon"
+        />REJO<br />
+        biti zastonj!
       </h1>
       <p>
-        Nov dan je nova eksperimentalna platforma za podporo neodvisnemu novinarstvu, ki deluje s pomočjo novega odprtega standarda za spletno monetizacijo (web monetization standard - WMS).
+        Nov dan je nova eksperimentalna platforma za podporo neodvisnemu
+        novinarstvu, ki deluje s pomočjo novega odprtega standarda za spletno
+        monetizacijo (web monetization standard - WMS).
       </p>
       <a href="#how-section" class="support-wrapper">
         <div class="star">
-          <img src="~assets/images/star.png" alt="pink spinning star">
+          <img src="~assets/images/star.png" alt="pink spinning star" />
           <div>
             <span>5</span>
-            <span>eur/<br>mes</span>
+            <span>eur/<br />mes</span>
           </div>
         </div>
-        <div class="support">
-          Podpri
-        </div>
+        <div class="support">Podpri</div>
         <div class="yellow-bg" />
       </a>
     </div>
@@ -114,7 +119,7 @@ export default {
     z-index: 5;
     right: -3rem;
     img {
-      animation: rotate360 3s linear infinite;  /* animation set */
+      animation: rotate360 3s linear infinite; /* animation set */
       height: 9rem;
     }
     div {
@@ -188,14 +193,22 @@ export default {
     transform: translateX(-50%) translateY(-50%);
     width: 300px;
     height: 300px;
-    background-image: radial-gradient(circle 150px at center, #ffd700 0%, rgba(255, 215, 0, 0) 100%);
+    background-image: radial-gradient(
+      circle 150px at center,
+      #ffd700 0%,
+      rgba(255, 215, 0, 0) 100%
+    );
     opacity: 0.4;
     z-index: 1;
     @media (min-width: 1200px) {
       top: 50%;
       width: 622px;
       height: 622px;
-      background-image: radial-gradient(circle 311px at center, #ffd700 0%, rgba(255, 215, 0, 0) 100%);
+      background-image: radial-gradient(
+        circle 311px at center,
+        #ffd700 0%,
+        rgba(255, 215, 0, 0) 100%
+      );
     }
   }
 }
@@ -301,5 +314,4 @@ export default {
     transform: translateX(-100%);
   }
 }
-
 </style>
