@@ -1,6 +1,7 @@
 <template>
   <div>
     <h3>REGISTRACIJA</h3>
+    <loading v-if="processing" />
     <form @submit.prevent="onSubmit">
       <div class="input-group">
         <label>Uporabniško ime</label>
@@ -33,9 +34,11 @@
 </template>
 
 <script>
+import Loading from '../../components/Loading.vue'
 import api from '~/mixins/api.js'
 
 export default {
+  components: { Loading },
   mixins: [api],
   layout: 'login',
   data() {
