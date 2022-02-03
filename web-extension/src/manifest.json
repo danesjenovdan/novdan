@@ -1,14 +1,14 @@
 {
   "applications": {
     "gecko": {
-      "id": "gftw-extension@example.com"
+      "id": "extension@novdan.si"
     }
   },
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "default_locale": "en",
-  "version": "1.0.2",
+  "default_locale": "sl",
+  "version": "1.0.3",
   "homepage_url": "https://novdan.si",
   "icons": {
     "16": "img/icon_16.png",
