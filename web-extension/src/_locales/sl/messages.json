@@ -1,10 +1,10 @@
 {
   "extensionName": {
-    "message": "New day",
+    "message": "Nov dan",
     "description": "Name of the extension."
   },
   "extensionDescription": {
-    "message": "Support independent media directly while browsing the web!",
+    "message": "Neposredno podpri neodvisne medije med brskanjem po spletu!",
     "description": "Description of the extension."
   }
 }
