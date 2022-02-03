@@ -8,7 +8,7 @@
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
   "default_locale": "sl",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "homepage_url": "https://novdan.si",
   "icons": {
     "16": "img/icon_16.png",
@@ -26,7 +26,7 @@
     {
       "matches": ["<all_urls>"],
       "run_at": "document_start",
-      "js": ["lib/uuidv4.min.js", "content/content.js"]
+      "js": ["lib/browser-polyfill.js", "lib/uuidv4.min.js", "content/content.js"]
     }
   ],
   "browser_action": {
