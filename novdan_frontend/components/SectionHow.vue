@@ -27,7 +27,11 @@
                 />
               </div>
             </div>
-            <div class="button-browser-wrapper">
+            <a
+              target="_blank"
+              href="https://addons.mozilla.org/sl-SI/firefox/addon/nov-dan/"
+              class="button-browser-wrapper"
+            >
               <div class="support">Firefox</div>
               <div class="button">
                 <img
@@ -41,7 +45,7 @@
                   alt="pink spinning star"
                 />
               </div>
-            </div>
+            </a>
           </div>
         </div>
         <div class="row">
@@ -198,6 +202,8 @@ export default {
     display: flex;
     align-items: center;
     margin: 2rem 0;
+    text-decoration: none;
+    color: #000000;
     @media (min-width: 992px) {
       &:first-child {
         margin-left: 8rem;

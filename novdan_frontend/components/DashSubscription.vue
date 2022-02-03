@@ -56,9 +56,7 @@
               <p>Vtičnik še ni inštaliran.</p>
               <div class="browsers">
                 <div class="button-browser-wrapper">
-                  <div class="support">
-                    Chrome
-                  </div>
+                  <div class="support">Chrome</div>
                   <div class="button">
                     <img
                       src="~assets/images/chrome.png"
@@ -72,10 +70,12 @@
                     />
                   </div>
                 </div>
-                <div class="button-browser-wrapper">
-                  <div class="support">
-                    Firefox
-                  </div>
+                <a
+                  target="_blank"
+                  href="https://addons.mozilla.org/sl-SI/firefox/addon/nov-dan/"
+                  class="button-browser-wrapper"
+                >
+                  <div class="support">Firefox</div>
                   <div class="button">
                     <img
                       src="~assets/images/mozilla.png"
@@ -88,7 +88,7 @@
                       alt="pink spinning star"
                     />
                   </div>
-                </div>
+                </a>
               </div>
             </div>
             <div v-if="extensionError" class="warning">
@@ -579,6 +579,8 @@ export default {
         display: flex;
         align-items: center;
         margin: 1rem 0;
+        text-decoration: none;
+        color: #000000;
         @media (min-width: 992px) {
         }
         .button {
