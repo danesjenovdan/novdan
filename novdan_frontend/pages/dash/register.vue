@@ -12,14 +12,17 @@
       <div class="input-group">
         <label>Uporabniško ime</label>
         <input v-model="username" type="text" :disabled="processing" />
+        <p v-for="(error, index) in errors.username" :key="'eu-' + index" class="form-input-error">{{ error }}</p>
       </div>
       <div class="input-group">
         <label>E-pošta</label>
         <input v-model="email" type="email" :disabled="processing" />
+        <p v-for="(error, index) in errors.email" :key="'ee-' + index" class="form-input-error">{{ error }}</p>
       </div>
       <div class="input-group">
         <label>Geslo</label>
         <input v-model="password" type="password" :disabled="processing" />
+        <p v-for="(error, index) in errors.password" :key="'ep-' + index" class="form-input-error">{{ error }}</p>
       </div>
       <div class="input-group">
         <label>Potrdite geslo</label>
@@ -28,12 +31,13 @@
           type="password"
           :disabled="processing"
         />
+        <p v-for="(error, index) in errors.confirm_password" :key="'ecp-' + index" class="form-input-error">{{ error }}</p>
       </div>
       <p v-if="processing">Pošiljanje...</p>
       <input type="submit" value="Ustvari račun" :disabled="processing" />
       <nuxt-link to="/dash/login"> Prijavi se </nuxt-link>
     </form>
-    <p v-if="error" class="error">Prišlo je do napake.</p>
+    <!-- <p v-if="error" class="error">Prišlo je do napake.</p> -->
   </div>
 </template>
 
@@ -52,7 +56,7 @@ export default {
       password: '',
       confirm_password: '',
       processing: false,
-      error: false
+      errors: {}
     }
   },
   async mounted() {
@@ -64,6 +68,7 @@ export default {
   methods: {
     async onSubmit() {
       this.processing = true
+      this.errors = {}
       try {
         await this.$api.register(
           this.username,
@@ -73,10 +78,8 @@ export default {
         )
         // redirect to payment
         this.$router.replace('/payment')
-      } catch (error) {
-        // TODO: show error
-        this.error = true
-        console.log(error)
+      } catch (e) {
+        this.errors = e.response.data
       }
       this.processing = false
     }
