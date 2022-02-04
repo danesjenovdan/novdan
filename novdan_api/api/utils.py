@@ -38,16 +38,22 @@ def calculate_receivers_percentage(from_wallet):
     return sum, percentages
 
 
-def _get_number_of_seconds_in_month(time=timezone.now()):
+def _get_number_of_seconds_in_month(time=None):
+    if time is None:
+        time = timezone.now()
+
     return int((get_end_of_month(time) - get_start_of_month(time)).total_seconds())
 
 
-def generate_tokens_for_month(time=timezone.now()):
+def generate_tokens_for_month(time=None):
     """
     Fills wallets of all users that have a valid subscription with tokens for
     the current month. The amount of tokens in each wallet is set to the number
     of seconds in the current month.
     """
+    if time is None:
+        time = timezone.now()
+
     seconds = _get_number_of_seconds_in_month(time)
 
     user_ids_with_subscription = Subscription.objects.current(time).values_list('user_id', flat=True)
@@ -55,7 +61,10 @@ def generate_tokens_for_month(time=timezone.now()):
     Wallet.objects.filter(user_id__in=user_ids_with_subscription).update(amount=seconds)
 
 
-def generate_tokens_for_month_for_wallet(wallet, time=timezone.now()):
+def generate_tokens_for_month_for_wallet(wallet, time=None):
+    if time is None:
+        time = timezone.now()
+
     seconds = _get_number_of_seconds_in_month(time)
     wallet.amount = seconds
     wallet.save()
@@ -72,13 +81,15 @@ def _create_subscription_time_range(time, subscription_id):
     )
 
 
-def generate_subscription_time_ranges_for_month(time=timezone.now()):
+def generate_subscription_time_ranges_for_month(time=None):
     """
     Creates a new SubscriptionTimeRange for the current month for all
     subscriptions where their last time range was not canceled.
 
     Asserts if any ranges for current month already exist!
     """
+    if time is None:
+        time = timezone.now()
 
     # make sure there are not any time ranges for this month already
     month_has_time_ranges = SubscriptionTimeRange.objects.current(time).exists()
