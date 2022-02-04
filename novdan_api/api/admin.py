@@ -48,6 +48,9 @@ class SubscriptionAdmin(admin.ModelAdmin):
     search_fields = ('id', 'user__username')
     inlines = [SubscriptionTimeRangeStackedInline]
 
+    def is_payed(self, obj):
+        return obj.time_ranges.current().payed().exists()
+
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
