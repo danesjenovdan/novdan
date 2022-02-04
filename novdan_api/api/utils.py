@@ -115,7 +115,7 @@ def activate_subscription(user, payment_token):
         subscription, _ = Subscription.objects.get_or_create(user=user)
 
         # make sure subscription is not already payed
-        assert not subscription.is_payed(time), "Subscription is already payed!"
+        assert not subscription.time_ranges.current(time).payed().exists(), "Subscription is already payed!"
 
         # try getting current unpayed subscription time range if it exists
         time_range = subscription.time_ranges.current(time).unpayed().first()
@@ -145,7 +145,7 @@ def cancel_subscription(user):
         subscription = Subscription.objects.get(user=user)
 
         # make sure subscription is payed
-        assert subscription.is_payed(time), "Subscription is not payed!"
+        assert subscription.time_ranges.current(time).payed().exists(), "Subscription is not payed!"
 
         # get current payed subscription time range
         time_range = subscription.time_ranges.current(time).payed().first()

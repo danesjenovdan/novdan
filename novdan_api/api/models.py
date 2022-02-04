@@ -42,9 +42,6 @@ class Subscription(models.Model):
         on_delete=models.CASCADE,
     )
 
-    def is_payed(self, time=timezone.now()):
-        return self.time_ranges.current(time).payed().exists()
-
     def __str__(self):
         return f'Subscription ({self.id})'
 
