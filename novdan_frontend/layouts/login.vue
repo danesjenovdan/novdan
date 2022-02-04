@@ -80,6 +80,10 @@ body {
       letter-spacing: 1px;
       margin-bottom: 10px;
     }
+    .form-input-error {
+      color: red;
+      margin: 6px 0 6px 16px;
+    }
     span {
       margin-left: 16px;
       text-decoration: underline;
