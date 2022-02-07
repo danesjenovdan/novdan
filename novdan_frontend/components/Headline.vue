@@ -121,7 +121,7 @@ export default {
         position: relative;
         background-color: #ffd700;
         border: 1px solid #000000;
-        padding: 0.5rem 1rem 0 1rem;
+        padding: 0.5rem 1rem;
         text-transform: uppercase;
         font-weight: 700;
         font-size: 2rem;
@@ -130,23 +130,19 @@ export default {
       }
       &:nth-child(odd) {
         .yellow-plate {
-          font-size: 2rem;
+          font-size: 2.75rem;
           font-family: 'Le Murmure', serif;
-          padding: 1rem 0.75rem 0 0.75rem;
-          line-height: 0.75;
         }
       }
     }
     @media (min-width: 992px) {
       .plate-wrapper {
         .yellow-plate {
-          padding: 0.5rem 1rem 0 1rem;
           font-size: 3rem;
         }
         &:nth-child(odd) {
           .yellow-plate {
             font-size: 3.5rem;
-            padding: 1.5rem 0.75rem 0 0.75rem;
           }
         }
       }
@@ -154,13 +150,11 @@ export default {
     @media (min-width: 1200px) {
       .plate-wrapper {
         .yellow-plate {
-          padding: 0.5rem 1rem 0 1rem;
           font-size: 4rem;
         }
         &:nth-child(odd) {
           .yellow-plate {
             font-size: 5rem;
-            padding: 1.5rem 0.75rem 0 0.75rem;
           }
         }
       }
