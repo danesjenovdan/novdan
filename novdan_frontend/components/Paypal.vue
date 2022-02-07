@@ -1,7 +1,7 @@
 <template>
   <div class="paypal-payment">
-    <payment-error v-if="error" />
-    <form v-else>
+    <!-- <payment-error v-if="error" /> -->
+    <form>
       <div class="form-group">
         <p>
           Klikni na gumb in zaključi naročilo
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import PaymentError from './Error.vue'
+// import PaymentError from './Error.vue'
 
 let braintree = null
 if (typeof window !== 'undefined') {
@@ -27,7 +27,7 @@ if (typeof window !== 'undefined') {
 
 export default {
   components: {
-    PaymentError
+    // PaymentError
   },
   props: {
     token: {
