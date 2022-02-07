@@ -5,7 +5,7 @@
         <h1>
           n<img class="sun" src="~assets/images/sun.png" alt="sun icon" />v dan
         </h1>
-        <p>Neposredno podpiraj neodvisne medije!</p>
+        <p>Neposredna podpora <br/> neodvisnemu novinarstvu</p>
       </div>
     </div>
   </section>
@@ -35,9 +35,9 @@ export default {
 .headline {
   padding: 1rem;
 
-  @media (min-width: 992px) {
-    padding: 3rem 0 6rem 0;
-  }
+  // @media (min-width: 992px) {
+  //   padding: 3rem 0 6rem 0;
+  // }
 
   .container:nth-of-type(1) {
     position: relative;
@@ -45,38 +45,43 @@ export default {
   }
 
   .title {
-    margin: 2rem 0;
+    margin: 1rem 0;
+    @media (min-width: 768px) {
+      display: flex;
+      align-items: end;
+    }
     h1 {
       font-weight: 700;
-      font-size: 4.5rem;
+      font-size: 5rem;
       line-height: 0.75;
       text-align: center;
       margin: 0;
     }
     p {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
+      line-height: 1;
       font-weight: 700;
       text-align: center;
-      margin: 0.5rem 0;
+      margin: 1rem 0;
     }
-    @media (min-width: 1200px) {
-      margin: 2rem 0;
+    @media (min-width: 768px) {
       h1 {
-        font-size: 12rem;
+        text-align: right;
+        width: 50%;
+        padding-right: 1.5rem;
       }
       p {
-        font-size: 2rem;
+        text-align: left;
+        font-size: 1.5rem;
+        width: 50%;
+        margin: 0;
       }
     }
   }
 
   .sun {
-    height: 2rem;
-    width: 2rem;
-    @media (min-width: 1200px) {
-      height: 6rem;
-      width: 6rem;
-    }
+    height: 2.5rem;
+    width: 2.5rem;
   }
 }
 </style>
