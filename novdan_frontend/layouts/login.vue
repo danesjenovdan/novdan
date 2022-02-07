@@ -1,5 +1,16 @@
 <template>
   <div class="login-layout">
+    <video
+      id="bgvid"
+      playsinline
+      autoplay
+      muted
+      loop
+      poster="~assets/images/gif.png"
+    >
+      <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
+    </video>
+    <DashHeadline />
     <section class="background-gradient-yellow-white">
       <div class="container">
         <div class="content-narrow">
@@ -15,7 +26,18 @@ body {
   margin: 0;
   font-family: 'Syne', sans-serif;
 }
+#bgvid {
+  object-fit: cover;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
 .login-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   section {
     display: flex;
     flex-direction: column;
@@ -30,6 +52,7 @@ body {
       rgba(255, 215, 0, 0.4) 0%,
       rgba(255, 215, 0, 0) 67%
     );
+    flex-grow: 1;
   }
   .container {
     width: 100%;
@@ -52,7 +75,7 @@ body {
   .content-narrow {
     padding: 2rem 1rem;
     @media (min-width: 576px) {
-      padding: 2rem 2rem;
+      padding: 4rem 2rem;
     }
     @media (min-width: 992px) {
       padding: 4rem 8rem;
@@ -79,6 +102,10 @@ body {
       line-height: 0.8;
       letter-spacing: 1px;
       margin-bottom: 10px;
+    }
+    .form-input-error {
+      color: red;
+      margin: 6px 0 6px 16px;
     }
     span {
       margin-left: 16px;

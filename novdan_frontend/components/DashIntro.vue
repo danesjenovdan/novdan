@@ -45,7 +45,7 @@ export default {
   }
   .text-big {
     font-weight: 500;
-    font-size: 1.5rem;
+    font-size: 1rem;
     line-height: 1.75rem;
     margin-top: 4rem;
     margin-bottom: 2rem;

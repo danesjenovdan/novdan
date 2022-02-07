@@ -1,6 +1,11 @@
 <template>
   <div class="loading">
-    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   </div>
 </template>
 
@@ -16,7 +21,8 @@ export default {}
     left: 0;
     // right: 0;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

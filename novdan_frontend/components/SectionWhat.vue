@@ -70,7 +70,7 @@ export default {
   }
   h1 {
     font-weight: 800;
-    font-size: 2.25rem;
+    font-size: 1.75rem;
     line-height: 0.8;
     margin-top: 4rem;
     margin-bottom: 3rem;
@@ -92,8 +92,8 @@ export default {
     }
   }
   .sun {
-    height: 2rem;
-    width: 2rem;
+    height: 1.5rem;
+    width: 1.5rem;
     @media (min-width: 1200px) {
       height: 5rem;
       width: 5rem;

@@ -141,7 +141,7 @@ export default {
     }
   }
   h1 {
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: 800;
     margin-top: 0;
     margin-bottom: 2rem;

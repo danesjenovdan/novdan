@@ -618,9 +618,11 @@ export default {
     }
   }
   .user-settings {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @media (min-width: 576px) {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     h3 {
       margin-bottom: 0;
     }

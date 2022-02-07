@@ -1,6 +1,5 @@
 <template>
   <div class="card-payment">
-    <payment-error v-if="error" />
     <form>
       <div class="form-group">
         <div
@@ -41,7 +40,7 @@
 </template>
 
 <script>
-import PaymentError from './Error.vue'
+// import PaymentError from './Error.vue'
 
 let braintree = null
 if (typeof window !== 'undefined') {
@@ -50,7 +49,7 @@ if (typeof window !== 'undefined') {
 
 export default {
   components: {
-    PaymentError
+    // PaymentError
   },
   props: {
     token: {
@@ -65,7 +64,7 @@ export default {
   data() {
     return {
       hostedFieldsInstance: null,
-      error: null,
+      // error: null,
       numberFocused: false,
       expirationDateFocused: false,
       cvvFocused: false,
@@ -141,29 +140,32 @@ export default {
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error)
-        this.error = error.message
+        // this.error = error.message
         this.$emit('error', { error })
       }
     }
   },
   methods: {
     payWithCreditCard() {
+      console.log('payment in progress', this.paymentInProgress)
       if (this.hostedFieldsInstance && !this.paymentInProgress) {
         this.paymentInProgress = true
         this.$emit('payment-start')
-        this.error = null
+        // this.error = null
         this.hostedFieldsInstance
           .tokenize({
             vault: true
           })
           .then((payload) => {
             this.$emit('success', { nonce: payload.nonce })
+            this.paymentInProgress = false
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
             console.error(error)
-            this.error = error.message
+            // this.error = error.message
             this.$emit('error', { error })
+            this.paymentInProgress = false
           })
       }
     }

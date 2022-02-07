@@ -9,27 +9,7 @@
         <div>
           <ul>
             <li>
-              <a href="/" target="_blank">
-                <span>Agrument</span>
-                <img
-                  src="~assets/images/djnd.svg"
-                  alt="Agrument logo"
-                  :style="`transform: rotate(${tilted * 0.5}deg)`"
-                />
-              </a>
-            </li>
-            <li>
-              <a href="/" target="_blank">
-                <span>Boris Vezjak - In Media Res</span>
-                <img
-                  src="~assets/images/imr.svg"
-                  alt="Boris Vezjak - In Media Res logo"
-                  :style="`transform: rotate(${tilted * 0.8}deg)`"
-                />
-              </a>
-            </li>
-            <li>
-              <a href="/" target="_blank">
+              <a href="https://www.ostro.si/" target="_blank">
                 <span>Oštro</span>
                 <img
                   src="~assets/images/ostro.svg"
@@ -39,8 +19,18 @@
               </a>
             </li>
             <li>
-              <a href="/" target="_blank">
-                <span>Mešanec.si</span>
+              <a href="https://vezjak.com/" target="_blank">
+                <span>Boris Vezjak - In Media Res</span>
+                <img
+                  src="~assets/images/imr.svg"
+                  alt="Boris Vezjak - In Media Res logo"
+                  :style="`transform: rotate(${tilted * 0.8}deg)`"
+                />
+              </a>
+            </li>
+            <li>
+              <a href="https://mesanec.si/" target="_blank">
+                <span>Mešanec</span>
                 <img
                   src="~assets/images/mesanec.svg"
                   alt="Mešanec.si logo"
@@ -49,12 +39,22 @@
               </a>
             </li>
             <li>
-              <a href="/" target="_blank">
+              <a href="https://www.dsavic.net/" target="_blank">
                 <span>Domen Savič - Državljan D</span>
                 <img
                   src="~assets/images/drzavljan-d.svg"
                   alt="Domen Savič - Državljan D logo"
                   :style="`transform: rotate(${tilted * 0.4}deg)`"
+                />
+              </a>
+            </li>
+            <li>
+              <a href="https://danesjenovdan.si/agrument/" target="_blank">
+                <span>Agrument - Danes je nov dan</span>
+                <img
+                  src="~assets/images/djnd.svg"
+                  alt="Agrument logo"
+                  :style="`transform: rotate(${tilted * 0.5}deg)`"
                 />
               </a>
             </li>
@@ -111,6 +111,7 @@ export default {
 <style scoped lang="scss">
 .media {
   padding: 4rem 30px;
+  overflow: hidden;
   @media (min-width: 1200px) {
     padding: 6rem 0;
   }

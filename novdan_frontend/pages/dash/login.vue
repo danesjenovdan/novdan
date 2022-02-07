@@ -16,7 +16,7 @@
       </nuxt-link>
     </form>
     <p v-if="error" class="error">
-      Prišlo je do napake.
+      Prijava ni uspela.
     </p>
   </div>
 </template>
@@ -48,6 +48,7 @@ export default {
       } catch (error) {
         // TODO: show error
         this.error = true
+        console.log(error.response.data)
       }
     }
   }
