@@ -251,7 +251,7 @@
     }
   }
   h1 {
-    font-size: 4rem;
+    font-size: 2rem;
     font-weight: 800;
     margin-top: 2rem;
     margin-bottom: 2rem;

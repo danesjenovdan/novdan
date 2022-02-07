@@ -111,6 +111,7 @@ export default {
 <style scoped lang="scss">
 .media {
   padding: 4rem 30px;
+  overflow: hidden;
   @media (min-width: 1200px) {
     padding: 6rem 0;
   }
