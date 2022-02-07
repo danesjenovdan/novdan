@@ -11,12 +11,6 @@
       <div class="plates">
         <div
           class="plate-wrapper"
-          :style="`transform: rotate(${tilted * 0.5}deg)`"
-        >
-          <YellowPlate text="Agrument" bg="bottom" />
-        </div>
-        <div
-          class="plate-wrapper"
           :style="`transform: rotate(${tilted * 0.25}deg)`"
         >
           <YellowPlate text="Oštro" bg="bottom" />
@@ -31,13 +25,19 @@
           class="plate-wrapper"
           :style="`transform: rotate(${tilted * 0.2}deg)`"
         >
-          <YellowPlate text="Mešanec.si" bg="bottom" />
+          <YellowPlate text="Mešanec" bg="bottom" />
         </div>
         <div
           class="plate-wrapper"
           :style="`transform: rotate(${tilted * 0.4}deg)`"
         >
           <YellowPlate text="Domen Savič - Državljan D" bg="top" />
+        </div>
+        <div
+          class="plate-wrapper"
+          :style="`transform: rotate(${tilted * 0.5}deg)`"
+        >
+          <YellowPlate text="Agrument - Danes je nov dan" bg="bottom" />
         </div>
       </div>
     </div>
