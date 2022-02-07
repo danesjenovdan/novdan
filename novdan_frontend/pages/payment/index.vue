@@ -53,7 +53,7 @@
       v-if="token && paymentType == 'paypal'"
       :token="token"
       :amount="5"
-      :recurring="false"
+      :recurring="true"
       @ready="onPaymentReady"
       @payment-start="paymentInProgress = true"
       @success="paymentSuccess"
