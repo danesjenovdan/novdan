@@ -73,7 +73,7 @@
           </li>
         </ul>
         <h4>
-          Vse skupaj mi diši po kriptovalutah, glede katerih imam zadržke.
+          Vse skupaj mi diši po kripto tehnologiji, o kateri imam zadržke.
         </h4>
         <hr />
         <p>
@@ -217,9 +217,8 @@
         <hr />
         <p>
           Danes je nov dan od transakcij ne jemlje provizije. Ves zbrani denar
-          (minus transakcijski stroški, ki nam jih zaračunajo Braintree in
-          banke) se vsak mesec po plačilu davka glede na branost proporcionalno
-          razdeli med medije.
+          (minus transakcijski stroški) se vsak mesec po plačilu davka glede na
+          branost proporcionalno razdeli med medije.
         </p>
         <p>
           Stroške za razvoj platforme krije fundacija Grant for the Web. Za
@@ -256,6 +255,9 @@
     margin-top: 2rem;
     margin-bottom: 2rem;
     color: #ff5ccb;
+    @media (min-width: 992px) {
+      font-size: 6rem;
+    }
     @media (min-width: 1200px) {
       font-size: 8rem;
     }
@@ -264,13 +266,16 @@
   p,
   ul,
   li {
-    color: white;
+    color: #dddddd;
+    @media (min-width: 992px) {
+      margin-right: 200px;
+    }
   }
   h4 {
     font-size: 1.5rem;
     font-weight: 800;
     margin-bottom: 1.5rem;
-    @media (min-width: 1200px) {
+    @media (min-width: 992px) {
       font-size: 2rem;
     }
   }
@@ -278,7 +283,7 @@
   ul,
   li {
     font-size: 1.25rem;
-    @media (min-width: 1200px) {
+    @media (min-width: 992px) {
       font-size: 1.5rem;
     }
   }
