@@ -1,14 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: novdan
+namespace: novdan-staging
 resources:
   - frontend.yaml
   - api.yaml
   - cronjobs/api_generate_monthly_tokens.yaml
 images:
   - name: novdan-frontend
-    newName: rg.fr-par.scw.cloud/djnd/novdan-frontend
-    newTag: 'a5599bdc17d00c3b3c9d6959d36358870c253fa4'
+    newName: rg.fr-par.scw.cloud/djnd/novdan-frontend-staging
+    newTag: 'latest'
   - name: novdan-api
-    newName: rg.fr-par.scw.cloud/djnd/novdan-api
-    newTag: 'a5599bdc17d00c3b3c9d6959d36358870c253fa4'
+    newName: rg.fr-par.scw.cloud/djnd/novdan-api-staging
+    newTag: 'latest'
