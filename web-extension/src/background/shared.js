@@ -1,17 +1,28 @@
-console.log('[novdan] background-sw started');
+console.log('[novdan] background shared started');
 
-chrome.action.setBadgeText({ text: '?' });
-chrome.action.setBadgeBackgroundColor({ color: '#ddd' });
+// GLOBALS
+// -----------------------------------------------------------------------------
+export const UPDATE_STATUS_PERIOD_MINUTES = 60 * 6; // every 6 hours
 
 const CLIENT_ID = 'Li03SQ542sSuIePdgKxw5XYRWLCPdCCgHweo1UVL';
 const API_URL_BASE = 'http://localhost:8000';
 // const CLIENT_ID = '1iOuBUL0JXbogMGDIpU0uC6lH52MqTkCOwj0qhKK';
 // const API_URL_BASE = 'https://denarnica.novdan.si';
+// -----------------------------------------------------------------------------
 
-const UPDATE_STATUS_INTERVAL_SECONDS = 60 * 60 * 24;
+// global `chrome` should be defined (firefox supports it for compatibility)
+if (typeof chrome === 'undefined') {
+  throw new Error('`chrome` is not defined!');
+}
 
-// update status immediately on load
-updateStatus();
+// In chrome manifest v3 it's `chrome.action` otherwise `chrome.browserAction`
+if (!chrome.action) {
+  chrome.action = chrome.browserAction;
+}
+
+// Set default badge, before we know any status
+chrome.action.setBadgeText({ text: '?' });
+chrome.action.setBadgeBackgroundColor({ color: '#999' });
 
 // Listen to changes in storage
 chrome.storage.onChanged.addListener((changes, area) => {
@@ -19,7 +30,6 @@ chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'sync') {
     Object.keys(changes).forEach((key) => {
       const { oldValue, newValue } = changes[key];
-      console.log(oldValue, newValue)
       if (oldValue !== newValue) {
         hasChanges = true;
       }
@@ -39,9 +49,22 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 // Open tab on toolbar icon click
 chrome.action.onClicked.addListener((tab) => {
-  updateStatus();
   chrome.tabs.create({ url: 'https://novdan.si/dash' });
 });
+
+// FIXME: this is a temporary check for promise support
+// -----------------------------------------------------------------------------
+{
+  const setReturnValue = chrome.storage.sync.set({});
+  if (!setReturnValue || !setReturnValue.then) {
+    throw new Error('`chrome` storage `set` does not return a promise!');
+  }
+  const getReturnValue = chrome.storage.sync.get({});
+  if (!getReturnValue || !getReturnValue.then) {
+    throw new Error('`chrome` storage `get` does not return a promise!');
+  }
+}
+// -----------------------------------------------------------------------------
 
 async function refreshToken() {
   const { refresh_token } = await chrome.storage.sync.get(null);
@@ -62,20 +85,20 @@ async function refreshToken() {
 
   const data = await response.json();
 
-  browser.storage.sync.set({
+  await chrome.storage.sync.set({
     access_token: data.access_token,
     refresh_token: data.refresh_token,
   });
 }
 
-async function fetchStatus(allowRefresh = true) {
+async function apiFetch(urlPath, allowRefresh = true) {
   const { access_token, refresh_token } = await chrome.storage.sync.get(null);
 
   if (!access_token) {
     throw new Error('No access token!');
   }
 
-  const response = await fetch(`${API_URL_BASE}/api/status`, {
+  const response = await fetch(`${API_URL_BASE}${urlPath}`, {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
@@ -87,30 +110,35 @@ async function fetchStatus(allowRefresh = true) {
     } catch (error) {
       return response;
     }
-    return fetchStatus(false);
+    return apiFetch(urlPath, false);
   }
 
   return response;
 }
 
-async function updateStatus() {
-  console.log('called updateStatus');
+async function fetchStatus() {
+  const response = await apiFetch('/api/status');
+  return response.json();
+}
+
+export async function updateStatus() {
+  console.log('[novdan] called updateStatus');
   try {
-    const response = await fetchStatus();
-    const status = await response.json();
-    chrome.storage.sync.set({
+    const status = await fetchStatus();
+    await chrome.storage.sync.set({
       username: status.user.username,
       wallet_id: status.wallet.id,
       active_subscription: status.active_subscription,
     });
   } catch (error) {
-    console.log('failed updateStatus', error);
-    chrome.storage.sync.set({
+    console.log('[novdan] failed updateStatus', error);
+    await chrome.storage.sync.set({
       username: null,
       wallet_id: null,
       active_subscription: null,
     });
   }
+  console.log('[novdan] finished updateStatus');
   updateBadge();
 }
 
@@ -141,9 +169,17 @@ async function updateBadge() {
   chrome.action.setBadgeBackgroundColor({ color: badgeColor });
   chrome.action.setTitle({ title: badgeTooltip.join('\n') });
 }
-/*
-// Update status periodically
-setInterval(async () => {
-  updateStatus();
-}, UPDATE_STATUS_INTERVAL_SECONDS * 1000);
-*/
+
+// Update status immediately on load
+updateStatus();
+
+// Set up alarm to update status every X minutes
+chrome.alarms.create('update-status-interval', {
+  periodInMinutes: UPDATE_STATUS_PERIOD_MINUTES,
+});
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === 'update-status-interval') {
+    updateStatus();
+  }
+});
