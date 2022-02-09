@@ -2,12 +2,12 @@ console.log('[novdan] background shared started');
 
 // GLOBALS
 // -----------------------------------------------------------------------------
-export const UPDATE_STATUS_PERIOD_MINUTES = 60 * 6; // every 6 hours
+const UPDATE_STATUS_PERIOD_MINUTES = 60 * 6; // every 6 hours
 
-const CLIENT_ID = 'Li03SQ542sSuIePdgKxw5XYRWLCPdCCgHweo1UVL';
-const API_URL_BASE = 'http://localhost:8000';
-// const CLIENT_ID = '1iOuBUL0JXbogMGDIpU0uC6lH52MqTkCOwj0qhKK';
-// const API_URL_BASE = 'https://denarnica.novdan.si';
+// const CLIENT_ID = 'Li03SQ542sSuIePdgKxw5XYRWLCPdCCgHweo1UVL';
+// const API_URL_BASE = 'http://localhost:8000';
+const CLIENT_ID = '1iOuBUL0JXbogMGDIpU0uC6lH52MqTkCOwj0qhKK';
+const API_URL_BASE = 'https://denarnica.novdan.si';
 // -----------------------------------------------------------------------------
 
 // Cross browser compatibility checks and polyfills
@@ -120,7 +120,7 @@ async function fetchStatus() {
   return response.json();
 }
 
-export async function updateStatus() {
+async function updateStatus() {
   console.log('[novdan] called updateStatus');
   try {
     const status = await fetchStatus();

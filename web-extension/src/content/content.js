@@ -18,16 +18,16 @@ loadScript(
   browser.runtime.getURL('/web_accessible_resources/monetization-polyfill.js')
 );
 
-const CLIENT_ID = 'Li03SQ542sSuIePdgKxw5XYRWLCPdCCgHweo1UVL';
-const PAGE_ORIGIN = 'http://localhost:3000';
-const PAGE_HOSTNAME = 'localhost';
-const API_URL_BASE = 'http://localhost:8000';
-const API_HOSTNAME = 'localhost';
-// const CLIENT_ID = '1iOuBUL0JXbogMGDIpU0uC6lH52MqTkCOwj0qhKK';
-// const PAGE_ORIGIN = 'https://novdan.si';
-// const PAGE_HOSTNAME = 'novdan.si';
-// const API_URL_BASE = 'https://denarnica.novdan.si';
-// const API_HOSTNAME = 'denarnica.novdan.si';
+// const CLIENT_ID = 'Li03SQ542sSuIePdgKxw5XYRWLCPdCCgHweo1UVL';
+// const PAGE_ORIGIN = 'http://localhost:3000';
+// const PAGE_HOSTNAME = 'localhost';
+// const API_URL_BASE = 'http://localhost:8000';
+// const API_HOSTNAME = 'localhost';
+const CLIENT_ID = '1iOuBUL0JXbogMGDIpU0uC6lH52MqTkCOwj0qhKK';
+const PAGE_ORIGIN = 'https://novdan.si';
+const PAGE_HOSTNAME = 'novdan.si';
+const API_URL_BASE = 'https://denarnica.novdan.si';
+const API_HOSTNAME = 'denarnica.novdan.si';
 
 const TESTING_HOSTNAMES = [
   'testwebmonetization.com',
