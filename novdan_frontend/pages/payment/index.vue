@@ -99,9 +99,18 @@ export default {
     }
   },
   async mounted() {
-    const response = await this.$api.activateSubscription()
-    this.token = response.token
-    this.loading = true
+    if (!this.$api.hasToken()) {
+      this.$router.replace('/dash/login')
+    }
+    try {
+      this.status = await this.$api.getStatus()
+      console.log(this.status)
+      const response = await this.$api.activateSubscription()
+      this.token = response.token
+      this.loading = true
+    } catch (e) {
+      this.$router.replace('/dash/login')
+    }
   },
   methods: {
     onPaymentReady({ pay } = {}) {
