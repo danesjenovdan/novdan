@@ -1,14 +1,9 @@
 {
-  "applications": {
-    "gecko": {
-      "id": "extension@novdan.si"
-    }
-  },
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
   "default_locale": "sl",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "homepage_url": "https://novdan.si",
   "icons": {
     "16": "img/icon_16.png",
@@ -18,18 +13,25 @@
     "96": "img/icon_96.png",
     "128": "img/icon_128.png"
   },
-  "permissions": ["<all_urls>", "storage"],
+  "minimum_chrome_version": "92",
+  "host_permissions": ["<all_urls>"],
+  "permissions": ["storage", "alarms"],
   "background": {
-    "page": "background/background.html"
+    "service_worker": "background/service-worker.js",
+    "type": "module"
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
       "run_at": "document_start",
-      "js": ["lib/browser-polyfill.js", "lib/uuidv4.min.js", "content/content.js"]
+      "js": [
+        "lib/browser-polyfill.js",
+        "lib/uuidv4.min.js",
+        "content/content.js"
+      ]
     }
   ],
-  "browser_action": {
+  "action": {
     "default_icon": {
       "16": "img/icon_16.png",
       "32": "img/icon_32.png",
@@ -39,5 +41,10 @@
       "128": "img/icon_128.png"
     }
   },
-  "web_accessible_resources": ["/web_accessible_resources/*"]
+  "web_accessible_resources": [
+    {
+      "matches": ["<all_urls>"],
+      "resources": ["/web_accessible_resources/*"]
+    }
+  ]
 }
