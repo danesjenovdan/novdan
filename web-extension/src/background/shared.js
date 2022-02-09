@@ -10,14 +10,27 @@ const API_URL_BASE = 'http://localhost:8000';
 // const API_URL_BASE = 'https://denarnica.novdan.si';
 // -----------------------------------------------------------------------------
 
-// global `chrome` should be defined (firefox supports it for compatibility)
-if (typeof chrome === 'undefined') {
-  throw new Error('`chrome` is not defined!');
-}
-
-// In chrome manifest v3 it's `chrome.action` otherwise `chrome.browserAction`
-if (!chrome.action) {
-  chrome.action = chrome.browserAction;
+// Cross browser compatibility checks and polyfills
+{
+  // While Firefox supports `chrome` for compatibility, it only provides promise
+  // based apis on `browser`.
+  if (self.browser) {
+    self.chrome = self.browser;
+  }
+  // At this point `chrome` should be defined in all cases.
+  if (typeof chrome === 'undefined') {
+    throw new Error('`chrome` is not defined!');
+  }
+  // Make sure we have promise based apis on storage (supported in Firefox by
+  // default and in Chrome with manifest v3 and version 93+)
+  const returnValue = chrome.storage.sync.get({});
+  if (!returnValue || !returnValue.then) {
+    throw new Error('`chrome` storage `get` does not return a promise!');
+  }
+  // In Chrome with manifest v3 it's `chrome.action` otherwise `chrome.browserAction`
+  if (!chrome.action) {
+    chrome.action = chrome.browserAction;
+  }
 }
 
 // Set default badge, before we know any status
@@ -51,20 +64,6 @@ chrome.runtime.onInstalled.addListener((details) => {
 chrome.action.onClicked.addListener((tab) => {
   chrome.tabs.create({ url: 'https://novdan.si/dash' });
 });
-
-// FIXME: this is a temporary check for promise support
-// -----------------------------------------------------------------------------
-{
-  const setReturnValue = chrome.storage.sync.set({});
-  if (!setReturnValue || !setReturnValue.then) {
-    throw new Error('`chrome` storage `set` does not return a promise!');
-  }
-  const getReturnValue = chrome.storage.sync.get({});
-  if (!getReturnValue || !getReturnValue.then) {
-    throw new Error('`chrome` storage `get` does not return a promise!');
-  }
-}
-// -----------------------------------------------------------------------------
 
 async function refreshToken() {
   const { refresh_token } = await chrome.storage.sync.get(null);
