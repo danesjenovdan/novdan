@@ -51,6 +51,7 @@
             <div v-if="isSubscribed" class="payment-method">
               <button>Zamenjaj plačilno sredstvo</button>
               <span @click="cancelSubscription">Prekini naročnino</span>
+              <p v-if="cancelSubscriptionError">Se opravičujemo, prišlo je do napake. Predlagamo, da osvežiš stran in poskusiš ponovno. Če ne bo šlo, nam piši na <a href="mailto:vsi@danesjenovdan.si">vsi@danesjenovdan.si</a> in ti bomo pomagali.</p>
             </div>
             <div v-if="extensionNotInstalled" class="no-extension">
               <p>Vtičnik še ni inštaliran.</p>
@@ -172,7 +173,8 @@ export default {
       extensionNotInstalled: true,
       extensionError: false,
       postMessageExpecting: null,
-      postMessageChallenge: null
+      postMessageChallenge: null,
+      cancelSubscriptionError: false
     }
   },
   computed: {
@@ -216,10 +218,11 @@ export default {
     async cancelSubscription() {
       if (window.confirm('Ste prepričani, da želite preklicati naročnino?')) {
         try {
-          const response = await this.$api.cancelSubscription()
-          console.log(response)
+          await this.$api.cancelSubscription()
+          this.$router.go()
         } catch (error) {
           console.log(error)
+          this.cancelSubscriptionError = true
         }
       }
     },
@@ -528,6 +531,12 @@ export default {
           margin-left: 22px;
         }
         &:hover {
+          color: #1103b1;
+        }
+      }
+      p {
+        color: red;
+        a {
           color: #1103b1;
         }
       }

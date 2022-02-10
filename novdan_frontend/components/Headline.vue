@@ -37,7 +37,7 @@
           class="plate-wrapper"
           :style="`transform: rotate(${tilted * 0.5}deg)`"
         >
-          <YellowPlate text="Agrument - Danes je nov dan" bg="bottom" />
+          <YellowPlate text="Agrument - DJND" bg="bottom" />
         </div>
       </div>
     </div>
@@ -121,14 +121,14 @@ export default {
         position: relative;
         background-color: #ffd700;
         border: 1px solid #000000;
-        padding: 0.5rem 1rem;
+        padding: 1rem 1rem 0.5rem 1rem;
         text-transform: uppercase;
         font-weight: 700;
         font-size: 2rem;
         margin: 0.5rem 0;
         line-height: 1;
       }
-      &:nth-child(odd) {
+      &:nth-child(even) {
         .yellow-plate {
           font-size: 2.75rem;
           font-family: 'Le Murmure', serif;
@@ -140,7 +140,7 @@ export default {
         .yellow-plate {
           font-size: 3rem;
         }
-        &:nth-child(odd) {
+        &:nth-child(even) {
           .yellow-plate {
             font-size: 3.5rem;
           }
@@ -152,7 +152,7 @@ export default {
         .yellow-plate {
           font-size: 4rem;
         }
-        &:nth-child(odd) {
+        &:nth-child(even) {
           .yellow-plate {
             font-size: 5rem;
           }

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 
 from corsheaders.defaults import default_headers as cors_default_headers
+from django.utils.log import DEFAULT_LOGGING
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -29,6 +30,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# By default 'console' logging handler has the 'require_debug_true' filter.
+# Remove that filter so that exceptions are logged in production as well.
+DEFAULT_LOGGING['handlers']['console']['filters'] = []
 
 # Application definition
 

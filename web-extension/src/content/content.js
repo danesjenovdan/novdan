@@ -55,7 +55,6 @@ const SETTINGS = {
   username: null,
   wallet_id: null,
   active_subscription: null,
-  fetch_status_timestamp: null,
 };
 
 let tokenResponseChallenge = null;
