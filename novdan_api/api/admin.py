@@ -28,10 +28,27 @@ class IsSubscriptionPayedFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == '1':
-            return queryset.current().payed()
+            return queryset.payed()
         if self.value() == '0':
-            # don't use .unpayed(), it's not the same
-            return queryset.exclude(id__in=queryset.current().payed())
+            return queryset.exclude(id__in=queryset.payed())
+        return queryset
+
+
+class IsSubscriptionCanceledFilter(admin.SimpleListFilter):
+    title = 'is canceled'
+    parameter_name = 'is_canceled'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('1', _('Yes')),
+            ('0', _('No')),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == '1':
+            return queryset.canceled()
+        if self.value() == '0':
+            return queryset.exclude(id__in=queryset.canceled())
         return queryset
 
 
@@ -43,13 +60,19 @@ class SubscriptionTimeRangeStackedInline(admin.StackedInline):
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'is_payed')
-    list_filter = ('user__is_staff', IsSubscriptionPayedFilter)
+    list_display = ('id', 'user', 'is_payed', 'is_canceled')
+    list_filter = ('user__is_staff', IsSubscriptionPayedFilter, IsSubscriptionCanceledFilter)
     search_fields = ('id', 'user__username')
     inlines = [SubscriptionTimeRangeStackedInline]
 
     def is_payed(self, obj):
         return obj.time_ranges.current().payed().exists()
+
+    def is_canceled(self, obj):
+        last_time_range = obj.time_ranges.order_by('-ends_at').first()
+        if last_time_range:
+            return last_time_range.canceled_at is not None
+        return False
 
 
 @admin.register(Transaction)
