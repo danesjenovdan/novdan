@@ -128,8 +128,8 @@ def activate_subscription(user, payment_token):
         # make sure subscription is not already payed
         assert not subscription.time_ranges.current(time).payed().exists(), "Subscription is already payed!"
 
-        # try getting current unpayed subscription time range if it exists
-        time_range = subscription.time_ranges.current(time).unpayed().first()
+        # try getting current not payed subscription time range if it exists
+        time_range = subscription.time_ranges.current(time).not_payed().first()
 
         # create new time range if it does not exist
         if not time_range:
