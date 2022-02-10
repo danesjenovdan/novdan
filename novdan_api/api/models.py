@@ -33,8 +33,15 @@ class SubscriptionQuerySet(models.QuerySet):
             time_range__ends_at__gte=time,
         )
 
-    def payed(self):
-        return self.filter(time_range__payed_at__isnull=False)
+    def payed(self, time=None):
+        if time is None:
+            time = timezone.now()
+
+        return self.filter(
+            time_range__starts_at__lte=time,
+            time_range__ends_at__gte=time,
+            time_range__payed_at__isnull=False,
+        )
 
     def canceled(self):
         # get last time range for each subscription

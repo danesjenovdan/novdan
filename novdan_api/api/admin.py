@@ -28,9 +28,9 @@ class IsSubscriptionPayedFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == '1':
-            return queryset.current().payed()
+            return queryset.payed()
         if self.value() == '0':
-            return queryset.exclude(id__in=queryset.current().payed())
+            return queryset.exclude(id__in=queryset.payed())
         return queryset
 
 
@@ -46,9 +46,9 @@ class IsSubscriptionCanceledFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == '1':
-            return queryset.current().canceled()
+            return queryset.canceled()
         if self.value() == '0':
-            return queryset.exclude(id__in=queryset.current().canceled())
+            return queryset.exclude(id__in=queryset.canceled())
         return queryset
 
 

@@ -112,7 +112,7 @@ class StatusView(APIView):
         wallet = Wallet.objects.filter(user=self.request.user).first()
         wallet_serializer = WalletSerializer(wallet)
 
-        active_subscription_exists = Subscription.objects.filter(user=self.request.user).current().payed().exists()
+        active_subscription_exists = Subscription.objects.filter(user=self.request.user).payed().exists()
 
         sum, percentages = calculate_receivers_percentage(wallet)
 
@@ -177,7 +177,7 @@ class TransferView(APIView):
 
 class SubscriptionActivateView(APIView):
     def get(self, request):
-        if Subscription.objects.filter(user=self.request.user).current().payed().exists():
+        if Subscription.objects.filter(user=self.request.user).payed().exists():
             raise ActiveSubscriptionExists
 
         try:
@@ -204,7 +204,7 @@ class SubscriptionActivateView(APIView):
         if not isinstance(self.request.data, dict):
             raise ParseError
 
-        if Subscription.objects.filter(user=self.request.user).current().payed().exists():
+        if Subscription.objects.filter(user=self.request.user).payed().exists():
             raise ActiveSubscriptionExists
 
         nonce = self.request.data.get('nonce')
@@ -290,7 +290,7 @@ class SubscriptionChargedView(APIView):
 
 class SubscriptionCancelView(APIView):
     def post(self, request):
-        if not Subscription.objects.filter(user=self.request.user).current().payed().exists():
+        if not Subscription.objects.filter(user=self.request.user).payed().exists():
             raise NoActiveSubscription
 
         subscription = Subscription.objects.get(user=self.request.user)
