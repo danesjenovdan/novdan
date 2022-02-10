@@ -60,8 +60,9 @@ spec:
           command:
             - gunicorn
             - novdan_api.wsgi:application
-            - -b
+            - --bind
             - 0.0.0.0:8000
+            - --capture-output
             - --log-level
             - DEBUG
             - --workers
