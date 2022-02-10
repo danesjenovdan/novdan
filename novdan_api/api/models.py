@@ -36,6 +36,20 @@ class SubscriptionQuerySet(models.QuerySet):
     def payed(self):
         return self.filter(time_range__payed_at__isnull=False)
 
+    def canceled(self):
+        # get last time range for each subscription
+        last_time_ranges = SubscriptionTimeRange.objects.filter(subscription__in=self) \
+            .order_by('subscription', '-ends_at') \
+            .distinct('subscription')
+
+        # filter canceled time ranges from last time ranges
+        # this needs to happen separately otherwise filter is executed before distinct
+        canceled_subscription_ids = SubscriptionTimeRange.objects \
+            .filter(pk__in=last_time_ranges, canceled_at__isnull=False) \
+            .values_list('subscription_id', flat=True)
+
+        return self.model.objects.filter(pk__in=canceled_subscription_ids)
+
 
 class Subscription(models.Model):
     objects = SubscriptionQuerySet.as_manager()
@@ -59,8 +73,14 @@ class SubscriptionTimeRangeQuerySet(models.QuerySet):
     def payed(self):
         return self.filter(payed_at__isnull=False)
 
-    def unpayed(self):
+    def not_payed(self):
         return self.filter(payed_at__isnull=True)
+
+    def canceled(self):
+        return self.filter(canceled_at__isnull=False)
+
+    def not_canceled(self):
+        return self.filter(canceled_at__isnull=True)
 
 
 class SubscriptionTimeRange(models.Model):
