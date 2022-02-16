@@ -51,12 +51,21 @@
             <div v-if="isSubscribed" class="payment-method">
               <button>Zamenjaj plačilno sredstvo</button>
               <span @click="cancelSubscription">Prekini naročnino</span>
-              <p v-if="cancelSubscriptionError">Se opravičujemo, prišlo je do napake. Predlagamo, da osvežiš stran in poskusiš ponovno. Če ne bo šlo, nam piši na <a href="mailto:vsi@danesjenovdan.si">vsi@danesjenovdan.si</a> in ti bomo pomagali.</p>
+              <p v-if="cancelSubscriptionError">
+                Se opravičujemo, prišlo je do napake. Predlagamo, da osvežiš
+                stran in poskusiš ponovno. Če ne bo šlo, nam piši na
+                <a href="mailto:vsi@danesjenovdan.si">vsi@danesjenovdan.si</a>
+                in ti bomo pomagali.
+              </p>
             </div>
             <div v-if="extensionNotInstalled" class="no-extension">
               <p>Vtičnik še ni inštaliran.</p>
               <div class="browsers">
-                <div class="button-browser-wrapper">
+                <a
+                  target="_blank"
+                  href="https://chrome.google.com/webstore/detail/nov-dan/lioeapnoibjfgmeicjnghkoaoalnggik?hl=sl"
+                  class="button-browser-wrapper"
+                >
                   <div class="support">Chrome</div>
                   <div class="button">
                     <img
@@ -70,7 +79,7 @@
                       alt="pink spinning star"
                     />
                   </div>
-                </div>
+                </a>
                 <a
                   target="_blank"
                   href="https://addons.mozilla.org/sl-SI/firefox/addon/nov-dan/"
