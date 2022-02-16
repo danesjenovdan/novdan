@@ -12,7 +12,11 @@
             >.
           </p>
           <div class="browsers">
-            <div class="button-browser-wrapper">
+            <a
+              target="_blank"
+              href="https://chrome.google.com/webstore/detail/nov-dan/lioeapnoibjfgmeicjnghkoaoalnggik?hl=sl"
+              class="button-browser-wrapper"
+            >
               <div class="support">Chrome</div>
               <div class="button">
                 <img
@@ -26,7 +30,7 @@
                   alt="pink spinning star"
                 />
               </div>
-            </div>
+            </a>
             <a
               target="_blank"
               href="https://addons.mozilla.org/sl-SI/firefox/addon/nov-dan/"

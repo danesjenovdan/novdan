@@ -3,30 +3,31 @@
     <div class="container">
       <div>
         <h1>Pogosta vprašanja</h1>
-        <h4>Ampak vse te medije lahko berem brezplačno?</h4>
+        <h4>Ampak saj lahko vse te medije berem brezplačno.</h4>
         <hr />
         <p>
-          Res je. Avtorji v naboru medijev Nov dan ponujajo svoje vsebine
-          brezplačno, kar pa ne pomeni, da je njihovo ustvarjanje brez
-          vrednosti.
+          Res je. Avtorice in avtorji v naboru medijskih projektov, združenih na
+          platformi Nov dan, svoje vsebine ponujajo brezplačno, kar pa ne
+          pomeni, da je njihovo ustvarjanje brez vrednosti.
         </p>
         <p>
-          Nasprotno, članki, ki jih lahko beremo na izbranih medijih so
-          kakovostni, poučni, kritični, raziskovalni in nasploh pomembni za
-          zdravo razumevanje družbe in sistema v katerem živimo. Da jih na
-          spletu lahko beremo popolnoma zastonj, je posledica razvoja spleta v
-          kapitalistično urejeni družbi, pri katerem so se zaradi poplave
-          ponudbe vsebin, dinamik tržnih sil in koncentracije vpliva gigantskih
-          platform razvili poslovni modeli, ki kot glavni vir dohodkov za
-          delovanje prioritizirajo oglaševanje ali preprodajo podatkov svojih
-          bralcev in ne lastne vsebine.
+          Nasprotno – članki, ki jih lahko beremo na izbranih medijskih
+          projektih, so kakovostni, poučni, kritični, raziskovalni ter nasploh
+          pomembni za zdravo razumevanje družbe in sistema, v katerem živimo. Da
+          jih na spletu lahko beremo popolnoma zastonj, je posledica razvoja
+          spleta v kapitalistično urejeni družbi, pri katerem so se zaradi
+          poplave ponudbe vsebin, dinamik tržnih sil in koncentracije vpliva
+          gigantskih platform razvili poslovni modeli, ki kot glavni vir
+          dohodkov za delovanje uporabljajo oglaševanje ali preprodajo podatkov
+          svojih bralk in bralcev, ne pa lastnih vsebin.
         </p>
         <p>
-          Mediji v naboru Nov dan tega sicer ne počnejo, vendar so svoje vsebine
-          vseeno primorani ponuditi brezplačno, zaradi ekosistema, v katerem
-          živijo. Njihovo delovanje se zanaša bodisi na institucionalno podporo
-          iz razpisov in fundacij, neposredno preko podpore bralcev in
-          podpornikov ali na prostovoljski entuziazem piscev. Vztrajajo, kljub
+          Mediji in medijski projekti, združeni na platformi Nov dan, tega sicer
+          ne počnejo, vendar svoje vsebine vseeno ponujajo brezplačno, predvsem
+          zaradi ekosistema, v katerem živijo. Njihovo delovanje se zanaša
+          bodisi na institucionalno podporo z razpisov in fundacij, neposredno
+          podporo bralk in bralcev oziroma podpornic in podpornikov ali pa na
+          prostovoljski entuziazem pisk in piscev. Pri tem vztrajajo kljub
           prekarni situaciji.
         </p>
         <h4>
@@ -35,16 +36,16 @@
         </h4>
         <hr />
         <p>
-          Če tako razmišljaš, mogoče nisi pomislil_a na celotno sliko in
-          posledice, ki izhajajo iz tega, da mediji niso odgovorni svojim
-          bralcem, temveč oglaševalski industriji oziroma spletnim gigantom, kot
-          sta Google in Facebook, ki imata duopol nad celotnim digitalnim
-          oglaševanjem in preprodajo podatkov. Mediji zaradi tega ne morejo biti
-          resnično neodvisni, temveč zgolj vazali, ki delujejo v okvirjih
-          tehno-fevdalističnega okolja, kjer so podvrženi pravilom gospodarjev
-          sodobnega interneta. Prisiljeni so tekmovati za (p)oglede in ne toliko
-          za izgradnjo dolgoročnega odnosa z bralci, ki bi temeljilo na
-          zaupanju.
+          Takšno razmišljanje ne upošteva celotne slike in posledic, ki izhajajo
+          iz dejstva, da mediji niso odgovorni svojim bralcem, temveč
+          oglaševalski industriji oziroma spletnim gigantom, kot sta Google in
+          Facebook. Ti dve korporaciji imata duopol nad tako rekoč celotnim
+          digitalnim oglaševalskim prostorom in preprodajo podatkov, mediji pa
+          zaradi tega ne morejo biti resnično neodvisni. So zgolj vazali, ki
+          delujejo v okvirjih tehno-fevdalističnega okolja, kjer so podvrženi
+          pravilom gospodarjev sodobnega interneta. Prisiljeni so tekmovati za
+          (p)oglede, pri tem pa svoje pozornosti ne morejo posvečati izgradnji
+          dolgoročnega odnosa z bralci, ki bi temeljilo na zaupanju.
         </p>
         <p>
           Tekma proti dnu, ki jo narekuje tovrstna podrejenost oglaševanju in ne
@@ -53,9 +54,9 @@
           v vse pore našega življenja in načela temelje demokratične družbene
           ureditve. Z razvrednotenjem novinarskega dela smo si naredili medvedjo
           uslugo, kajti posledice tega, da smo se navadili, da so vse vsebine na
-          spletu brezplačne,
+          spletu brezplačne, plačujemo po višji ceni z razkrojem demokracije.
         </p>
-        <h4>Ok, ampak kako bo Nov dan to popravil?</h4>
+        <h4>Ampak kako bo Nov dan to popravil?</h4>
         <hr />
         <p>
           Nov dan tega globoko vkoreninjenega sistemskega problema ne bo rešil,
@@ -63,64 +64,69 @@
         </p>
         <ul>
           <li>
-            Eksperimentacijo in promocijo odprtokodnega standarda WMS, ki bi
-            lahko postal eden od temeljev novega, bolj etičnega medijskega
-            ekosistema na spletu.
+            Preizkušanje in promocijo odprtokodnega standarda WMS, ki bi lahko
+            postal eden od temeljev novega, bolj etičnega medijskega ekosistema
+            na spletu.
           </li>
           <li>
-            Neposredno finančno podporo izbranim medijem in novinarjem za svoje
-            delo.
+            Neposredno finančno podporo izbranim medijem ter medijskim
+            ustvarjalcem za svoje delo.
           </li>
         </ul>
         <h4>
-          Vse skupaj mi diši po kripto tehnologiji, o kateri imam zadržke.
+          Vse skupaj me spominja na po kripto tehnologijo, glede katere imam
+          zadržke.
         </h4>
         <hr />
         <p>
           Tudi mi. Poleg fundacije Mozilla in Creative Commons je glavni
           sofinancer projekta podjetje Coil, ki za podobno storitev uporablja
           kriptovaluto Ripple (XRP). Od tam tudi večina njihovega kapitala.
-          Fundacija Interledger, ki projekt vodi in piše večino dokumentacije za
-          primer (skoraj) vedno uporablja XRP, vendar sam standard nikjer ne
-          predvideva dejanske uporabe kriptovalut. Nov dan tako ne uporablja
-          nobene kriptovalute. Vaše evre hranimo na bilanci inštituta Danes je
-          nov dan, podatke o transakcijah pa hranimo v (sicer varovani, z
-          varnostnimi kopijami dodatno zaščiteni) “klasični” relacijski bazi. S
-          tem ne trošimo kriminalnih količin elektrike po nepotrebnem in
-          zagotavljamo, da se transakcije izvedejo kar se da hitro in brez
-          internih transakcijskih stroškov.
+          Fundacija Interledger, ki projekt vodi in piše večino dokumentacije,
+          za primer (skoraj) vedno uporablja XRP, vendar sam standard nikjer ne
+          predvideva dejanske uporabe kriptovalut.
+        </p>
+        <p>
+          Nov dan tako ne uporablja nobene kriptovalute. Vaše evre hranimo na
+          bilanci inštituta Danes je nov dan, podatke o transakcijah pa hranimo
+          v (sicer varovani, z varnostnimi kopijami dodatno zaščiteni)
+          “klasični” relacijski bazi. S tem po nepotrebnem ne trošimo
+          kriminalnih količin elektrike in zagotavljamo, da se transakcije
+          izvedejo kar se da hitro in brez internih transakcijskih stroškov.
         </p>
         <p>
           Kot pri vseh kriptovalutah morate tudi tukaj nekomu zaupati (čeprav to
-          ni kriptovaluta). Zaupate inštitutu Danes je nov dan in sicer, da:
+          ni kriptovaluta). Zaupate inštitutu Danes je nov dan, in sicer da:
         </p>
         <ul>
-          <li>ne bomo izdali vaših osebnih podatkov (email naslova),</li>
+          <li>
+            ne bomo izdali vaših osebnih podatkov (elektronskega naslova),
+          </li>
           <li>ne bomo izdali vaše zgodovine transakcij,</li>
           <li>ne bomo ponarejali transakcij,</li>
           <li>
-            bomo konec meseca vaše evre (minus transakcijski stroški) med
+            bomo konec meseca vaše evre (minus transakcijske stroške) med
             sodelujoče medije razdelili glede na število kovančkov, ki so jih
             mediji ta mesec prejeli.
           </li>
         </ul>
         <h4>
           Zakaj govorite o neposredni podpori, če pa je platforma Nov dan
-          posrednik, ki zbira donacije.
+          posrednik, ki zbira donacije?
         </h4>
         <hr />
         <p>
           Dolgoročna vizija odprtokodnega standarda WMS je, da ga konzorcij WW3
-          sprejme kot privzeti spletni standard, ki bi bil podprt v vseh
-          spletnih brskalnikih in torej za njegovo uporabo ne bi več potrebovali
-          vtičnikov. To bi pomenilo, da platforme kot je Nov dan, ki trenutno
+          sprejme kot privzeti spletni standard, ki bo podprt v vseh spletnih
+          brskalnikih in torej za njegovo uporabo ne bomo več potrebovali
+          vtičnikov. To bi pomenilo, da platforme, kot je Nov dan, ki trenutno
           skrbi za razvoj vtičnika ter pobiranje in deljenje zbranih sredstev,
           ne bi več rabili.
         </p>
         <p>
-          WMS vsebuje natančna navodila kako po internetu pretakati “vrednost”.
+          WMS vsebuje natančna navodila, kako po internetu pretakati “vrednost”.
           Podobno kot uporabljamo “podatkovne pakete”, da to spletno stran
-          spravimo do tvojega računalnika. WMS se opira na t.i. Interledger
+          spravimo do tvojega računalnika. WMS se opira na t. i. Interledger
           Protocol, ki je protokol, ki omogoča komunikacijo med različnimi
           “ledgerji” (ledger se v slovenščino prevaja kot “glavna knjiga”, tukaj
           pa označuje različne načine beleženja vrednosti od rešitev, ki
@@ -128,104 +134,105 @@
           navadna papir in svinčnik).
         </p>
         <p>
-          Ker se standard šele oblikuje, WMS funkcionalnost ni na voljo v
-          najbolj priljubljenih brskalnikih (zato potrebuješ razširitev), niti
-          ne obstaja način, da bi po internetu pošiljali prave evre. Zato evre
-          poberemo in shranimo mi. Uporabnikom podelimo kovančke, ki jih ob
-          obisku njihovih spletnih strani pošiljaš medijem direktno, brez
-          posrednika. Konec meseca nam mediji pošljejo kovančke, ki so jih
-          prejeli od vas, mi pa jim nakažemo primeren delež vseh evrov, ki smo
-          jih zbrali od vas (minus transakcijski stroški Braintree).
+          Ker se standard šele oblikuje, WMS funkcionalnosti ni na voljo v
+          najbolj priljubljenih brskalnikih (zato potrebuješ razširitev), poleg
+          tega pa ne obstaja način, da bi po internetu pošiljali prave evre.
+          Zato evre poberemo in shranimo mi. Uporabnikom podelimo kovančke, ki
+          jih medijem pošiljaš neposredno ob obisku njihovih spletnih mest.
+          Konec meseca nam mediji pošljejo kovančke, ki so jih prejeli od bralk
+          in bralcev, mi pa jim nakažemo primeren delež vseh evrov, ki smo jih
+          zbrali (minus transakcijske stroške za storitev Braintree).
         </p>
         <p>
           Eden od ciljev projekta Nov dan, ki deluje v sklopu fundacije Grant
-          for the Web je promocija in ozaveščanje javnosti o obstoju in
+          for the Web, je promocija in ozaveščanje javnosti o obstoju in
           poslanstvu WMS-ja. Če se standard izkaže za uspešnega in se v
-          naslenjih letih implementira neposredno v brskalnike boste neodvisne
+          naslednjih letih implementira neposredno v brskalnike, boste neodvisne
           medije lahko finančno podprli brez našega posredovanja.
         </p>
-        <h4>Po kakšnem ključu se delijo sredstva med medije?</h4>
+        <h4>Po kakšnem ključu se medijem delijo sredstva?</h4>
         <hr />
         <p>
-          Ko si namestiš vtičnik Nov dan in aktiviraš naročnino se v tvojo
+          Ko si namestiš vtičnik Nov dan in aktiviraš naročnino, se v tvojo
           virtualno denarnico naložijo virtualni kovančki. Ko bereš spletno
-          mesto enega od sodelujočih medijev v ozadju vsakih 5 sekund mediju
-          direktno “nakažeš” 5 žetončkov.
+          mesto enega od sodelujočih medijev, v ozadju vsakih 5 sekund mediju
+          direktno “nakažeš” 5 kovančkov.
         </p>
         <p>
-          Ob koncu meseca potegnemo črto in preverimo, koliko žetončkov so
-          uporabniki namenili kateremu mediju. Glede na to razmerje nato
-          porazdelimo vsoto, zbrano tisti mesec, med medije.
+          Ob koncu meseca potegnemo črto in preverimo, koliko kovančkov so
+          uporabniki namenili kateremu mediju. Glede na to razmerje med medije
+          porazdelimo vsoto, zbrano tisti mesec.
         </p>
-        <h4>Po kakšnem ključu ste izbrali medije, ki sodelujejo?</h4>
+        <h4>
+          Po kakšnem ključu ste izbrali ustvarjalce, ki sodelujejo v projektu?
+        </h4>
         <hr />
         <p>
-          Iskali smo neodvisne, kvalitetne medije, ki svojih vsebin ne zapirajo
-          za plačljivimi vrati. Hkrati mora medij biti spleten in pripravljen v
-          glavo svoje spletne strani vnesti “meta tag” ter z nami podpisati vse
-          potrebne papirje, da jim lahko denar dejansko nakažemo. Pristopili smo
-          do več medijev, nekateri so sodelovanje (zaenkrat) zavrnili iz takšnih
-          in drugačnih razlogov (vsi legitimni). Sodelujejo tisti, ki so po
-          nekaj mesecih novačenja bili pripravljeni sodelovati v eksperimentu.
+          Iskali smo neodvisne kakovostne medije in medijske projekte, ki svojih
+          vsebin ne zapirajo za plačljivimi vrati. Hkrati so morali biti mediji
+          spletni in pripravljen v glavo svoje spletne strani vnesti meta tag
+          ter z nami podpisati vse potrebne papirje, da jim lahko denar dejansko
+          nakažemo. Pristopili smo do več medijev, a so nekateri sodelovanje
+          (zaenkrat) zavrnili iz takšnih in drugačnih razlogov (vsi legitimni).
+          Na platformo smo tako vključili tiste medije, ki so bili po nekaj
+          mesecih novačenja pripravljeni sodelovati v tem eksperimentu.
         </p>
         <p>
-          V kolikor se bo eksperiment izkazal za uspešnega seveda pričakujemo,
-          da bo število sodelujočih medijev raslo iz meseca v mesec.
+          Če se bo pilotna izvedba izkazala za uspešno, pričakujemo, da bo
+          število sodelujočih medijev raslo iz meseca v mesec.
         </p>
         <h4>Se lahko pridružijo novi mediji?</h4>
         <hr />
         <p>
-          Ne danes. Upamo, da kmalu. Radi bi potrdili, da vse dela kot mora in
-          da nam papirologija štima. Fundaciji Grant for the Web smo obljubili,
-          da bomo po nekajmesečni rabi standarda pripravili belo knjigo z našimi
-          izkušnjami in priporočili. To bi radi zaključili z obstoječim naborom
-          medijev.
+          Ne danes,a upamo, da kmalu. Radi bi potrdili, da platforma dela, kot
+          mora, in da je vse v redu s papirologijo. Fundaciji Grant for the Web
+          smo obljubili, da bomo po nekajmesečni rabi standarda pripravili belo
+          knjigo z našimi izkušnjami in priporočili. To bi radi zaključili z
+          obstoječim naborom medijev.
         </p>
         <p>
-          Si pa vsekakor želimo, da čim več medijev in ljudi posvoji WMS. Tako
-          da če ste medij in bi se radi pridružili pišite na
-          novdan@danesjenovdan.si, mi pa se bomo javili, da skupaj raziščemo kaj
-          lahko naredimo.
+          Si pa vsekakor želimo, da čim več medijev in ljudi posvoji WMS. Zato
+          vse medijske projekte, ki bi se radi pridružili, vabimo, da nam pišejo
+          na novdan@danesjenovdan.si, mi pa se bomo javili, da skupaj raziščemo,
+          kaj lahko naredimo.
         </p>
         <h4>
-          Večino medijev berem na telefonu, zakaj samo namizni brskalniki? Zakaj
-          samo Chrome in Firefox vtičniki?
+          Večino medijev berem na telefonu, zakaj so v projekt vključeni samo
+          namizni brskalniki? Zakaj samo Chrome in Firefox vtičniki?
         </h4>
         <hr />
         <p>
-          Standard je zaenkrat samo predlagan “na papirju”. Skoraj noben
-          brskalnik trenutno ne zmore vsega, kar je potrebno sam od sebe. Zato
-          je treba uporabljati razširitev (extension). Izdelava terja kar nekaj
-          ur, tako da smo iskali ravnovesje med količino potrebnega dela,
-          številom uporabnikov brskalnika in odprtostjo brskalnika (Firefox kot
-          brskalnik z največjim deležem med brskalniki, ki niso v lasti
-          multinacionalke).
+          Standard je trenutno predlagan samo “na papirju”. Skoraj noben
+          brskalnik samo od sebe v tem trenutku še ne zmore opraviti vsega, kar
+          je potrebno za delovanje. Zato je treba uporabljati razširitev
+          (extension). Izdelava terja kar nekaj ur, tako da smo iskali
+          ravnovesje med količino potrebnega dela, številom uporabnic in
+          uporabnikov brskalnika ter odprtostjo brskalnika (Firefox je bil
+          izbran kot brskalnik z največjim deležem uporabnic in uporabnikov, ki
+          ni v lasti multinacionalke).
         </p>
         <p>
-          Če na telefonu uporabljaš Firefox bo razširitev morda delala tudi tam,
-          čeprav je podpora za mobilne telefone še relativno eksperimentalna.
-          Trudimo se, da bi čim prej podprli čim več brskalnikov.
+          Če na telefonu uporabljaš Firefox, bo razširitev morda delala tudi
+          tam, čeprav je podpora za mobilne telefone še relativno
+          eksperimentalna. Trudimo se, da bi čim prej podprli čim več
+          brskalnikov.
         </p>
         <p>
           Če znaš programirati in misliš, da lahko pomagaš pripraviti razširitev
-          za še kak brskalnik piši na novdan@danesjenovdan.si.
+          za še kak brskalnik, nam piši na novdan@danesjenovdan.si.
         </p>
         <h4>
-          Kakšen procent teh donacij jemlje platforma Nov dan oziroma Danes je
-          nov dan.
+          Kakšen procent donacij jemlje platforma Nov dan oziroma Danes je nov
+          dan?
         </h4>
         <hr />
         <p>
           Danes je nov dan od transakcij ne jemlje provizije. Ves zbrani denar
-          (minus transakcijski stroški) se vsak mesec po plačilu davka glede na
-          branost proporcionalno razdeli med medije.
+          (minus transakcijske stroške) vsak mesec po plačilu davka glede na
+          branost proporcionalno razdelimo med medije.
         </p>
-        <p>
-          Stroške za razvoj platforme krije fundacija Grant for the Web. Za
-          projekt New Day: Helping Independent Investigative Journalism Thrive
-          On Its Own Terms so nam namenili 46.014 ameriških dolarjev.
-        </p>
-        <h4>Kdo stoji za Grant for the Web?</h4>
+        <p>Stroške za razvoj platforme krije fundacija Grant for the Web.</p>
+        <h4>Kdo stoji za projektom Grant for the Web?</h4>
         <hr />
         <p>
           Grant for the Web deluje preko fundacije Interledger Foundation, ki jo
@@ -233,7 +240,7 @@
         </p>
         <h4>Imam dodatna vprašanja, predloge ali komentarje.</h4>
         <hr />
-        <p>Super, kar piši nam na novdan@danesjenovdan.si.</p>
+        <p>Super, piši nam na novdan@danesjenovdan.si.</p>
       </div>
     </div>
   </section>
@@ -242,51 +249,63 @@
 <style scoped lang="scss">
 .faq {
   padding: 3rem 30px;
+
   @media (min-width: 1200px) {
     padding: 6rem 0;
+
     .container > div {
       padding-left: 8rem;
       padding-right: 6rem;
     }
   }
+
   h1 {
     font-size: 2rem;
     font-weight: 800;
     margin-top: 2rem;
     margin-bottom: 2rem;
     color: #ff5ccb;
+
     @media (min-width: 992px) {
       font-size: 6rem;
     }
+
     @media (min-width: 1200px) {
       font-size: 8rem;
     }
   }
+
   h4,
   p,
   ul,
   li {
     color: #dddddd;
+
     @media (min-width: 992px) {
       margin-right: 200px;
     }
   }
+
   h4 {
     font-size: 1.5rem;
     font-weight: 800;
     margin-bottom: 1.5rem;
+
     @media (min-width: 992px) {
       font-size: 2rem;
     }
   }
+
   p,
   ul,
   li {
     font-size: 1.25rem;
+
     @media (min-width: 992px) {
       font-size: 1.5rem;
     }
   }
+
   hr {
     background-color: #ffd700;
     border-color: #ffd700;
