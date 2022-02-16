@@ -8,7 +8,7 @@ resources:
 images:
   - name: novdan-frontend
     newName: rg.fr-par.scw.cloud/djnd/novdan-frontend
-    newTag: '13290e6c20f9e9c52b3549087947780b3ca8922b'
+    newTag: 'd911845b75aca8c21e36ba97290b8fd547c40ed9'
   - name: novdan-api
     newName: rg.fr-par.scw.cloud/djnd/novdan-api
-    newTag: '13290e6c20f9e9c52b3549087947780b3ca8922b'
+    newTag: 'd911845b75aca8c21e36ba97290b8fd547c40ed9'
