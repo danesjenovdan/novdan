@@ -5,7 +5,10 @@
         <h1>
           n<img class="sun" src="~assets/images/sun.png" alt="sun icon" />v dan
         </h1>
-        <p>Neposredna podpora <br /> neodvisnemu novinarstvu</p>
+        <p>
+          Neposredna podpora <br />
+          neodvisnim medijskim ustvarjalcem
+        </p>
       </div>
     </div>
   </section>
