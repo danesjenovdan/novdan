@@ -10,9 +10,9 @@
         biti zastonj!
       </h1>
       <p>
-        Nov dan je nova eksperimentalna platforma za podporo neodvisnemu
-        novinarstvu, ki deluje s pomočjo novega odprtega standarda za spletno
-        monetizacijo (web monetization standard - WMS).
+        Nov dan je eksperimentalna platforma za podporo neodvisnim medijem in
+        medijskim ustvarjalcem, ki deluje s pomočjo novega odprtega standarda za
+        spletno monetizacijo (web monetization standard – WMS).
       </p>
       <a href="#how-section" class="support-wrapper">
         <div class="star">
