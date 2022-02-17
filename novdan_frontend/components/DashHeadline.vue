@@ -51,7 +51,7 @@ export default {
     margin: 1rem 0;
     @media (min-width: 768px) {
       display: flex;
-      align-items: end;
+      align-items: flex-end;
     }
     h1 {
       font-weight: 700;

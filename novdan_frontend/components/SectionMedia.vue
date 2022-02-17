@@ -145,7 +145,7 @@ export default {
         display: flex;
         align-items: center;
         flex-direction: row-reverse;
-        justify-content: start;
+        justify-content: flex-start;
         @media (min-width: 1200px) {
           font-size: 1.75rem;
         }
