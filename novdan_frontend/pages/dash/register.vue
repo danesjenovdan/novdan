@@ -12,21 +12,33 @@
       <div class="input-group">
         <label>Uporabniško ime</label>
         <input v-model="username" type="text" :disabled="processing" />
-        <p v-for="(error, index) in errors.username" :key="'eu-' + index" class="form-input-error">
+        <p
+          v-for="(error, index) in errors.username"
+          :key="'eu-' + index"
+          class="form-input-error"
+        >
           {{ error }}
         </p>
       </div>
       <div class="input-group">
         <label>E-pošta</label>
         <input v-model="email" type="email" :disabled="processing" />
-        <p v-for="(error, index) in errors.email" :key="'ee-' + index" class="form-input-error">
+        <p
+          v-for="(error, index) in errors.email"
+          :key="'ee-' + index"
+          class="form-input-error"
+        >
           {{ error }}
         </p>
       </div>
       <div class="input-group">
         <label>Geslo</label>
         <input v-model="password" type="password" :disabled="processing" />
-        <p v-for="(error, index) in errors.password" :key="'ep-' + index" class="form-input-error">
+        <p
+          v-for="(error, index) in errors.password"
+          :key="'ep-' + index"
+          class="form-input-error"
+        >
           {{ error }}
         </p>
       </div>
@@ -37,19 +49,25 @@
           type="password"
           :disabled="processing"
         />
-        <p v-for="(error, index) in errors.confirm_password" :key="'ecp-' + index" class="form-input-error">
+        <p
+          v-for="(error, index) in errors.confirm_password"
+          :key="'ecp-' + index"
+          class="form-input-error"
+        >
           {{ error }}
         </p>
       </div>
-      <p v-if="processing">
-        Pošiljanje...
-      </p>
+      <p v-if="processing">Pošiljanje...</p>
       <input type="submit" value="Ustvari račun" :disabled="processing" />
-      <nuxt-link to="/dash/login">
-        Prijavi se
-      </nuxt-link>
+      <nuxt-link to="/dash/login"> Prijavi se </nuxt-link>
     </form>
     <!-- <p v-if="error" class="error">Prišlo je do napake.</p> -->
+    <a
+      target="_blank"
+      href="/terms"
+      style="width: 100%; display: inline-block; padding-top: 20px"
+      >Splošni pogoji uporabe</a
+    >
   </div>
 </template>
 

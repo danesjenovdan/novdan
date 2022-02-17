@@ -116,7 +116,7 @@
         </h4>
         <hr />
         <p>
-          Dolgoročna vizija odprtokodnega standarda WMS je, da ga konzorcij WW3
+          Dolgoročna vizija odprtokodnega standarda WMS je, da ga konzorcij W3C
           sprejme kot privzeti spletni standard, ki bo podprt v vseh spletnih
           brskalnikih in torej za njegovo uporabo ne bomo več potrebovali
           vtičnikov. To bi pomenilo, da platforme, kot je Nov dan, ki trenutno

@@ -152,6 +152,17 @@
             Pošlji
           </button>
         </form>
+        <a
+          target="_blank"
+          href="/terms"
+          style="
+            width: 100%;
+            display: block;
+            padding-top: 20px;
+            text-align: center;
+          "
+          >Splošni pogoji uporabe</a
+        >
       </div>
     </div>
   </section>
