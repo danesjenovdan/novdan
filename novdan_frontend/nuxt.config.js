@@ -63,7 +63,15 @@ export default {
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: true },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&display=swap' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Syne+Tactile&display=swap' }
-    ]
+    ],
+    script: [
+      {
+        src: 'https://plausible.lb.djnd.si/js/plausible.js',
+        async: true,
+        defer: true,
+        'data-domain': 'novdan.si',
+      },
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
