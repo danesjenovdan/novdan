@@ -15,7 +15,7 @@
         <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
       </video>
       <DashHeadline />
-      <DashIntro :window-width="windowWidth" />
+      <DashIntro :window-width="windowWidth" :status="status" />
       <DashSubscription :window-width="windowWidth" :status="status" />
       <Footer :window-width="windowWidth" />
     </div>
@@ -75,6 +75,11 @@ section {
   position: relative;
   z-index: 1;
 }
+hr {
+  border: none;
+  border-bottom: 2px solid #ffd700;
+  margin: 4rem 0;
+}
 .container {
   width: 100%;
   @media (min-width: 576px) {
@@ -126,6 +131,15 @@ section {
 }
 .row {
   display: flex;
+}
+h3 {
+  font-size: 3rem;
+  font-weight: 400;
+  font-family: 'Le Murmure';
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-top: 0;
+  margin-bottom: 2rem;
 }
 
 // animations
