@@ -3,13 +3,13 @@
     <div class="container">
       <div class="content-narrow">
         <p class="text-big">
-          <span>Pozdravljen_a!</span>
+          <span>ZDRAVO!</span>
         </p>
         <p class="text-small">
-          Tukaj je tvoja nadzorna plošča. V prihodnosti se bo še razvijala in če
-          bo projekt uspešen kmalu pridobila nove funkcionalnosti. Če imaš
-          kakršno koli vprašanje, pripombe, težave, ali komentarje
-          <a href="mailto:novdan@danesjenovdan.si">nam piši</a>.
+          Tukaj je tvoja nadzorna plošča. V prihodnosti se bo še razvijala, če
+          bo projekt uspešen, pa bo kmalu pridobila tudi nove funkcionalnosti.
+          Če imaš kakršno koli vprašanje, pripombe, težave ali komentarje,
+          <a href="mailto:novdan@danesjenovdan.si" target="_blank">nam piši</a>.
         </p>
         <div class="yellow-bg" />
       </div>

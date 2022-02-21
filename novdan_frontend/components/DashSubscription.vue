@@ -9,8 +9,8 @@
           <div v-if="isSubscribed" style="position: relative">
             <h3>Tvoja razporeditev</h3>
             <p class="text-small">
-              Ta mesec si medijem doniral
-              <span>{{ status.monetized_time }} sekund</span> svoje pozornosti
+              Ta mesec si medijem prispeval_a
+              <span>{{ status.monetized_time }} sekund</span> svoje pozornosti.
             </p>
             <pie-chart
               :section-data="status.monetized_split"
@@ -34,11 +34,11 @@
             </div>
             <div v-if="isSubscribed">
               <h6>Tvoja <span>naročnina</span> je aktivna.</h6>
-              <p>Obračunamo jo vsakega 1. v mesecu.</p>
+              <p>Obračunamo jo vsak prvi dan v mesecu.</p>
             </div>
             <div v-if="!isSubscribed">
               <h6>Tvoja <span>naročnina</span> še ni aktivna.</h6>
-              <p>Obračunamo jo vsakega 1. v mesecu.</p>
+              <p>Obračunamo jo vsak prvi dan v mesecu.</p>
             </div>
           </div>
           <div class="support-wrapper">
