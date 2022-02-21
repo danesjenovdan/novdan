@@ -290,9 +290,11 @@
     font-size: 1.5rem;
     font-weight: 800;
     margin-bottom: 1.5rem;
+    margin-top: 4rem;
 
     @media (min-width: 992px) {
       font-size: 2rem;
+      margin-top: 6rem;
     }
   }
 
@@ -300,6 +302,7 @@
   ul,
   li {
     font-size: 1.25rem;
+    line-height: 1.5;
 
     @media (min-width: 992px) {
       font-size: 1.5rem;

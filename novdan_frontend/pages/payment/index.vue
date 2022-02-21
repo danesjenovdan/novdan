@@ -172,6 +172,13 @@ export default {
 h3 {
   text-align: center;
 }
+p {
+  text-align: center;
+  font-size: 18px;
+  @media (min-width: 992px) {
+    margin: 1rem 4rem;
+  }
+}
 .alert-danger {
   border: 2px solid red;
   padding: 0 16px;
