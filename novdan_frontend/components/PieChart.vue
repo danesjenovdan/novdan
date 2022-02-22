@@ -1,22 +1,23 @@
 <template>
   <svg viewBox="-0.05 -0.05 2.1 2.1" xmlns="http://www.w3.org/2000/svg">
     <g
-      v-for="sector in sectors"
+      v-for="(sector, index) in sectors"
       :key="sector.text"
       :transform="`rotate(${sector.R}, ${sector.L}, ${sector.L})`"
     >
       <path
         :d="`M${sector.L},${sector.L} L${sector.L},0 A${sector.L},${sector.L} 0 ${sector.arcSweep},1 ${sector.X}, ${sector.Y} z`"
+        :style="{'fill': colors[index]}"
       />
       {{ sector }}
-      <text
+      <!-- <text
         font-size="0.15"
         x="1"
         y="0.3"
         text-anchor="middle"
         transform-origin="50% 50%"
         :transform="`rotate(${sector.a / 2})`"
-      >{{ sector.text }}</text>
+      >{{ sector.text }}</text> -->
     </g>
   </svg>
 </template>
@@ -26,6 +27,10 @@ export default {
   name: 'PieChart',
   props: {
     sectionData: {
+      type: Array,
+      default: () => []
+    },
+    colors: {
       type: Array,
       default: () => []
     }
@@ -88,7 +93,7 @@ path {
   stroke: #1103b1;
   stroke-width: 0.03;
 }
-text {
-  fill: #1103b1;
-}
+// text {
+//   fill: #1103b1;
+// }
 </style>
