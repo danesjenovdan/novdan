@@ -8,8 +8,7 @@
     <div v-if="error" class="alert alert-danger">
       <h4>Napaka št. {{ error.status }}</h4>
       <p>
-        Naš strežnik je ni mogel
-        rešiti, prejel je naslednje sporočilo:
+        Naš strežnik je ni mogel rešiti, prejel je naslednje sporočilo:
         <strong>{{
           error.data && error.data.msg ? error.data.msg : error.message
         }}</strong>
@@ -27,13 +26,19 @@
     <div class="buttons-wrapper links">
       <button
         :class="{ active: paymentType == 'card' }"
-        @click="paymentType = 'card'; error = null"
+        @click="
+          paymentType = 'card'
+          error = null
+        "
       >
         Kreditna kartica
       </button>
       <button
         :class="{ active: paymentType == 'paypal' }"
-        @click="paymentType = 'paypal'; error = null"
+        @click="
+          paymentType = 'paypal'
+          error = null
+        "
       >
         Paypal
       </button>
@@ -65,10 +70,14 @@
       </button>
     </div>
     <div class="buttons-wrapper">
-      <nuxt-link to="/dash">
-        Nazaj
-      </nuxt-link>
+      <nuxt-link to="/dash"> Nazaj </nuxt-link>
     </div>
+    <a
+      target="_blank"
+      href="/terms"
+      style="width: 100%; display: block; padding-top: 20px; text-align: center"
+      >Splošni pogoji uporabe</a
+    >
   </div>
 </template>
 
@@ -163,10 +172,18 @@ export default {
 h3 {
   text-align: center;
 }
+p {
+  text-align: center;
+  font-size: 18px;
+  @media (min-width: 992px) {
+    margin: 1rem 4rem;
+  }
+}
 .alert-danger {
   border: 2px solid red;
   padding: 0 16px;
-  h4, strong {
+  h4,
+  strong {
     color: red;
   }
 }

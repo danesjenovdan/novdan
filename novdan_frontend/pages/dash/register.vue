@@ -3,41 +3,57 @@
     <h3>REGISTRACIJA</h3>
     <loading v-if="processing" />
     <p>
-      Za začetek vas prosimo, da si ustvariš uporabniški profil. Tvoje podatke
-      bo do tvojega preklica hranil
-      <a href="https://danesjenovdan.si">inštitut Danes je nov dan</a> na
-      strežnikih v EU.
+      Za začetek te prosimo, da si ustvariš uporabniški profil. Tvoje podatke bo
+      do tvojega preklica hranil
+      <a href="https://danesjenovdan.si" target="_blank">inštitut Danes je nov dan</a>, in sicer
+      na strežnikih v EU.
     </p>
     <form @submit.prevent="onSubmit">
       <div class="input-group">
         <label>Uporabniško ime</label>
         <input v-model="username" type="text" :disabled="processing" />
-        <p v-for="(error, index) in errors.username" :key="'eu-' + index" class="form-input-error">
+        <p
+          v-for="(error, index) in errors.username"
+          :key="'eu-' + index"
+          class="form-input-error"
+        >
           {{ error }}
         </p>
       </div>
       <div class="input-group">
         <label>E-pošta</label>
         <input v-model="email" type="email" :disabled="processing" />
-        <p v-for="(error, index) in errors.email" :key="'ee-' + index" class="form-input-error">
+        <p
+          v-for="(error, index) in errors.email"
+          :key="'ee-' + index"
+          class="form-input-error"
+        >
           {{ error }}
         </p>
       </div>
       <div class="input-group">
         <label>Geslo</label>
         <input v-model="password" type="password" :disabled="processing" />
-        <p v-for="(error, index) in errors.password" :key="'ep-' + index" class="form-input-error">
+        <p
+          v-for="(error, index) in errors.password"
+          :key="'ep-' + index"
+          class="form-input-error"
+        >
           {{ error }}
         </p>
       </div>
       <div class="input-group">
-        <label>Potrdite geslo</label>
+        <label>Potrdi geslo</label>
         <input
           v-model="confirm_password"
           type="password"
           :disabled="processing"
         />
-        <p v-for="(error, index) in errors.confirm_password" :key="'ecp-' + index" class="form-input-error">
+        <p
+          v-for="(error, index) in errors.confirm_password"
+          :key="'ecp-' + index"
+          class="form-input-error"
+        >
           {{ error }}
         </p>
       </div>
@@ -50,6 +66,11 @@
       </nuxt-link>
     </form>
     <!-- <p v-if="error" class="error">Prišlo je do napake.</p> -->
+    <a
+      target="_blank"
+      href="/terms"
+      style="width: 100%; display: inline-block; padding-top: 20px"
+    >Splošni pogoji uporabe</a>
   </div>
 </template>
 

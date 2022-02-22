@@ -12,7 +12,11 @@
             >.
           </p>
           <div class="browsers">
-            <div class="button-browser-wrapper">
+            <a
+              target="_blank"
+              href="https://chrome.google.com/webstore/detail/nov-dan/lioeapnoibjfgmeicjnghkoaoalnggik?hl=sl"
+              class="button-browser-wrapper"
+            >
               <div class="support">Chrome</div>
               <div class="button">
                 <img
@@ -26,7 +30,7 @@
                   alt="pink spinning star"
                 />
               </div>
-            </div>
+            </a>
             <a
               target="_blank"
               href="https://addons.mozilla.org/sl-SI/firefox/addon/nov-dan/"
@@ -110,7 +114,11 @@
             </div>
             <div>
               <p>Spomni se kasneje</p>
-              <div class="support">pošlji si e-mail!</div>
+              <a
+                href="mailto:?subject=Se%20spomni%C5%A1%20platforme%20Nov%20dan%3F&body=Nov%20dan%20je%20eksperimentalna%20platforma%20za%20podporo%20neodvisnim%20medijem%20in%20medijskim%20ustvarjalcem%2C%20ki%20deluje%20s%20pomo%C4%8Djo%20novega%20odprtega%20standarda%20za%20spletno%20monetizacijo%20(web%20monetization%20standard%20%E2%80%93%20WMS).%20Povezavo%20do%20vti%C4%8Dnika%20za%20brskalnik%20dobi%C5%A1%20na%20https%3A%2F%2Fnovdan.si"
+                class="support"
+                >pošlji si e-mail!</a
+              >
             </div>
           </div>
         </div>
@@ -181,6 +189,7 @@ export default {
     }
   }
   .support {
+    display: block;
     text-decoration: none;
     font-size: 2.5rem;
     font-weight: 700;

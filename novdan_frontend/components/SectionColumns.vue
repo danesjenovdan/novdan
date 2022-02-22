@@ -1,7 +1,7 @@
 <template>
   <section class="background-gif columns">
     <div v-if="windowWidth > 1200" class="rotating-circle">
-      <img src="~assets/images/krog-moder.svg" alt="">
+      <img src="~assets/images/krog-moder.svg" alt="" />
     </div>
     <video
       id="bgvidfooter"
@@ -11,37 +11,44 @@
       loop
       poster="~assets/images/gif.png"
     >
-      <source src="~assets/video/back_v4.mp4" type="video/mp4">
+      <source src="~assets/video/back_v4.mp4" type="video/mp4" />
     </video>
     <div class="container">
       <div class="row">
         <div class="yellow-column-wrapper">
           <div class="yellow-column">
             <h3>
-              Sodeluj pri <br v-if="windowWidth > 1200"> spremembi
+              Sodeluj pri <br v-if="windowWidth > 1200" />
+              spremembi
             </h3>
             <p>
-              Pridruži se pilotskemu projektu in pomagaj pri izgradnji spleta, v katerem je kvalitetna vsebina pravično nagrajena.
+              Pridruži se pilotni izvedbi in pomagaj pri izgradnji spleta, v
+              katerem so kakovostne vsebine pravično nagrajene.
+            </p>
+          </div>
+        </div>
+        <div class="yellow-column-wrapper">
+          <div class="yellow-column">
+            <h3>Nov odprtokodni spletni standard</h3>
+            <p>
+              Obstoječi načini monetizacije spletnih vsebin so problematični in
+              nevzdržni. Ustvarjalci se morajo zatekati k oglaševanju in prodaji
+              podatkov obiskovalcev, saj boljše rešitve ne obstajajo. WMS je nov
+              standard, ki omogoča hiter, varen in učinkovit način za obdelavo
+              mikrotransakcij.
             </p>
           </div>
         </div>
         <div class="yellow-column-wrapper">
           <div class="yellow-column">
             <h3>
-              Nov odprtokodni spletni standard
+              Podpiraj medije, <br v-if="windowWidth > 1200" />
+              ki jih bereš
             </h3>
             <p>
-              Obstoječi načini monetizacije spletnih vsebin so problematični in nevzdržni. Ustvarjalci vsebin se morajo zatekati k oglaševanju in prodaji podatkov svojih obiskovalcev, ker boljše rešitve ne obstajajo. WMS je nov standard, ki omogoča hiter, varen in učinkovit način za obdelavo mikotransakcij.
-            </p>
-          </div>
-        </div>
-        <div class="yellow-column-wrapper">
-          <div class="yellow-column">
-            <h3>
-              Podpiraj medije, <br v-if="windowWidth > 1200"> ki jih bereš
-            </h3>
-            <p>
-              Tvoja podpora bo med neodvisne medije razdeljena proporcionalno, glede na količino časa, ki si ga porabil_a za branje posameznega medija.
+              Tvoja podpora bo med neodvisne medije razdeljena proporcionalno,
+              in sicer glede na količino časa, ki ga porabiš za branje
+              posameznega medija.
             </p>
           </div>
         </div>
@@ -110,7 +117,7 @@ export default {
     h3 {
       text-transform: uppercase;
       font-size: 2rem;
-      font-family: "Le Murmure", serif;
+      font-family: 'Le Murmure', serif;
       margin: 0;
     }
     p {

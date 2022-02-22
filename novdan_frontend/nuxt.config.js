@@ -1,15 +1,59 @@
+const OG_TITLE = 'Nov dan - donatorska platforma v podporo neodvisnim medijskim ustvarjalcem';
+const OG_DESCRIPTION = 'Pridruži se pilotskemu projektu in pomagaj pri izgradnji spleta, v katerem je kvalitetna vsebina pravično nagrajena.';
+const OG_IMAGE = 'https://novdan.si/OG.jpg';
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'novdan',
+    title: OG_TITLE,
     htmlAttrs: {
-      lang: 'en'
+      lang: 'sl'
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { name: 'format-detection', content: 'telephone=no' },
+  
+      { property: 'og:site_name', content: OG_TITLE },
+      { property: 'og:type', content: 'website' },
+      { name: 'author', content: 'Danes je nov dan' },
+      { name: 'twitter:creator', content: '@danesjenovdan' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      {
+        hid: 'og-title',
+        property: 'og:title',
+        content: OG_TITLE,
+      },
+      {
+        hid: 'twitter-title',
+        name: 'twitter:title',
+        content: OG_TITLE,
+      },
+      {
+        hid: 'description',
+        name: 'description',
+        content: OG_DESCRIPTION,
+      },
+      {
+        hid: 'og-description',
+        property: 'og:description',
+        content: OG_DESCRIPTION,
+      },
+      {
+        hid: 'twitter-description',
+        name: 'twitter:description',
+        content: OG_DESCRIPTION,
+      },
+      {
+        hid: 'og-image',
+        property: 'og:image',
+        content: OG_IMAGE,
+      },
+      {
+        hid: 'twitter-image',
+        name: 'twitter:image',
+        content: OG_IMAGE,
+      },
     ],
     link: [
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
@@ -19,7 +63,15 @@ export default {
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: true },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&display=swap' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Syne+Tactile&display=swap' }
-    ]
+    ],
+    script: [
+      {
+        src: 'https://plausible.lb.djnd.si/js/plausible.js',
+        async: true,
+        defer: true,
+        'data-domain': 'novdan.si',
+      },
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

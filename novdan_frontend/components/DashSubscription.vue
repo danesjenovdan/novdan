@@ -5,21 +5,6 @@
   >
     <div class="container">
       <div class="content-narrow">
-        <div class="row">
-          <div v-if="isSubscribed" style="position: relative">
-            <h3>Tvoja razporeditev</h3>
-            <p class="text-small">
-              Ta mesec si medijem doniral
-              <span>{{ status.monetized_time }} sekund</span> svoje pozornosti
-            </p>
-            <pie-chart
-              :section-data="status.monetized_split"
-              class="pie-chart"
-            ></pie-chart>
-            <div class="pink-bg" />
-          </div>
-        </div>
-        <hr v-if="isSubscribed" />
         <h3>Naročnina</h3>
         <div class="row">
           <div class="subscribe">
@@ -34,11 +19,11 @@
             </div>
             <div v-if="isSubscribed">
               <h6>Tvoja <span>naročnina</span> je aktivna.</h6>
-              <p>Obračunamo jo vsakega 1. v mesecu.</p>
+              <p>Obračunamo jo vsak prvi dan v mesecu.</p>
             </div>
             <div v-if="!isSubscribed">
               <h6>Tvoja <span>naročnina</span> še ni aktivna.</h6>
-              <p>Obračunamo jo vsakega 1. v mesecu.</p>
+              <p>Obračunamo jo vsak prvi dan v mesecu.</p>
             </div>
           </div>
           <div class="support-wrapper">
@@ -51,12 +36,21 @@
             <div v-if="isSubscribed" class="payment-method">
               <button>Zamenjaj plačilno sredstvo</button>
               <span @click="cancelSubscription">Prekini naročnino</span>
-              <p v-if="cancelSubscriptionError">Se opravičujemo, prišlo je do napake. Predlagamo, da osvežiš stran in poskusiš ponovno. Če ne bo šlo, nam piši na <a href="mailto:vsi@danesjenovdan.si">vsi@danesjenovdan.si</a> in ti bomo pomagali.</p>
+              <p v-if="cancelSubscriptionError">
+                Se opravičujemo, prišlo je do napake. Predlagamo, da osvežiš
+                stran in poskusiš ponovno. Če ne bo šlo, nam piši na
+                <a href="mailto:vsi@danesjenovdan.si">vsi@danesjenovdan.si</a>
+                in ti bomo pomagali.
+              </p>
             </div>
             <div v-if="extensionNotInstalled" class="no-extension">
               <p>Vtičnik še ni inštaliran.</p>
               <div class="browsers">
-                <div class="button-browser-wrapper">
+                <a
+                  target="_blank"
+                  href="https://chrome.google.com/webstore/detail/nov-dan/lioeapnoibjfgmeicjnghkoaoalnggik?hl=sl"
+                  class="button-browser-wrapper"
+                >
                   <div class="support">Chrome</div>
                   <div class="button">
                     <img
@@ -70,7 +64,7 @@
                       alt="pink spinning star"
                     />
                   </div>
-                </div>
+                </a>
                 <a
                   target="_blank"
                   href="https://addons.mozilla.org/sl-SI/firefox/addon/nov-dan/"
@@ -143,17 +137,28 @@
             Pošlji
           </button>
         </form>
+        <a
+          target="_blank"
+          href="/terms"
+          style="
+            width: 100%;
+            display: block;
+            padding-top: 20px;
+            text-align: center;
+          "
+          >Splošni pogoji uporabe</a
+        >
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import PieChart from './PieChart.vue'
+// import PieChart from './PieChart.vue'
 import api from '~/mixins/api.js'
 
 export default {
-  components: { PieChart },
+  // components: { PieChart },
   mixins: [api],
   props: {
     windowWidth: {
@@ -318,15 +323,15 @@ export default {
       display: flex;
     }
   }
-  h3 {
-    font-size: 3rem;
-    font-weight: 400;
-    font-family: 'Le Murmure';
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    margin-top: 0;
-    margin-bottom: 2rem;
-  }
+  // h3 {
+  //   font-size: 3rem;
+  //   font-weight: 400;
+  //   font-family: 'Le Murmure';
+  //   text-transform: uppercase;
+  //   letter-spacing: 3px;
+  //   margin-top: 0;
+  //   margin-bottom: 2rem;
+  // }
   .subscribe {
     margin: 4rem 0;
     text-align: center;
@@ -636,10 +641,6 @@ export default {
       margin-bottom: 0;
     }
   }
-  hr {
-    border: 1px solid #ffd700;
-    margin: 4rem 0;
-  }
   form {
     .input-group {
       margin-bottom: 30px;
@@ -700,52 +701,6 @@ export default {
       background-color: #1103b1;
       border-color: #1103b1;
       color: white;
-    }
-  }
-  .text-small {
-    font-size: 1.5rem;
-    line-height: 1.75rem;
-    span {
-      font-weight: 800;
-    }
-    @media (min-width: 992px) {
-      margin: 1rem 9rem 2rem 9rem;
-      font-size: 2rem;
-      line-height: 2.5rem;
-    }
-  }
-  .pie-chart {
-    height: 200px;
-    float: right;
-    margin-right: 10rem;
-  }
-  .pink-bg {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 300px;
-    height: 300px;
-    background-image: radial-gradient(
-      circle 150px at center,
-      #ff5ccb 0%,
-      rgba(255, 92, 203, 0) 100%
-    );
-    opacity: 0.4;
-    z-index: -1;
-    @media (min-width: 768px) {
-      top: -10%;
-      left: 40%;
-    }
-    @media (min-width: 992px) {
-      top: -11rem;
-      left: 31rem;
-      width: 622px;
-      height: 622px;
-      background-image: radial-gradient(
-        circle 311px at center,
-        #ff5ccb 0%,
-        rgba(255, 92, 203, 0) 100%
-      );
     }
   }
 }
