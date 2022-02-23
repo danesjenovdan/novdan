@@ -142,12 +142,7 @@
         <a
           target="_blank"
           href="/terms"
-          style="
-            width: 100%;
-            display: block;
-            padding-top: 20px;
-            text-align: center;
-          "
+          class="terms"
         >Splošni pogoji uporabe</a>
       </div>
     </div>
@@ -718,6 +713,13 @@ export default {
       border-color: #1103b1;
       color: white;
     }
+  }
+
+  .terms {
+    width: 100%;
+    display: block;
+    padding-top: 20px;
+    text-align: center;
   }
 }
 </style>

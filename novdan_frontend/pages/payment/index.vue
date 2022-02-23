@@ -130,9 +130,7 @@ export default {
     },
     finish() {
       this.error = null
-      console.log('pritisnemo gumb')
       if (this.payFunction) {
-        console.log('pay funcrion')
         this.payFunction()
       }
     },

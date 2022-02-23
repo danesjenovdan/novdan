@@ -24,7 +24,7 @@
               <div class="legend">
                 <div v-for="medium in media_with_colors" :key="medium.user.username" class="legend-item">
                   <span class="legend-ring" :style="{'backgroundColor': medium.color}"></span>
-                  {{ medium.user.full_name }}
+                  <a :href="medium.user.url" target="_blank">{{ medium.user.full_name }}</a>
                 </div>
               </div>
               <pie-chart
@@ -157,8 +157,6 @@ export default {
   }
 
   .legend-item {
-    font-family: "Syne Tactile", cursive;
-    color: #1103b1;
     font-size: 32px;
     display: flex;
     align-items: center;
@@ -170,6 +168,14 @@ export default {
       border-radius: 50%;
       display: inline-block;
       margin-right: 15px;
+    }
+    a {
+      font-family: "Syne Tactile", cursive;
+      color: #1103b1;
+      text-decoration: none;
+    }
+    a:hover {
+      color: #0000EE;
     }
   }
 
