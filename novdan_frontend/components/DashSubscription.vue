@@ -34,7 +34,9 @@
               </div>
             </a>
             <div v-if="isSubscribed" class="payment-method">
-              <button>Zamenjaj plačilno sredstvo</button>
+              <button @click="changePaymentOption">
+                Zamenjaj plačilno sredstvo
+              </button>
               <span @click="cancelSubscription">Prekini naročnino</span>
               <p v-if="cancelSubscriptionError">
                 Se opravičujemo, prišlo je do napake. Predlagamo, da osvežiš
@@ -140,14 +142,8 @@
         <a
           target="_blank"
           href="/terms"
-          style="
-            width: 100%;
-            display: block;
-            padding-top: 20px;
-            text-align: center;
-          "
-          >Splošni pogoji uporabe</a
-        >
+          class="terms"
+        >Splošni pogoji uporabe</a>
       </div>
     </div>
   </section>
@@ -225,6 +221,21 @@ export default {
         try {
           await this.$api.cancelSubscription()
           this.$router.go()
+        } catch (error) {
+          console.log(error)
+          this.cancelSubscriptionError = true
+        }
+      }
+    },
+    async changePaymentOption() {
+      if (
+        window.confirm(
+          'Menjava plačilnega sredstva poteka tako, da prekinemo tvojo obstoječo naročnino in te preusmerimo na stran, kjer se lahko ponovno naročiš z novim plačilnim sredstvom.'
+        )
+      ) {
+        try {
+          await this.$api.cancelSubscription()
+          this.$router.push('/payment')
         } catch (error) {
           console.log(error)
           this.cancelSubscriptionError = true
@@ -702,6 +713,13 @@ export default {
       border-color: #1103b1;
       color: white;
     }
+  }
+
+  .terms {
+    width: 100%;
+    display: block;
+    padding-top: 20px;
+    text-align: center;
   }
 }
 </style>

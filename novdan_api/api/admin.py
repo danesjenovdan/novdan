@@ -6,7 +6,16 @@ from rangefilter.filters import DateTimeRangeFilter
 from .models import (Subscription, SubscriptionTimeRange, Transaction, User,
                      Wallet)
 
-admin.site.register(User, UserAdmin)
+
+class CustomUserAdmin(UserAdmin):
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('url',)}),
+    )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        (None, {'fields': ('url',)}),
+    )
+
+admin.site.register(User, CustomUserAdmin)
 
 
 @admin.register(Wallet)
