@@ -14,6 +14,10 @@ def get_end_of_month(datetime):
     return timezone.datetime(datetime.year, datetime.month + 1, 1, tzinfo=datetime.tzinfo) - timezone.timedelta(seconds=1)
 
 
+def get_end_of_last_month(datetime):
+    return timezone.datetime(datetime.year, datetime.month, 1, tzinfo=datetime.tzinfo) - timezone.timedelta(seconds=1)
+
+
 def calculate_receivers_percentage(from_wallet):
     now = timezone.now()
     year = now.year
