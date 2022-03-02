@@ -9,7 +9,7 @@ from .models import (Subscription, SubscriptionTimeRange, Transaction, User,
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('url',)}),
+        (None, {'fields': ('url', 'customer_id')}),
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
         (None, {'fields': ('url',)}),

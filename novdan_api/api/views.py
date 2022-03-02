@@ -112,7 +112,14 @@ class StatusView(APIView):
         wallet = Wallet.objects.filter(user=self.request.user).first()
         wallet_serializer = WalletSerializer(wallet)
 
-        active_subscription_exists = Subscription.objects.filter(user=self.request.user).payed().exists()
+        active_subscription = Subscription.objects.filter(user=self.request.user).payed().first()
+        active_subscription_exists = bool(active_subscription)
+
+        active_subscription_expires_at = None
+        if active_subscription_exists:
+            if last_time_range := active_subscription.time_ranges.order_by('-ends_at').first():
+                if last_time_range.canceled_at is not None:
+                    active_subscription_expires_at = last_time_range.ends_at
 
         sum, percentages = calculate_receivers_percentage(wallet)
 
@@ -120,6 +127,7 @@ class StatusView(APIView):
             'user': user_serializer.data,
             'wallet': wallet_serializer.data,
             'active_subscription': active_subscription_exists,
+            'active_subscription_expires_at': active_subscription_expires_at,
             'monetized_split': percentages,
             'monetized_time': sum,
         })
