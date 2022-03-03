@@ -27,13 +27,19 @@
             </div>
           </div>
           <div class="support-wrapper">
-            <a v-if="!isSubscribed" class="button" @click="activate">
+            <div v-if="subscriptionExpiresAt" class="expire-reminder">
+              <p>
+                Samodejno obračunavanje je prekinjeno. <br>
+                Naročnina poteče čez {{ subscriptionExpiresInDays }}
+              </p>
+            </div>
+            <a v-if="!isSubscribed || (isSubscribed && subscriptionExpiresAt)" class="button" @click="activate">
               <div class="support">Aktiviraj</div>
               <div class="star">
                 <img src="~assets/images/star.png" alt="pink spinning star" />
               </div>
             </a>
-            <div v-if="isSubscribed" class="payment-method">
+            <div v-else-if="isSubscribed" class="payment-method">
               <button @click="changePaymentOption">
                 Zamenjaj plačilno sredstvo
               </button>
@@ -184,6 +190,19 @@ export default {
         return true
       }
       return false
+    },
+    subscriptionExpiresAt() {
+      return this.status && this.status.active_subscription_expires_at
+    },
+    subscriptionExpiresInDays() {
+      const date = new Date(this.status.active_subscription_expires_at)
+      const diffMs = date - new Date()
+      const diffSeconds = diffMs / 1000
+      const diffMinutes = diffSeconds / 60
+      const diffHours = diffMinutes / 60
+      const diffDays = Math.ceil(diffHours / 24)
+      const diff = `${diffDays} ${diffDays === 1 ? 'dan' : 'dni'}`
+      return diff
     }
   },
   watch: {
@@ -411,6 +430,11 @@ export default {
     }
     @media (min-width: 992px) {
       display: block;
+    }
+    .expire-reminder p {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 1em 0;
     }
     .button {
       text-decoration: none;

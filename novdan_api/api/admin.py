@@ -9,11 +9,12 @@ from .models import (Subscription, SubscriptionTimeRange, Transaction, User,
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('url',)}),
+        (None, {'fields': ('url', 'customer_id')}),
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
         (None, {'fields': ('url',)}),
     )
+    search_fields = UserAdmin.search_fields + ('customer_id',)
 
 admin.site.register(User, CustomUserAdmin)
 
@@ -63,15 +64,17 @@ class IsSubscriptionCanceledFilter(admin.SimpleListFilter):
 
 class SubscriptionTimeRangeStackedInline(admin.StackedInline):
     model = SubscriptionTimeRange
-    fields = ('starts_at', 'ends_at', 'canceled_at', 'payed_at', 'payment_token')
+    fields = ('created_at', 'starts_at', 'ends_at', 'canceled_at', 'payed_at', 'payment_token')
+    readonly_fields = ('created_at',)
     extra = 0
+    ordering = ('-ends_at',)
 
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'is_payed', 'is_canceled')
     list_filter = ('user__is_staff', IsSubscriptionPayedFilter, IsSubscriptionCanceledFilter)
-    search_fields = ('id', 'user__username')
+    search_fields = ('id', 'user__username', 'user__customer_id', 'time_range__payment_token')
     inlines = [SubscriptionTimeRangeStackedInline]
 
     def is_payed(self, obj):
