@@ -50,7 +50,7 @@
             </li>
             <li>
               <a href="https://danesjenovdan.si/agrument/" target="_blank">
-                <span>Agrument - Danes je nov dan</span>
+                <span>Agrument</span>
                 <img
                   src="~assets/images/djnd.svg"
                   alt="Agrument logo"
@@ -134,7 +134,10 @@ export default {
     list-style-type: none;
     padding-left: 0;
     li {
-      margin: 3rem 0;
+      margin: 2rem 0;
+      @media (min-width: 1400px) {
+        margin: 0;
+      }
       a {
         text-decoration: none;
         text-transform: uppercase;
@@ -145,7 +148,7 @@ export default {
         display: flex;
         align-items: center;
         flex-direction: row-reverse;
-        justify-content: flex-start;
+        justify-content: flex-end;
         @media (min-width: 1200px) {
           font-size: 1.75rem;
         }
@@ -167,8 +170,8 @@ export default {
 
         @media (min-width: 1400px) {
           height: 5rem;
-          position: absolute;
-          top: -1.5rem;
+          position: relative;
+          bottom: -1.5rem;
         }
       }
     }
@@ -182,7 +185,7 @@ export default {
     margin-left: 4rem;
   }
   @media (min-width: 1400px) {
-    margin-left: 12rem;
+    margin-left: 8rem;
 
     .yellow-bg {
       position: absolute;
