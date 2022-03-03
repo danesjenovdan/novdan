@@ -14,6 +14,7 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = UserAdmin.add_fieldsets + (
         (None, {'fields': ('url',)}),
     )
+    search_fields = UserAdmin.search_fields + ('customer_id',)
 
 admin.site.register(User, CustomUserAdmin)
 
@@ -73,7 +74,7 @@ class SubscriptionTimeRangeStackedInline(admin.StackedInline):
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'is_payed', 'is_canceled')
     list_filter = ('user__is_staff', IsSubscriptionPayedFilter, IsSubscriptionCanceledFilter)
-    search_fields = ('id', 'user__username')
+    search_fields = ('id', 'user__username', 'user__customer_id', 'time_range__payment_token')
     inlines = [SubscriptionTimeRangeStackedInline]
 
     def is_payed(self, obj):
