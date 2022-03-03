@@ -23,6 +23,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
+from sentry_sdk import capture_exception
 
 from .exceptions import (ActiveSubscriptionExists, LowBalance,
                          NoActiveSubscription, invalid_receiver_error)
@@ -30,7 +31,8 @@ from .models import Subscription, Wallet
 from .serializers import (ChangePasswordSerializer, RegisterSerializer,
                           UserSerializer, WalletSerializer)
 from .utils import (activate_subscription, calculate_receivers_percentage,
-                    cancel_subscription, get_end_of_last_month, transfer_tokens)
+                    cancel_subscription, get_end_of_last_month,
+                    transfer_tokens)
 
 User = get_user_model()
 Application = get_application_model()
@@ -219,10 +221,14 @@ class SubscriptionActivateView(APIView):
                 params={ 'customer_id': self.request.user.customer_id },
                 timeout=30,
             )
+            print(f'SubscriptionActivateView GET api response text:')
+            print(f'type: {type(r.text)}')
+            print(f'r.text: {r.text}')
             data = r.json()
             token = data['token']
             customer_id = data['customer_id']
         except Exception as e:
+            capture_exception(e)
             print('Exception in SubscriptionActivateView GET:')
             traceback.print_exc()
             raise APIException
@@ -255,9 +261,13 @@ class SubscriptionActivateView(APIView):
                 },
                 timeout=30,
             )
+            print(f'SubscriptionActivateView POST api response text:')
+            print(f'type: {type(r.text)}')
+            print(f'r.text: {r.text}')
             data = r.json()
             payment_token = data['subscription_id']
         except Exception as e:
+            capture_exception(e)
             print('Exception in SubscriptionActivateView POST:')
             traceback.print_exc()
             raise APIException
@@ -338,9 +348,13 @@ class SubscriptionCancelView(APIView):
                 },
                 timeout=30,
             )
+            print(f'SubscriptionCancelView POST api response text:')
+            print(f'type: {type(r.text)}')
+            print(f'r.text: {r.text}')
             data = r.json()
             assert data['msg'] == 'subscription canceled', "bad response msg"
         except Exception as e:
+            capture_exception(e)
             print('Exception in SubscriptionCancelView POST:')
             traceback.print_exc()
             raise APIException
