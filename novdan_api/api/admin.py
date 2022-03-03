@@ -1,10 +1,16 @@
+from datetime import datetime
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.template.response import TemplateResponse
+from django.urls import path
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from rangefilter.filters import DateTimeRangeFilter
 
 from .models import (Subscription, SubscriptionTimeRange, Transaction, User,
                      Wallet)
+from .utils import calculate_receivers_percentage
 
 
 class CustomUserAdmin(UserAdmin):
@@ -94,3 +100,29 @@ class TransactionAdmin(admin.ModelAdmin):
     search_fields = ('from_wallet__id', 'to_wallet__id', 'amount')
     readonly_fields = ('created_at',)
     fields = ('created_at', 'from_wallet', 'to_wallet', 'amount')
+
+    def get_urls(self):
+        return [
+            path('calculate_monthly_split/', self.calculate_monthly_split),
+        ] + super().get_urls()
+
+    def calculate_monthly_split(self, request):
+        date_string = request.GET.get('date')
+        time = timezone.now()
+        if date_string:
+            time = datetime.strptime(date_string, '%Y-%m-%d')
+
+        sum, percentages = calculate_receivers_percentage(None, time)
+
+        context = dict(
+           # Include common variables for rendering the admin template.
+           self.admin_site.each_context(request),
+           # Anything else you want in the context...
+           split={'sum': sum, 'percentages': percentages},
+           time=time,
+        )
+        return TemplateResponse(
+            request,
+            'admin/api/transaction/calculate_monthly_split.html',
+            context,
+        )

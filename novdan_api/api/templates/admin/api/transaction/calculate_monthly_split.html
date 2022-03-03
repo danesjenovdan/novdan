@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Calculate monthly split{% endblock %}
+
+{% block content %}
+
+<form>
+  <input type="date" name="date" value="{{ time|date:"Y-m-d" }}">
+  <input type="submit">
+</form>
+
+<h2>{{ time|date:"F Y" }}</h2>
+
+<p>Sum of all transactions: {{ split.sum }} tokens</p>
+
+<p>Percentages:</p>
+
+<table style="width: 100%">
+  <tr>
+    <th>Username</th>
+    <th>Full name</th>
+    <th>Amount</th>
+    <th>Percentage</th>
+  </tr>
+  {% for percentage in split.percentages %}
+    <tr>
+      <td>{{ percentage.user.username }}</td>
+      <td>{{ percentage.user.full_name }}</td>
+      <td>{{ percentage.amount }} tokens</td>
+      <td>{% widthratio percentage.percentage 1 100 %}%</td>
+    </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}
