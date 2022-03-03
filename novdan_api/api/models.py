@@ -94,6 +94,7 @@ class SubscriptionTimeRangeQuerySet(models.QuerySet):
 class SubscriptionTimeRange(models.Model):
     objects = SubscriptionTimeRangeQuerySet.as_manager()
 
+    created_at = models.DateTimeField(auto_now_add=True)
     starts_at = models.DateTimeField()
     ends_at = models.DateTimeField()
     canceled_at = models.DateTimeField(blank=True, null=True)

@@ -63,8 +63,10 @@ class IsSubscriptionCanceledFilter(admin.SimpleListFilter):
 
 class SubscriptionTimeRangeStackedInline(admin.StackedInline):
     model = SubscriptionTimeRange
-    fields = ('starts_at', 'ends_at', 'canceled_at', 'payed_at', 'payment_token')
+    fields = ('created_at', 'starts_at', 'ends_at', 'canceled_at', 'payed_at', 'payment_token')
+    readonly_fields = ('created_at',)
     extra = 0
+    ordering = ('-ends_at',)
 
 
 @admin.register(Subscription)
