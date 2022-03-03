@@ -23,6 +23,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
+from sentry_sdk import capture_exception
 
 from .exceptions import (ActiveSubscriptionExists, LowBalance,
                          NoActiveSubscription, invalid_receiver_error)
@@ -30,7 +31,8 @@ from .models import Subscription, Wallet
 from .serializers import (ChangePasswordSerializer, RegisterSerializer,
                           UserSerializer, WalletSerializer)
 from .utils import (activate_subscription, calculate_receivers_percentage,
-                    cancel_subscription, transfer_tokens)
+                    cancel_subscription, get_end_of_last_month,
+                    transfer_tokens)
 
 User = get_user_model()
 Application = get_application_model()
@@ -112,7 +114,38 @@ class StatusView(APIView):
         wallet = Wallet.objects.filter(user=self.request.user).first()
         wallet_serializer = WalletSerializer(wallet)
 
-        active_subscription_exists = Subscription.objects.filter(user=self.request.user).payed().exists()
+        now_time = timezone.now()
+        last_month_time = get_end_of_last_month(now_time)
+        payment_grace_period_days = 2
+
+        subscription = Subscription.objects.filter(user=self.request.user).first()
+
+        if subscription:
+            last_time_range = subscription.time_ranges.order_by('-ends_at').first()
+            is_canceled = last_time_range is not None and last_time_range.canceled_at is not None
+
+            active_subscription_exists = subscription.time_ranges.current(now_time).payed().exists()
+
+            # check if subscription is canceled and is still active until the
+            # end of month
+            active_subscription_expires_at = None
+            if active_subscription_exists and is_canceled:
+                active_subscription_expires_at = last_time_range.ends_at
+
+            # if subscription is not active but was active at the end of last
+            # month and we are in the first days of the month, pretend its still
+            # active while we wait for payment
+            payment_pending = False
+            if not active_subscription_exists and not is_canceled and now_time.day <= payment_grace_period_days:
+                if subscription.time_ranges.current(last_month_time).payed().not_canceled().exists():
+                    active_subscription_exists = True
+                    payment_pending = True
+
+        # there is no subscription
+        else:
+            active_subscription_exists = False
+            active_subscription_expires_at = None
+            payment_pending = False
 
         sum, percentages = calculate_receivers_percentage(wallet)
 
@@ -120,6 +153,8 @@ class StatusView(APIView):
             'user': user_serializer.data,
             'wallet': wallet_serializer.data,
             'active_subscription': active_subscription_exists,
+            'active_subscription_expires_at': active_subscription_expires_at,
+            'payment_pending': payment_pending,
             'monetized_split': percentages,
             'monetized_time': sum,
         })
@@ -186,10 +221,14 @@ class SubscriptionActivateView(APIView):
                 params={ 'customer_id': self.request.user.customer_id },
                 timeout=30,
             )
+            print(f'SubscriptionActivateView GET api response text:')
+            print(f'type: {type(r.text)}')
+            print(f'r.text: {r.text}')
             data = r.json()
             token = data['token']
             customer_id = data['customer_id']
         except Exception as e:
+            capture_exception(e)
             print('Exception in SubscriptionActivateView GET:')
             traceback.print_exc()
             raise APIException
@@ -222,9 +261,13 @@ class SubscriptionActivateView(APIView):
                 },
                 timeout=30,
             )
+            print(f'SubscriptionActivateView POST api response text:')
+            print(f'type: {type(r.text)}')
+            print(f'r.text: {r.text}')
             data = r.json()
             payment_token = data['subscription_id']
         except Exception as e:
+            capture_exception(e)
             print('Exception in SubscriptionActivateView POST:')
             traceback.print_exc()
             raise APIException
@@ -305,9 +348,13 @@ class SubscriptionCancelView(APIView):
                 },
                 timeout=30,
             )
+            print(f'SubscriptionCancelView POST api response text:')
+            print(f'type: {type(r.text)}')
+            print(f'r.text: {r.text}')
             data = r.json()
             assert data['msg'] == 'subscription canceled', "bad response msg"
         except Exception as e:
+            capture_exception(e)
             print('Exception in SubscriptionCancelView POST:')
             traceback.print_exc()
             raise APIException
