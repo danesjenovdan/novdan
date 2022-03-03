@@ -18,16 +18,19 @@ def get_end_of_last_month(datetime):
     return timezone.datetime(datetime.year, datetime.month, 1, tzinfo=datetime.tzinfo) - timezone.timedelta(seconds=1)
 
 
-def calculate_receivers_percentage(from_wallet):
-    now = timezone.now()
-    year = now.year
-    month = now.month
+def calculate_receivers_percentage(from_wallet=None, time=None):
+    if time is None:
+        time = timezone.now()
+    year = time.year
+    month = time.month
 
     transactions = Transaction.objects.filter(
-        from_wallet=from_wallet,
         created_at__year=year,
         created_at__month=month,
     )
+
+    if from_wallet:
+        transactions.filter(from_wallet=from_wallet)
 
     sum = transactions.aggregate(Sum('amount')).get('amount__sum', None) or 0
     if sum <= 0:
@@ -36,6 +39,7 @@ def calculate_receivers_percentage(from_wallet):
     results = transactions.values('to_wallet').order_by('to_wallet').annotate(sum=Sum('amount'))
     percentages = [{
         'user': UserSerializer(Wallet.objects.get(id=result['to_wallet']).user).data,
+        'amount': result['sum'],
         'percentage': result['sum'] / sum,
     } for result in results]
 
