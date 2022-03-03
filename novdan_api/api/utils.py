@@ -74,33 +74,30 @@ def generate_tokens_for_month_for_wallet(wallet, time=None):
     wallet.save()
 
 
-def _create_subscription_time_range(time, subscription_id):
+def _get_or_create_subscription_time_range(time, subscription_id):
     starts_at = get_start_of_month(time)
     ends_at = get_end_of_month(time)
 
-    return SubscriptionTimeRange.objects.create(
+    time_range, created = SubscriptionTimeRange.objects.get_or_create(
         starts_at=starts_at,
         ends_at=ends_at,
         subscription_id=subscription_id,
     )
+
+    return time_range
 
 
 def generate_subscription_time_ranges_for_month(time=None):
     """
     Creates a new SubscriptionTimeRange for the current month for all
     subscriptions where their last time range was not canceled.
-
-    Asserts if any ranges for current month already exist!
     """
     if time is None:
         time = timezone.now()
 
-    # make sure there are not any time ranges for this month already
-    month_has_time_ranges = SubscriptionTimeRange.objects.current(time).exists()
-    assert not month_has_time_ranges, "A SubscriptionTimeRange for current month already exists!"
-
     # get last time range for each subscription
     last_time_ranges = SubscriptionTimeRange.objects.all() \
+        .filter(ends_at__lt=get_start_of_month(time)) \
         .order_by('subscription', '-ends_at') \
         .distinct('subscription')
 
@@ -111,7 +108,7 @@ def generate_subscription_time_ranges_for_month(time=None):
         .values_list('subscription_id', flat=True)
 
     for subscription_id in non_canceled_subscription_ids:
-        _create_subscription_time_range(time, subscription_id)
+        _get_or_create_subscription_time_range(time, subscription_id)
 
 
 def activate_subscription(user, payment_token):
@@ -132,12 +129,8 @@ def activate_subscription(user, payment_token):
         # make sure subscription is not already payed
         assert not subscription.time_ranges.current(time).payed().exists(), "Subscription is already payed!"
 
-        # try getting current not payed subscription time range if it exists
-        time_range = subscription.time_ranges.current(time).not_payed().first()
-
-        # create new time range if it does not exist
-        if not time_range:
-            time_range = _create_subscription_time_range(time, subscription.id)
+        # try getting or create new subscription time range
+        time_range = _get_or_create_subscription_time_range(time, subscription.id)
 
         # add payment data and save
         time_range.payed_at = time
