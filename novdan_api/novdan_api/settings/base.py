@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 # By default 'console' logging handler has the 'require_debug_true' filter.
 # Remove that filter so that exceptions are logged in production as well.
+# For 'print' calls to show up PYTHONUNBUFFERED environment variable must be set
+# IMPORTANT: PYTHONUNBUFFERED is an env var NOT a setting in this file!
 DEFAULT_LOGGING['handlers']['console']['filters'] = []
 
 # Application definition
