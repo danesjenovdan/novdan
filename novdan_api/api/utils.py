@@ -30,7 +30,7 @@ def calculate_receivers_percentage(from_wallet=None, time=None):
     )
 
     if from_wallet:
-        transactions.filter(from_wallet=from_wallet)
+        transactions = transactions.filter(from_wallet=from_wallet)
 
     sum = transactions.aggregate(Sum('amount')).get('amount__sum', None) or 0
     if sum <= 0:
