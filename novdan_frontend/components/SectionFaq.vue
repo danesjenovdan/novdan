@@ -74,7 +74,7 @@
           </li>
         </ul>
         <h4>
-          Vse skupaj me spominja na po kripto tehnologijo, glede katere imam
+          Vse skupaj me spominja na kripto tehnologijo, glede katere imam
           zadržke.
         </h4>
         <hr />

@@ -7,10 +7,12 @@
 
 <script>
 import SectionTerms from '../../components/SectionTerms.vue'
+import Footer from '../../components/Footer.vue'
 
 export default {
   components: {
-    SectionTerms
+    SectionTerms,
+    Footer
   },
   data() {
     return {

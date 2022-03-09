@@ -2,7 +2,7 @@
   <div class="payment">
     <h3>PLAČILO</h3>
     <p>
-      Vpiši podatke za plačilo. Znesek bo obračunan danes in nato vsakega 1. v
+      Vpiši podatke za plačilo. Znesek bo obračunan vsakega 1. v
       mesecu. Naročnino lahko kadarkoli prekineš.
     </p>
     <div v-if="error" class="alert alert-danger">
