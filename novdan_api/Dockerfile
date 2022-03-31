@@ -19,4 +19,4 @@ EXPOSE 8000
 ENV DJANGO_SETTINGS_MODULE=novdan_api.settings.dev
 
 # by default run the dev server
-CMD python manage.py runserver 0.0.0.0:8000
+CMD exec python manage.py runserver 0.0.0.0:8000
