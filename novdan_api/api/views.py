@@ -1,6 +1,5 @@
 import base64
 import traceback
-from datetime import timedelta
 
 import requests
 from django.conf import settings
@@ -80,7 +79,7 @@ class ConnectExtensionView(APIView):
     def post(self, request):
         user = self.request.user
         application = self.request.auth.application
-        expires = timezone.now() + timedelta(seconds=oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS)
+        expires = timezone.now() + timezone.timedelta(seconds=oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS)
 
         # generate access token that only has `read transfer` scope (no `write`)
         access_token = AccessToken.objects.create(

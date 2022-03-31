@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import transaction
 from django.db.models import F, Sum
 from django.utils import timezone
@@ -5,13 +6,32 @@ from django.utils import timezone
 from .models import Subscription, SubscriptionTimeRange, Transaction, Wallet
 from .serializers import UserSerializer
 
+VALID_PAYOUT_USERNAMES = [
+    'agrument',
+    'drzavljand',
+    'mesanec',
+    'ostro',
+    'vezjak',
+]
+
+USER_PAYMENT_AMOUNT = settings.PAYMENT_SUBSCRIPTION_AMOUNT * (1 - 0.03) # subtract 3% fees
+
 
 def get_start_of_month(datetime):
     return timezone.datetime(datetime.year, datetime.month, 1, tzinfo=datetime.tzinfo)
 
 
+def get_start_of_next_month(datetime):
+    year = datetime.year
+    month = datetime.month + 1
+    if month == 13:
+        month = 1
+        year += 1
+    return timezone.datetime(year, month, 1, tzinfo=datetime.tzinfo)
+
+
 def get_end_of_month(datetime):
-    return timezone.datetime(datetime.year, datetime.month + 1, 1, tzinfo=datetime.tzinfo) - timezone.timedelta(seconds=1)
+    return get_start_of_next_month(datetime) - timezone.timedelta(seconds=1)
 
 
 def get_end_of_last_month(datetime):
