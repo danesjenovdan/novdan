@@ -28,7 +28,7 @@ PGPASSWORD=$DATABASE_PASSWORD \
 echo
 echo "DROPPING THE DB VOLUME"
 sudo docker-compose down -v db
-sudo docker-compose up -d
+sudo docker-compose up -d db
 
 sleep 5
 

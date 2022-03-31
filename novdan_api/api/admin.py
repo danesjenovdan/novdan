@@ -137,6 +137,7 @@ class TransactionAdmin(admin.ModelAdmin):
 
         # if we are past the cutoff date for payments, calculate payouts
         else:
+            # initialize an object to store total payout amounts for valid payout users
             total_payout_amounts = {
                 username: {
                     'user': UserSerializer(User.objects.get(username=username)).data,
@@ -145,6 +146,7 @@ class TransactionAdmin(admin.ModelAdmin):
                 for username in VALID_PAYOUT_USERNAMES
             }
 
+            # TODO replace payed with paid everywhere
             payed_subscriptions = Subscription.objects.payed(payment_time_end).distinct('id')
 
             subscription_count = 0
