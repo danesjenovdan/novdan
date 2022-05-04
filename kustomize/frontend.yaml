@@ -50,6 +50,7 @@ metadata:
     cert-manager.io/cluster-issuer: "letsencrypt-production"
     nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
         - novdan.lb.djnd.si
