@@ -108,6 +108,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-production"
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
         - api.novdan.lb.djnd.si
