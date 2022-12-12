@@ -41,6 +41,8 @@ if os.getenv('DJANGO_ENABLE_S3', False):
 
 PAYMENT_API_BASE = os.getenv('DJANGO_PAYMENT_API_BASE', 'https://podpri.lb.djnd.si')
 PAYMENT_CAMPAIGN_ID = int(os.getenv('DJANGO_PAYMENT_CAMPAIGN_ID', 1))
+PAYMENT_QUESTION_ID = os.getenv('DJANGO_PAYMENT_QUESTION_ID', None)
+PAYMENT_QUESTION_ANSWER = os.getenv('DJANGO_PAYMENT_QUESTION_ANSWER', None)
 
 
 # sentry setup

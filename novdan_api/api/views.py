@@ -217,7 +217,11 @@ class SubscriptionActivateView(APIView):
         try:
             r = requests.get(
                 f'{settings.PAYMENT_API_BASE}/api/generic-donation/{settings.PAYMENT_CAMPAIGN_ID}/',
-                params={ 'customer_id': self.request.user.customer_id },
+                params={
+                    'customer_id': self.request.user.customer_id,
+                    'question_id': settings.PAYMENT_QUESTION_ID,
+                    'answer': settings.PAYMENT_QUESTION_ANSWER,
+                },
                 timeout=30,
             )
             print(f'SubscriptionActivateView GET api response text:')
