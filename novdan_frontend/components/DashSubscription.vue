@@ -21,7 +21,11 @@
               <h6>Tvoja <span>naročnina</span> je aktivna.</h6>
               <p>Obračunamo jo vsak prvi dan v mesecu.</p>
             </div>
-            <div v-if="!isSubscribed">
+            <div v-else-if="paymentPending">
+              <h6>Tvoja <span>naročnina</span> ni aktivna.</h6>
+              <p>Obračunamo jo vsak prvi dan v mesecu, a plačilo še ni prispelo.</p>
+            </div>
+            <div v-else>
               <h6>Tvoja <span>naročnina</span> še ni aktivna.</h6>
               <p>Obračunamo jo vsak prvi dan v mesecu.</p>
             </div>
@@ -33,13 +37,19 @@
                 Naročnina poteče čez {{ subscriptionExpiresInDays }}
               </p>
             </div>
-            <a v-if="!isSubscribed || (isSubscribed && subscriptionExpiresAt)" class="button" @click="activate">
+            <div v-if="paymentPending && !isSubscribed" class="expire-reminder">
+              <p>
+                Samodejno obračunavanje ni uspelo. <br>
+                Preverite če je način plačila še veljaven ali pa ga zamenjajte!
+              </p>
+            </div>
+            <a v-if="(!isSubscribed && !paymentPending) || (isSubscribed && subscriptionExpiresAt)" class="button" @click="activate">
               <div class="support">Aktiviraj</div>
               <div class="star">
                 <img src="~assets/images/star.png" alt="pink spinning star" />
               </div>
             </a>
-            <div v-else-if="isSubscribed" class="payment-method">
+            <div v-else-if="isSubscribed || paymentPending" class="payment-method">
               <button @click="changePaymentOption">
                 Zamenjaj plačilno sredstvo
               </button>
@@ -203,6 +213,12 @@ export default {
       const diffDays = Math.ceil(diffHours / 24)
       const diff = `${diffDays} ${diffDays === 1 ? 'dan' : 'dni'}`
       return diff
+    },
+    paymentPending() {
+      if (this.status && this.status.payment_pending) {
+        return true
+      }
+      return false
     }
   },
   watch: {

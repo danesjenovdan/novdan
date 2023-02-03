@@ -114,8 +114,6 @@ class StatusView(APIView):
         wallet_serializer = WalletSerializer(wallet)
 
         now_time = timezone.now()
-        last_month_time = get_end_of_last_month(now_time)
-        payment_grace_period_days = 2
 
         subscription = Subscription.objects.filter(user=self.request.user).first()
 
@@ -135,10 +133,15 @@ class StatusView(APIView):
             # month and we are in the first days of the month, pretend its still
             # active while we wait for payment
             payment_pending = False
-            if not active_subscription_exists and not is_canceled and now_time.day <= payment_grace_period_days:
-                if subscription.time_ranges.current(last_month_time).payed().not_canceled().exists():
+            if not active_subscription_exists and not is_canceled:
+                last_month_time = get_end_of_last_month(now_time)
+                if now_time.day <= settings.PAYMENT_GRACE_PERIOD_DAYS and subscription.time_ranges.current(last_month_time).payed().not_canceled().exists():
                     active_subscription_exists = True
                     payment_pending = True
+                else:
+                    last_payed_time_range = subscription.time_ranges.payed().order_by('-ends_at').first()
+                    if last_payed_time_range is not None and last_payed_time_range.canceled_at is None:
+                        payment_pending = True
 
         # there is no subscription
         else:
@@ -327,7 +330,7 @@ class SubscriptionChargedView(APIView):
         if kind == 'subscription_charged_successfully':
             activate_subscription(user, payment_token)
         elif kind == 'subscription_canceled':
-            cancel_subscription(user)
+            cancel_subscription(user, payment_token)
         else:
             raise RestValidationError({ 'kind': ['This field must be a valid kind.'] })
 
@@ -340,14 +343,19 @@ class SubscriptionCancelView(APIView):
             raise NoActiveSubscription
 
         subscription = Subscription.objects.get(user=self.request.user)
-        time_range = subscription.time_ranges.current().payed().first()
+
+        last_time_range = subscription.time_ranges.payed().order_by('-ends_at').first()
+        is_canceled = last_time_range is not None and last_time_range.canceled_at is not None
+
+        if not last_time_range or is_canceled:
+            raise NoActiveSubscription
 
         try:
             r = requests.post(
                 f'{settings.PAYMENT_API_BASE}/api/generic-donation/cancel-subscription/',
                 json={
                     'customer_id': self.request.user.customer_id,
-                    'subscription_id': time_range.payment_token,
+                    'subscription_id': last_time_range.payment_token,
                 },
                 timeout=30,
             )
@@ -362,7 +370,7 @@ class SubscriptionCancelView(APIView):
             traceback.print_exc()
             raise APIException
 
-        cancel_subscription(self.request.user)
+        cancel_subscription(self.request.user, last_time_range.payment_token)
 
         return Response({ 'success': True })
 
