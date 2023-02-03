@@ -114,7 +114,6 @@ class StatusView(APIView):
         wallet_serializer = WalletSerializer(wallet)
 
         now_time = timezone.now()
-        last_month_time = get_end_of_last_month(now_time)
 
         subscription = Subscription.objects.filter(user=self.request.user).first()
 
@@ -135,11 +134,13 @@ class StatusView(APIView):
             # active while we wait for payment
             payment_pending = False
             if not active_subscription_exists and not is_canceled:
-                if subscription.time_ranges.current(last_month_time).payed().not_canceled().exists():
-                    if now_time.day <= settings.PAYMENT_GRACE_PERIOD_DAYS:
-                        active_subscription_exists = True
-                        payment_pending = True
-                    else:
+                last_month_time = get_end_of_last_month(now_time)
+                if now_time.day <= settings.PAYMENT_GRACE_PERIOD_DAYS and subscription.time_ranges.current(last_month_time).payed().not_canceled().exists():
+                    active_subscription_exists = True
+                    payment_pending = True
+                else:
+                    last_payed_time_range = subscription.time_ranges.payed().order_by('-ends_at').first()
+                    if last_payed_time_range is not None and last_payed_time_range.canceled_at is None:
                         payment_pending = True
 
         # there is no subscription
