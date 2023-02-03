@@ -165,26 +165,33 @@ def activate_subscription(user, payment_token):
         generate_tokens_for_month_for_wallet(Wallet.objects.get(user=user), time)
 
 
-def cancel_subscription(user):
+def cancel_subscription(user, payment_token):
     """
     Cancels subscription for user.
 
+    Asserts if payment token is none or empty!
     Asserts if subscription is not active!
     """
     time = timezone.now()
 
+    # make sure payment token is not empty
+    assert payment_token is not None and payment_token != '', "Payment token is none or empty!"
+
     with transaction.atomic():
         subscription = Subscription.objects.get(user=user)
 
-        # make sure subscription is payed
-        assert subscription.time_ranges.current(time).payed().exists(), "Subscription is not payed!"
+        last_time_range = subscription.time_ranges.filter(payment_token=payment_token).order_by('-ends_at').first()
+        is_canceled = last_time_range is not None and last_time_range.canceled_at is not None
 
-        # get current payed subscription time range
-        time_range = subscription.time_ranges.current(time).payed().first()
+        # make sure subscription exists
+        assert last_time_range, "Subscription with this payment token does not exist!"
+
+        # make sure subscription is not canceled
+        assert not is_canceled, "Subscription with this payment token already canceled!"
 
         # add cancelation data and save
-        time_range.canceled_at = time
-        time_range.save()
+        last_time_range.canceled_at = time
+        last_time_range.save()
 
 
 def transfer_tokens(from_wallet, to_wallet, amount):
