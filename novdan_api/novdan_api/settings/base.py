@@ -166,7 +166,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_HEADERS = list(cors_default_headers) + ['web-monetization-id']
 
 PAYMENT_API_BASE = ''
-PAYMENT_CAMPAIGN_ID = 1
+PAYMENT_CAMPAIGN_ID = 'nov-dan'
 PAYMENT_QUESTION_ID = None
 PAYMENT_QUESTION_ANSWER = None
 
