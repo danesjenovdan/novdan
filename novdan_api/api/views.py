@@ -215,7 +215,11 @@ class TransferView(APIView):
 class SubscriptionActivateView(APIView):
     def get(self, request):
         if Subscription.objects.filter(user=self.request.user).payed().exists():
-            raise ActiveSubscriptionExists
+            subscription = Subscription.objects.get(user=self.request.user)
+            last_time_range = subscription.time_ranges.payed().order_by('-ends_at').first()
+            is_canceled = last_time_range is not None and last_time_range.canceled_at is not None
+            if not is_canceled:
+                raise ActiveSubscriptionExists
 
         try:
             r = requests.get(
@@ -248,9 +252,6 @@ class SubscriptionActivateView(APIView):
     def post(self, request):
         if not isinstance(self.request.data, dict):
             raise ParseError
-
-        if Subscription.objects.filter(user=self.request.user).payed().exists():
-            raise ActiveSubscriptionExists
 
         nonce = self.request.data.get('nonce')
         if nonce is None or nonce == '':
@@ -339,7 +340,7 @@ class SubscriptionChargedView(APIView):
 
 class SubscriptionCancelView(APIView):
     def post(self, request):
-        if not Subscription.objects.filter(user=self.request.user).payed().exists():
+        if not Subscription.objects.filter(user=self.request.user).exists():
             raise NoActiveSubscription
 
         subscription = Subscription.objects.get(user=self.request.user)
@@ -347,7 +348,7 @@ class SubscriptionCancelView(APIView):
         last_time_range = subscription.time_ranges.payed().order_by('-ends_at').first()
         is_canceled = last_time_range is not None and last_time_range.canceled_at is not None
 
-        if not last_time_range or is_canceled:
+        if is_canceled:
             raise NoActiveSubscription
 
         try:
