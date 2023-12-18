@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('o/', include((oauth2_base_urlpatterns, oauth2_app_name), namespace='oauth2_provider')),
     path('api/', include('api.urls')),
+    path('articles/', include('articles.urls')),
     path('', include(spsp4_urlpatterns)),
 ]

@@ -1,0 +1,27 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: novdan-api-parse-articles
+spec:
+  schedule: "59 * * * *" # At HH:59 every hour.
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: novdan-api-parse-articles
+              image: novdan-api
+              command:
+                - python
+                - manage.py
+                - parse_articles
+              envFrom:
+                - secretRef:
+                    name: novdan-secrets
+              env:
+                - name: DJANGO_SETTINGS_MODULE
+                  value: novdan_api.settings.k8s

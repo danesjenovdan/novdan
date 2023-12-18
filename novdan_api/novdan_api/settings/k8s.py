@@ -8,7 +8,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'secret_key_changeme')
 
 DEBUG = bool(os.getenv('DJANGO_DEBUG', False))
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'api.novdan.lb.djnd.si', 'denarnica.novdan.si']
+ALLOWED_HOSTS = ['novdan-api', 'localhost', '127.0.0.1', '0.0.0.0', 'api.novdan.lb.djnd.si', 'denarnica.novdan.si']
 
 STATIC_ROOT = os.getenv('DJANGO_STATIC_ROOT', BASE_DIR / 'static')
 STATIC_URL = os.getenv('DJANGO_STATIC_URL_BASE', '/static/')
@@ -38,6 +38,7 @@ if os.getenv('DJANGO_ENABLE_S3', False):
     AWS_S3_REGION_NAME = os.getenv('DJANGO_AWS_REGION_NAME', 'fr-par')
     AWS_S3_ENDPOINT_URL = os.getenv('DJANGO_AWS_S3_ENDPOINT_URL', 'https://s3.fr-par.scw.cloud')
     AWS_S3_SIGNATURE_VERSION = os.getenv('DJANGO_AWS_S3_SIGNATURE_VERSION', 's3v4')
+    AWS_S3_FILE_OVERWRITE = False
 
 PAYMENT_API_BASE = os.getenv('DJANGO_PAYMENT_API_BASE', 'https://podpri.lb.djnd.si')
 PAYMENT_CAMPAIGN_ID = os.getenv('DJANGO_PAYMENT_CAMPAIGN_ID', 'nov-dan')
