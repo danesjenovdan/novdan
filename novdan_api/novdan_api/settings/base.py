@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
 
     'api',
+    'articles',
 ]
 
 MIDDLEWARE = [
