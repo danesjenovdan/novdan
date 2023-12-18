@@ -12,7 +12,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  novdan_api:
+  novdan-api:
     build: ./novdan_api
     ports:
       - 8000:8000
@@ -29,13 +29,13 @@ services:
     depends_on:
       - db
 
-  novdan_frontend:
+  novdan-frontend:
     build: ./novdan_frontend
     ports:
       - 3000:3000
     environment:
       NODE_ENV: development
-      NUXT_API_BASE: http://novdan_api:8000
+      NUXT_API_BASE: http://novdan-api:8000
       NUXT_API_BASE_BROWSER: http://localhost:8000
       NUXT_API_CLIENT_ID: 1iOuBUL0JXbogMGDIpU0uC6lH52MqTkCOwj0qhKK
     command: npm run dev
