@@ -23,7 +23,6 @@ class LatestArticlesForMedia(ListAPIView):
     permission_classes = (AllowAny,)
     queryset = Article.objects.all().order_by("-published_at")
     serializer_class = ArticleSerializer
-    pagination_class = Pagination
 
     def list(self, request, *args, **kwargs):
         Serializer = self.get_serializer_class()

@@ -156,7 +156,20 @@ class Command(BaseCommand):
                             image_url = enclosure.attributes.get("url")
                             break
 
-                # get matching article and update it or create a new one
+                existing_article = Article.objects.filter(
+                    medium=medium,
+                    guid=guid,
+                    title=title,
+                    description=description,
+                    url=url,
+                    published_at=pub_date,
+                ).first()
+
+                if existing_article:
+                    self.stdout.write(f"     > exists: {existing_article.id}")
+                    self.update_article_image_url(existing_article, image_url)
+                    continue
+
                 article, created = Article.objects.update_or_create(
                     medium=medium,
                     guid=guid,
@@ -168,14 +181,15 @@ class Command(BaseCommand):
                     },
                 )
 
-                if created:
-                    self.stdout.write(f"     > created: {article.id}")
-                else:
-                    self.stdout.write(f"     > updated: {article.id}")
-
+                action_text = "created" if created else "updated"
+                self.stdout.write(f"     > {action_text}: {article.id}")
                 self.update_article_image_url(article, image_url)
+
         except Exception as e:
-            capture_exception(e)
+            with push_scope() as scope:
+                scope.set_extra("command", "parse_articles")
+                scope.set_extra("rss_url", url)
+                capture_exception(e)
             self.stdout.write(f"   > error: {e}")
             self.stdout.write("")
             return
