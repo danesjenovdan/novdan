@@ -8,10 +8,10 @@
     <div v-if="error" class="alert alert-danger">
       <h4>Napaka št. {{ error.status }}</h4>
       <p>
-        Naš strežnik je ni mogel rešiti, prejel je naslednje sporočilo:
-        <strong>{{
-          error.data && error.data.msg ? error.data.msg : error.message
-        }}</strong>
+        Naš strežnik je ni mogel rešiti, prejel je naslednje sporočilo: <br>
+        <strong v-if="error.message">{{ error.message }}<br></strong>
+        <strong v-if="error.data && error.data.msg">{{ error.data.msg }}<br></strong>
+        <strong v-if="error.data && error.data.detail">{{ error.data.detail }}<br></strong>
       </p>
       <p>
         Zaračunali ti nismo ničesar, ves denar je še vedno na tvoji kartici.
@@ -118,6 +118,8 @@ export default {
       this.token = response.token
       this.loading = true
     } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e)
       this.loading = false
       this.error = {
         status: e.response.status,

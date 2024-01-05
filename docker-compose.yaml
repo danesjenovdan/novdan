@@ -37,7 +37,7 @@ services:
       NODE_ENV: development
       NUXT_API_BASE: http://novdan-api:8000
       NUXT_API_BASE_BROWSER: http://localhost:8000
-      NUXT_API_CLIENT_ID: 1iOuBUL0JXbogMGDIpU0uC6lH52MqTkCOwj0qhKK
+      NUXT_API_CLIENT_ID: IfFCMgW5XsJZGX27M5a4cjdicW6AEJZzrimI5qiS
     command: npm run dev
     volumes:
       - ./novdan_frontend:/app
