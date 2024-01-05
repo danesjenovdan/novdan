@@ -70,14 +70,15 @@
       </button>
     </div>
     <div class="buttons-wrapper">
-      <nuxt-link to="/dash"> Nazaj </nuxt-link>
+      <nuxt-link to="/dash">
+        Nazaj
+      </nuxt-link>
     </div>
     <a
       target="_blank"
       href="/terms"
       style="width: 100%; display: block; padding-top: 20px; text-align: center"
-      >Splošni pogoji uporabe</a
-    >
+    >Splošni pogoji uporabe</a>
   </div>
 </template>
 
@@ -143,6 +144,7 @@ export default {
       this.nonce = nonce
       try {
         const response = await this.$api.activateSubscription2(this.nonce)
+        // eslint-disable-next-line no-console
         console.log(response)
         this.$router.push('/dash')
         // this.$router.push(

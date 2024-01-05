@@ -257,7 +257,8 @@ export default {
           await this.$api.cancelSubscription()
           this.$router.go()
         } catch (error) {
-          console.log(error)
+          // eslint-disable-next-line no-console
+          console.error(error)
           this.cancelSubscriptionError = true
         }
       }
@@ -272,7 +273,8 @@ export default {
           await this.$api.cancelSubscription()
           this.$router.push('/payment')
         } catch (error) {
-          console.log(error)
+          // eslint-disable-next-line no-console
+          console.error(error)
           this.cancelSubscriptionError = true
         }
       }
@@ -289,9 +291,11 @@ export default {
               this.oldPassword,
               this.newPassword
             )
+            // eslint-disable-next-line no-console
             console.log(response)
           } catch (error) {
-            console.log(error)
+            // eslint-disable-next-line no-console
+            console.error(error)
           }
         }
       }
