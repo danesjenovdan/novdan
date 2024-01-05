@@ -29,9 +29,10 @@ from .exceptions import (ActiveSubscriptionExists, LowBalance,
 from .models import Subscription, Wallet
 from .serializers import (ChangePasswordSerializer, RegisterSerializer,
                           UserSerializer, WalletSerializer)
-from .utils import (activate_subscription, calculate_receivers_percentage,
-                    cancel_subscription, get_end_of_last_month,
-                    transfer_tokens)
+from .utils import (activate_subscription,
+                    api_exception_from_request_exception,
+                    calculate_receivers_percentage, cancel_subscription,
+                    get_end_of_last_month, transfer_tokens)
 
 User = get_user_model()
 Application = get_application_model()
@@ -226,17 +227,23 @@ class SubscriptionActivateView(APIView):
                 f'{settings.PAYMENT_API_BASE}/api/generic-donation/{settings.PAYMENT_CAMPAIGN_ID}/',
                 params={
                     'customer_id': self.request.user.customer_id,
-                    'question_id': settings.PAYMENT_QUESTION_ID,
-                    'answer': settings.PAYMENT_QUESTION_ANSWER,
+                    'captcha': self.request.GET.get('captcha'),
                 },
                 timeout=30,
             )
+            r.raise_for_status()
             print(f'SubscriptionActivateView GET api response text:')
             print(f'type: {type(r.text)}')
             print(f'r.text: {r.text}')
             data = r.json()
             token = data['token']
             customer_id = data['customer_id']
+        except requests.exceptions.RequestException as request_exception:
+            capture_exception(request_exception)
+            print('RequestException in SubscriptionActivateView GET')
+            if api_exception := api_exception_from_request_exception(request_exception):
+              raise api_exception
+            raise APIException
         except Exception as e:
             capture_exception(e)
             print('Exception in SubscriptionActivateView GET:')

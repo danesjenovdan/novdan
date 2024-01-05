@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import transaction
 from django.db.models import F, Sum
 from django.utils import timezone
+from rest_framework.exceptions import APIException
 
 from .models import Subscription, SubscriptionTimeRange, Transaction, Wallet
 from .serializers import UserSerializer
@@ -215,3 +216,20 @@ def transfer_tokens(from_wallet, to_wallet, amount):
         from_wallet.save()
         to_wallet.save()
         new_transaction.save()
+
+
+def api_exception_from_request_exception(request_exception):
+    if request_exception.response is not None:
+        detail = None
+        try:
+            json = request_exception.response.json()
+            if 'detail' in json:
+                detail = json['detail']
+            elif 'status' in json:
+                detail = json['status']
+        except Exception:
+            pass
+        api_exception = APIException(detail=detail)
+        api_exception.status_code = request_exception.response.status_code
+        return api_exception
+    return None
