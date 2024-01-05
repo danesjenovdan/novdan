@@ -1,17 +1,14 @@
 <template>
   <div class="payment">
     <h3>PLAČILO</h3>
-    <p>
-      Vpiši podatke za plačilo. Znesek bo obračunan vsakega 1. v
-      mesecu. Naročnino lahko kadarkoli prekineš.
-    </p>
+
     <div v-if="error" class="alert alert-danger">
       <h4>Napaka št. {{ error.status }}</h4>
       <p>
-        Naš strežnik je ni mogel rešiti, prejel je naslednje sporočilo: <br>
-        <strong v-if="error.message">{{ error.message }}<br></strong>
-        <strong v-if="error.data && error.data.msg">{{ error.data.msg }}<br></strong>
-        <strong v-if="error.data && error.data.detail">{{ error.data.detail }}<br></strong>
+        Naš strežnik je ni mogel rešiti, prejel je naslednje sporočilo: <br />
+        <strong v-if="error.message">{{ error.message }}<br /></strong>
+        <strong v-if="error.data && error.data.msg">{{ error.data.msg }}<br /></strong>
+        <strong v-if="error.data && error.data.detail">{{ error.data.detail }}<br /></strong>
       </p>
       <p>
         Zaračunali ti nismo ničesar, ves denar je še vedno na tvoji kartici.
@@ -21,54 +18,81 @@
         bomo poskusili pomagati.
       </p>
     </div>
+
     <loading v-if="paymentInProgress || loading" />
 
-    <div class="buttons-wrapper links">
-      <button
-        :class="{ active: paymentType == 'card' }"
-        @click="
-          paymentType = 'card'
-          error = null
-        "
-      >
-        Kreditna kartica
-      </button>
-      <button
-        :class="{ active: paymentType == 'paypal' }"
-        @click="
-          paymentType = 'paypal'
-          error = null
-        "
-      >
-        Paypal
-      </button>
-    </div>
+    <template v-if="!captchaSolved">
+      <p>
+        Zadnje čase nas pogosto napadajo roboti. Ker se želimo prepričati,
+        da si človek, prosim vpiši spodnje znake.
+      </p>
+      <div v-if="captchaError" class="alert alert-danger">
+        <p>
+          <strong>{{ captchaError }}</strong>
+        </p>
+      </div>
+      <div ref="captcha" class="captcha-wrapper"></div>
+      <div class="buttons-wrapper">
+        <button @click="solveCaptcha">
+          Naprej
+        </button>
+      </div>
+    </template>
 
-    <Card
-      v-if="token && paymentType == 'card'"
-      :token="token"
-      @ready="onPaymentReady"
-      @validity-change="paymentInfoValid = $event"
-      @payment-start="paymentInProgress = true"
-      @success="paymentSuccess"
-      @error="paymentError"
-    />
+    <template v-if="captchaSolved">
+      <p>
+        Vpiši podatke za plačilo. Znesek bo obračunan vsakega 1. v mesecu.
+        Naročnino lahko kadarkoli prekineš.
+      </p>
 
-    <Paypal
-      v-if="token && paymentType == 'paypal'"
-      :token="token"
-      :amount="5"
-      :recurring="true"
-      @ready="onPaymentReady"
-      @payment-start="paymentInProgress = true"
-      @success="paymentSuccess"
-    />
+      <div class="buttons-wrapper links">
+        <button
+          :class="{ active: paymentType == 'card' }"
+          @click="
+            paymentType = 'card'
+            error = null
+          "
+        >
+          Kreditna kartica
+        </button>
+        <button
+          :class="{ active: paymentType == 'paypal' }"
+          @click="
+            paymentType = 'paypal'
+            error = null
+          "
+        >
+          Paypal
+        </button>
+      </div>
 
-    <div class="buttons-wrapper">
-      <button :disabled="!canContinueToNextStage" @click="finish">
-        Plačaj
-      </button>
-    </div>
+      <Card
+        v-if="token && paymentType == 'card'"
+        :token="token"
+        @ready="onPaymentReady"
+        @validity-change="paymentInfoValid = $event"
+        @payment-start="paymentInProgress = true"
+        @success="paymentSuccess"
+        @error="paymentError"
+      />
+
+      <Paypal
+        v-if="token && paymentType == 'paypal'"
+        :token="token"
+        :amount="5"
+        :recurring="true"
+        @ready="onPaymentReady"
+        @payment-start="paymentInProgress = true"
+        @success="paymentSuccess"
+      />
+
+      <div class="buttons-wrapper">
+        <button :disabled="!canContinueToNextStage" @click="finish">
+          Plačaj
+        </button>
+      </div>
+    </template>
+
     <div class="buttons-wrapper">
       <nuxt-link to="/dash">
         Nazaj
@@ -100,7 +124,9 @@ export default {
       payFunction: undefined,
       nonce: undefined,
       error: null,
-      loading: true
+      loading: false,
+      captchaSolved: false,
+      captchaError: null
     }
   },
   computed: {
@@ -108,27 +134,52 @@ export default {
       return this.payFunction && this.paymentInfoValid
     }
   },
-  async mounted() {
+  mounted() {
     if (!this.$api.hasToken()) {
       this.$router.replace('/dash/login')
     }
-    try {
-      this.status = await this.$api.getStatus()
-      const response = await this.$api.activateSubscription()
-      this.token = response.token
-      this.loading = true
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e)
-      this.loading = false
-      this.error = {
-        status: e.response.status,
-        data: e.response.data,
-        message: e.message
-      }
+
+    if (this.$refs.captcha && !document.querySelector('#djncaptcha')) {
+      const s = document.createElement('script')
+      s.dataset.inputName = 'captcha'
+      s.dataset.locale = 'sl'
+      s.src = 'https://captcha.lb.djnd.si/js/djncaptcha.js'
+      this.$refs.captcha.appendChild(s)
     }
   },
   methods: {
+    async solveCaptcha() {
+      const captchaApi = window.djnCAPTCHA?.captcha
+      if (!captchaApi) {
+        this.captchaError = 'Izziv CAPTCHA ni bil naložen. Osveži stran.'
+        return
+      }
+      this.loading = true
+      this.status = await this.$api.getStatus()
+      try {
+        const response = await this.$api.activateSubscription(captchaApi.value())
+        this.token = response.token
+        captchaApi.remove()
+        this.captchaSolved = true
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error)
+        this.loading = false
+        const detail = error?.response?.data?.detail || ''
+        if (detail.toLowerCase().includes('captcha')) {
+          captchaApi.reload()
+          this.captchaError = detail
+        } else {
+          captchaApi.remove()
+          this.captchaError = null
+          this.error = {
+            status: error.response.status,
+            data: error.response.data,
+            message: error.message
+          }
+        }
+      }
+    },
     onPaymentReady({ pay } = {}) {
       this.checkoutLoading = false
       this.paymentInfoValid = false
@@ -192,6 +243,10 @@ p {
   strong {
     color: red;
   }
+}
+.captcha-wrapper {
+  display: flex;
+  justify-content: center;
 }
 .buttons-wrapper {
   text-align: center;

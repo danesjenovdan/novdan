@@ -112,8 +112,10 @@ function api() {
     getStatus() {
       return authedApi.$get('/api/status')
     },
-    activateSubscription() {
-      return authedApi.$get('/api/subscription/activate')
+    activateSubscription(captcha) {
+      const params = new URLSearchParams()
+      params.append('captcha', captcha)
+      return authedApi.$get(`/api/subscription/activate?${params}`)
     },
     activateSubscription2(nonce) {
       const params = new URLSearchParams()
