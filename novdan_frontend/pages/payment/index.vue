@@ -113,12 +113,16 @@ export default {
     }
     try {
       this.status = await this.$api.getStatus()
-      console.log(this.status)
       const response = await this.$api.activateSubscription()
       this.token = response.token
       this.loading = true
     } catch (e) {
-      this.$router.replace('/dash/login')
+      this.loading = false
+      this.error = {
+        status: e.response.status,
+        data: e.response.data,
+        message: e.message
+      }
     }
   },
   methods: {
