@@ -52,8 +52,11 @@
                   :alt="`Image for ${article.title}`"
                 />
                 <div class="medium-and-date">
-                  <small>{{ formatDate(article.published_at) }}</small>
-                  <p>{{ article.medium.name }}</p>
+                  <p>
+                    <img :src="faviconURL(article.medium.url)" :alt="article.medium.name" class="favicon" />
+                    <span>{{ article.medium.name }}</span>
+                  </p>
+                  <small>{{ formatRelativeTime(article.published_at) }}</small>
                 </div>
                 <h5>{{ article.title }}</h5>
                 <hr />
@@ -111,6 +114,39 @@ export default {
         day: 'numeric',
         weekday: 'long'
       }).format(new Date(date))
+    },
+    formatRelativeTime(date) {
+      const now = new Date().getTime()
+      const then = new Date(date).getTime()
+      const diff = now - then
+
+      const formatter = new Intl.RelativeTimeFormat('sl-SI', {
+        numeric: 'auto'
+      })
+
+      const UNITS = {
+        second: 1000,
+        minute: 1000 * 60,
+        hour: 1000 * 60 * 60,
+        day: 1000 * 60 * 60 * 24,
+        week: 1000 * 60 * 60 * 24 * 7,
+        month: 1000 * 60 * 60 * 24 * 30,
+        year: 1000 * 60 * 60 * 24 * 365
+      }
+      const UNIT_KEYS = Object.keys(UNITS)
+
+      for (let i = 0; i < UNIT_KEYS.length; i++) {
+        const unit = UNIT_KEYS[i]
+        const nextUnit = UNIT_KEYS[i + 1]
+        if (!nextUnit || diff < UNITS[nextUnit]) {
+          const amount = Math.floor(diff / UNITS[unit])
+          return formatter.format(-amount, unit)
+        }
+      }
+    },
+    faviconURL(url) {
+      const urlObj = new URL(url)
+      return `https://icons.duckduckgo.com/ip3/${urlObj.hostname}.ico`
     }
   }
 }
@@ -400,7 +436,20 @@ export default {
         justify-content: space-between;
 
         p {
+          display: flex;
+          gap: 0.33rem;
+          align-items: center;
           margin: 0;
+
+          .favicon {
+            display: block;
+            overflow: hidden;
+            width: 22px;
+            aspect-ratio: 1/1;
+            background: #fff;
+            border: 1px solid #fff;
+            border-radius: 0;
+          }
         }
       }
     }
