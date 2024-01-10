@@ -2,30 +2,69 @@
   <section class="background-black articles">
     <div class="container">
       <div>
-        <h1>Članki</h1>
-        <div>
-          <div class="article-list">
-            <a
-              v-for="article in articles.results"
-              :key="article.id"
-              :href="article.url"
-              target="_blank"
-              class="article"
-            >
-              <img
-                :src="article.image_url"
-                :alt="`Image for ${article.title}`"
-              />
-              <div class="medium-and-date">
-                <small>{{ formatDate(article.published_at) }}</small>
-                <p>{{ article.medium.name }}</p>
+        <div class="preamble">
+          <div class="description">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio
+              amet harum obcaecati hic perspiciatis, voluptatem ut. Commodi esse
+              nostrum vitae quo deserunt vel molestiae nobis explicabo, fugit
+              nihil ut expedita.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio
+              amet harum obcaecati hic perspiciatis, voluptatem ut.
+            </p>
+          </div>
+          <div class="badge">
+            <a href="#" class="support-wrapper">
+              <div class="star">
+                <img src="~assets/images/star.png" alt="pink spinning star" />
+                <div>
+                  <span>5</span>
+                  <span>eur/<br />mes</span>
+                </div>
               </div>
-              <h5>{{ article.title }}</h5>
-              <hr />
-              <p class="line-clamp-4">
-                {{ article.description }}
-              </p>
+              <div class="support">Podpri</div>
+              <div class="yellow-bg" />
             </a>
+          </div>
+        </div>
+        <div>
+          <div
+            v-for="(dayArticles, date) in articlesByDate"
+            :key="date"
+            class="date-articles"
+          >
+            <div class="date-line">
+              <span class="date">{{ formatLongDate(date) }}</span>
+              <hr />
+            </div>
+            <div class="article-list">
+              <a
+                v-for="article in dayArticles"
+                :key="article.id"
+                :href="article.url"
+                target="_blank"
+                class="article"
+              >
+                <img
+                  :src="article.image_url"
+                  :alt="`Image for ${article.title}`"
+                />
+                <div class="medium-and-date">
+                  <p>
+                    <img :src="faviconURL(article.medium.url)" :alt="article.medium.name" class="favicon" />
+                    <span>{{ article.medium.name }}</span>
+                  </p>
+                  <small>{{ formatRelativeTime(article.published_at) }}</small>
+                </div>
+                <h5>{{ article.title }}</h5>
+                <hr />
+                <p class="line-clamp-4">
+                  {{ article.description }}
+                </p>
+              </a>
+            </div>
           </div>
           <div v-if="articles.next" class="more-articles">
             <button type="button" @click="$emit('load-more')">
@@ -50,6 +89,16 @@ export default {
   data() {
     return {}
   },
+  computed: {
+    articlesByDate() {
+      return this.articles.results.reduce((acc, article) => {
+        const date = new Date(article.published_at).toISOString().split('T')[0]
+        acc[date] = acc[date] || []
+        acc[date].push(article)
+        return acc
+      }, {})
+    }
+  },
   methods: {
     formatDate(date) {
       return Intl.DateTimeFormat('sl-SI', {
@@ -57,6 +106,47 @@ export default {
         month: 'long',
         day: 'numeric'
       }).format(new Date(date))
+    },
+    formatLongDate(date) {
+      return Intl.DateTimeFormat('sl-SI', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+      }).format(new Date(date))
+    },
+    formatRelativeTime(date) {
+      const now = new Date().getTime()
+      const then = new Date(date).getTime()
+      const diff = now - then
+
+      const formatter = new Intl.RelativeTimeFormat('sl-SI', {
+        numeric: 'auto'
+      })
+
+      const UNITS = {
+        second: 1000,
+        minute: 1000 * 60,
+        hour: 1000 * 60 * 60,
+        day: 1000 * 60 * 60 * 24,
+        week: 1000 * 60 * 60 * 24 * 7,
+        month: 1000 * 60 * 60 * 24 * 30,
+        year: 1000 * 60 * 60 * 24 * 365
+      }
+      const UNIT_KEYS = Object.keys(UNITS)
+
+      for (let i = 0; i < UNIT_KEYS.length; i++) {
+        const unit = UNIT_KEYS[i]
+        const nextUnit = UNIT_KEYS[i + 1]
+        if (!nextUnit || diff < UNITS[nextUnit]) {
+          const amount = Math.floor(diff / UNITS[unit])
+          return formatter.format(-amount, unit)
+        }
+      }
+    },
+    faviconURL(url) {
+      const urlObj = new URL(url)
+      return `https://icons.duckduckgo.com/ip3/${urlObj.hostname}.ico`
     }
   }
 }
@@ -64,10 +154,164 @@ export default {
 
 <style scoped lang="scss">
 .articles {
-  padding: 3rem 30px;
+  padding: 2rem 30px;
 
   @media (min-width: 1200px) {
-    padding: 6rem 0;
+    padding-inline: 0;
+  }
+
+  .preamble {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 992px) {
+      flex-direction: row;
+    }
+
+    .description {
+      flex: 1;
+      color: #fff;
+
+      @media (min-width: 992px) {
+        margin-right: 2rem;
+      }
+
+      p {
+        font-size: 1rem;
+        margin: 0;
+      }
+
+      p + p {
+        margin-top: 1.25rem;
+      }
+    }
+
+    .badge {
+      --badge-size: 180px;
+
+      // flex: 0 0 0%;
+      margin-top: 1.5rem;
+      width: var(--badge-size);
+      height: calc(var(--badge-size) / 1.5);
+      position: relative;
+
+      @media (min-width: 992px) {
+        margin-top: -1rem;
+        margin-bottom: -0.75rem;
+      }
+
+      @keyframes rotate360 {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .support-wrapper {
+        position: absolute;
+        inset: 0;
+        display: block;
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+        transform-origin: center;
+        transform: rotate(-10deg);
+
+        &:hover {
+          .support {
+            background-color: #ffd700;
+            @media (min-width: 992px) {
+              transform: translateX(-50%) rotate(0) scale(1.2);
+            }
+          }
+
+          .star > img {
+            animation-play-state: running;
+          }
+        }
+
+        .yellow-bg {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translateX(-50%) translateY(-50%);
+          width: var(--badge-size);
+          height: var(--badge-size);
+          background-image: radial-gradient(
+            circle calc(var(--badge-size) / 2) at center,
+            #ffd700 0%,
+            rgba(255, 215, 0, 0) 100%
+          );
+          opacity: 0.4;
+          z-index: 1;
+        }
+
+        .star {
+          width: calc(var(--badge-size) / 2);
+          height: calc(var(--badge-size) / 2);
+          position: absolute;
+          z-index: 5;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+
+          > img,
+          > div {
+            position: absolute;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+          }
+
+          > img {
+            animation: rotate360 3s linear infinite;
+          }
+
+          > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            span:first-child {
+              margin-top: -0.2em;
+              font-size: calc(var(--badge-size) / 7);
+              font-weight: 700;
+              line-height: 1;
+            }
+
+            span:last-child {
+              font-family: 'Syne Tactile', cursive;
+              font-size: calc(var(--badge-size) / 18);
+              font-style: italic;
+              line-height: 1;
+            }
+          }
+
+          @media (min-width: 992px) {
+            img {
+              animation-play-state: paused;
+            }
+          }
+        }
+
+        .support {
+          position: absolute;
+          top: calc(var(--badge-size) / 2.5);
+          left: 50%;
+          transform: translateX(-50%) rotate(0) scale(1);
+          z-index: 6;
+          width: fit-content;
+          padding: 0.2em 0.75em;
+          background-color: #fff;
+          border: 3px solid #000;
+          border-radius: 0.4em;
+          text-align: center;
+          font-size: calc(var(--badge-size) / 8);
+          font-weight: 700;
+          transition: all 0.25s ease;
+        }
+      }
+    }
   }
 
   h1 {
@@ -113,9 +357,29 @@ export default {
     margin: 0;
   }
 
+  .date-articles {
+    margin-top: 2rem;
+  }
+
+  .date-line {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    color: #ffd700;
+
+    .date {
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    hr {
+      flex: 1;
+    }
+  }
+
   .article-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem 1.5rem;
     margin-top: 2rem;
 
@@ -150,7 +414,7 @@ export default {
 
       h5 {
         font-size: 1.2rem;
-        font-weight: 800;
+        font-weight: 500;
         margin-block: 0.75em;
       }
 
@@ -172,7 +436,20 @@ export default {
         justify-content: space-between;
 
         p {
+          display: flex;
+          gap: 0.33rem;
+          align-items: center;
           margin: 0;
+
+          .favicon {
+            display: block;
+            overflow: hidden;
+            width: 22px;
+            aspect-ratio: 1/1;
+            background: #fff;
+            border: 1px solid #fff;
+            border-radius: 0;
+          }
         }
       }
     }
