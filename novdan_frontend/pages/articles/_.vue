@@ -1,25 +1,38 @@
 <template>
   <div class="content">
-    <SectionArticles :articles-by-medium="articlesByMedium" />
-    <Footer :window-width="windowWidth" />
+    <video
+      id="bgvid"
+      playsinline
+      autoplay
+      muted
+      loop
+      poster="~assets/images/gif.png"
+    >
+      <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
+    </video>
+    <ArticleHeadline />
+    <SectionArticlesAll :articles="articles" @load-more="onLoadMore" />
+    <ArticlesFooter :window-width="windowWidth" />
   </div>
 </template>
 
 <script>
-import SectionArticles from '../../components/SectionArticles.vue'
-import Footer from '../../components/Footer.vue'
+import ArticleHeadline from '../../components/ArticleHeadline.vue'
+import SectionArticlesAll from '../../components/SectionArticlesAll.vue'
+import ArticlesFooter from '../../components/ArticlesFooter.vue'
 
 export default {
   components: {
-    SectionArticles,
-    Footer
+    ArticleHeadline,
+    SectionArticlesAll,
+    ArticlesFooter
   },
   async asyncData({ $axios, $config }) {
     const api = $axios.create({ baseURL: $config.apiBase })
-    const articlesByMedium = await api.$get('/articles/latest/')
+    const articles = await api.$get('/articles/')
 
     return {
-      articlesByMedium
+      articles
     }
   },
   data() {
@@ -32,6 +45,21 @@ export default {
     window.addEventListener('resize', () => {
       this.windowWidth = window.innerWidth
     })
+  },
+  methods: {
+    async onLoadMore() {
+      const api = this.$axios.create({ baseURL: this.$config.apiBase })
+
+      if (this.articles.next) {
+        const { pathname, search } = new URL(this.articles.next)
+        const articles = await api.$get(`${pathname}${search}`)
+
+        this.articles = {
+          ...articles,
+          results: this.articles.results.concat(articles.results)
+        }
+      }
+    }
   }
 }
 </script>
