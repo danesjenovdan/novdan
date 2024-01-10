@@ -30,28 +30,38 @@
           </div>
         </div>
         <div>
-          <div class="article-list">
-            <a
-              v-for="article in articles.results"
-              :key="article.id"
-              :href="article.url"
-              target="_blank"
-              class="article"
-            >
-              <img
-                :src="article.image_url"
-                :alt="`Image for ${article.title}`"
-              />
-              <div class="medium-and-date">
-                <small>{{ formatDate(article.published_at) }}</small>
-                <p>{{ article.medium.name }}</p>
-              </div>
-              <h5>{{ article.title }}</h5>
+          <div
+            v-for="(dayArticles, date) in articlesByDate"
+            :key="date"
+            class="date-articles"
+          >
+            <div class="date-line">
+              <span class="date">{{ formatLongDate(date) }}</span>
               <hr />
-              <p class="line-clamp-4">
-                {{ article.description }}
-              </p>
-            </a>
+            </div>
+            <div class="article-list">
+              <a
+                v-for="article in dayArticles"
+                :key="article.id"
+                :href="article.url"
+                target="_blank"
+                class="article"
+              >
+                <img
+                  :src="article.image_url"
+                  :alt="`Image for ${article.title}`"
+                />
+                <div class="medium-and-date">
+                  <small>{{ formatDate(article.published_at) }}</small>
+                  <p>{{ article.medium.name }}</p>
+                </div>
+                <h5>{{ article.title }}</h5>
+                <hr />
+                <p class="line-clamp-4">
+                  {{ article.description }}
+                </p>
+              </a>
+            </div>
           </div>
           <div v-if="articles.next" class="more-articles">
             <button type="button" @click="$emit('load-more')">
@@ -76,12 +86,30 @@ export default {
   data() {
     return {}
   },
+  computed: {
+    articlesByDate() {
+      return this.articles.results.reduce((acc, article) => {
+        const date = new Date(article.published_at).toISOString().split('T')[0]
+        acc[date] = acc[date] || []
+        acc[date].push(article)
+        return acc
+      }, {})
+    }
+  },
   methods: {
     formatDate(date) {
       return Intl.DateTimeFormat('sl-SI', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
+      }).format(new Date(date))
+    },
+    formatLongDate(date) {
+      return Intl.DateTimeFormat('sl-SI', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
       }).format(new Date(date))
     }
   }
@@ -293,9 +321,29 @@ export default {
     margin: 0;
   }
 
+  .date-articles {
+    margin-top: 2rem;
+  }
+
+  .date-line {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    color: #ffd700;
+
+    .date {
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    hr {
+      flex: 1;
+    }
+  }
+
   .article-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem 1.5rem;
     margin-top: 2rem;
 
