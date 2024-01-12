@@ -11,18 +11,21 @@
       <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
     </video>
     <ArticleHeadline />
+    <ArticleStickyBadge />
     <SectionArticlesAll :articles="articles" @load-more="onLoadMore" />
     <ArticlesFooter :window-width="windowWidth" />
   </div>
 </template>
 
 <script>
+import ArticleStickyBadge from '../../components/ArticleStickyBadge.vue'
 import ArticleHeadline from '../../components/ArticleHeadline.vue'
 import SectionArticlesAll from '../../components/SectionArticlesAll.vue'
 import ArticlesFooter from '../../components/ArticlesFooter.vue'
 
 export default {
   components: {
+    ArticleStickyBadge,
     ArticleHeadline,
     SectionArticlesAll,
     ArticlesFooter
