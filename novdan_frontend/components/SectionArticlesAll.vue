@@ -5,18 +5,19 @@
         <div class="preamble">
           <div class="description">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio
-              amet harum obcaecati hic perspiciatis, voluptatem ut. Commodi esse
-              nostrum vitae quo deserunt vel molestiae nobis explicabo, fugit
-              nihil ut expedita.
+              Nov dan je eksperimentalna platforma za podporo neodvisnim medijem
+              in medijskim ustvarjalcem.
             </p>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio
-              amet harum obcaecati hic perspiciatis, voluptatem ut.
+              Na enem mestu zbiramo ustvarjene vsebine in spodbujamo bralce, da
+              podprete njihovo ustvarjanje s pomočjo našega donacijskega
+              sistema, ki temelji na odprtem standardu za spletno monetizacijo
+              (WMS) in omogoča pravično distribucijo podpornih sredstev.
+              <a href="/">Več informacij →</a>
             </p>
           </div>
           <div class="badge">
-            <a href="#" class="support-wrapper">
+            <a href="/podpri" class="support-wrapper">
               <div class="star">
                 <img src="~assets/images/star.png" alt="pink spinning star" />
                 <div>
@@ -47,19 +48,22 @@
                 target="_blank"
                 class="article"
               >
-                <img
-                  :src="article.image_url"
-                  :alt="`Image for ${article.title}`"
-                />
                 <div class="medium-and-date">
                   <p>
-                    <img :src="faviconURL(article.medium.url)" :alt="article.medium.name" class="favicon" />
+                    <img
+                      :src="faviconURL(article.medium.url)"
+                      :alt="article.medium.name"
+                      class="favicon"
+                    />
                     <span>{{ article.medium.name }}</span>
                   </p>
                   <small>{{ formatRelativeTime(article.published_at) }}</small>
                 </div>
+                <img
+                  :src="article.image_url"
+                  :alt="`Image for ${article.title}`"
+                />
                 <h5>{{ article.title }}</h5>
-                <hr />
                 <p class="line-clamp-4">
                   {{ article.description }}
                 </p>
@@ -163,6 +167,7 @@ export default {
   .preamble {
     display: flex;
     flex-direction: column;
+    margin-bottom: 2rem;
 
     @media (min-width: 992px) {
       flex-direction: row;
@@ -177,12 +182,21 @@ export default {
       }
 
       p {
-        font-size: 1rem;
+        font-size: 1.25rem;
         margin: 0;
       }
 
       p + p {
         margin-top: 1.25rem;
+      }
+
+      a {
+        color: #ffd700;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 
@@ -196,8 +210,7 @@ export default {
       position: relative;
 
       @media (min-width: 992px) {
-        margin-top: -1rem;
-        margin-bottom: -0.75rem;
+        margin-top: 0;
       }
 
       @keyframes rotate360 {
@@ -358,7 +371,7 @@ export default {
   }
 
   .date-articles {
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 
   .date-line {
@@ -381,7 +394,7 @@ export default {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem 1.5rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
 
     .article {
       display: block;
@@ -395,6 +408,8 @@ export default {
       }
 
       img {
+        box-sizing: border-box;
+        display: block;
         aspect-ratio: 16/9;
         width: 100%;
         height: auto;
@@ -415,12 +430,12 @@ export default {
       h5 {
         font-size: 1.2rem;
         font-weight: 500;
-        margin-block: 0.75em;
+        margin-block: 0.7em;
       }
 
       p {
         font-size: 1rem;
-        margin-block: 1em;
+        margin-block: 0.7rem;
       }
 
       .line-clamp-4 {
@@ -434,6 +449,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        margin-bottom: 0.4rem;
 
         p {
           display: flex;

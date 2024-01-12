@@ -12,7 +12,7 @@
         <nav>
           <ul>
             <li><a href="#">Za ustvarjalce</a></li>
-            <li><a href="#">Za podpornike</a></li>
+            <li><a href="/dash/register">Za podpornike</a></li>
           </ul>
         </nav>
       </div>
