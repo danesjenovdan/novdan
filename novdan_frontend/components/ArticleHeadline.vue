@@ -3,7 +3,10 @@
     <div class="container">
       <div class="title">
         <h1>
-          n<img class="sun" src="~assets/images/sun.png" alt="sun icon" />v dan
+          <a href="/">
+            n<img class="sun" src="~assets/images/sun.png" alt="sun icon" />v
+            dan
+          </a>
         </h1>
         <p>
           Neposredna podpora <br />
@@ -11,7 +14,7 @@
         </p>
         <nav>
           <ul>
-            <li><a href="#">Za ustvarjalce</a></li>
+            <li><a href="/za-ustvarjalce">Za ustvarjalce</a></li>
             <li><a href="/dash/register">Za podpornike</a></li>
           </ul>
         </nav>
@@ -29,7 +32,44 @@
             podprete njihovo ustvarjanje s pomočjo našega donacijskega sistema,
             ki temelji na odprtem standardu za spletno monetizacijo (WMS) in
             omogoča pravično distribucijo podpornih sredstev.
-            <a href="/">Več informacij →</a>
+          </p>
+          <p>Sodelujoči:</p>
+          <p class="logos">
+            <a href="https://www.ostro.si/" target="_blank">
+              <img
+                src="~assets/images/ostro.svg"
+                alt="Oštro logo"
+                :style="`transform: rotate(${tilted * 0.6}deg)`"
+              />
+            </a>
+            <a href="https://vezjak.com/" target="_blank">
+              <img
+                src="~assets/images/imr.svg"
+                alt="Boris Vezjak - In Media Res logo"
+                :style="`transform: rotate(${tilted * 0.8}deg)`"
+              />
+            </a>
+            <a href="https://mesanec.si/" target="_blank">
+              <img
+                src="~assets/images/mesanec.svg"
+                alt="Mešanec.si logo"
+                :style="`transform: rotate(${tilted * 0.2}deg)`"
+              />
+            </a>
+            <a href="https://www.dsavic.net/" target="_blank">
+              <img
+                src="~assets/images/drzavljan-d.svg"
+                alt="Domen Savič - Državljan D logo"
+                :style="`transform: rotate(${tilted * 0.4}deg)`"
+              />
+            </a>
+            <a href="https://danesjenovdan.si/agrument/" target="_blank">
+              <img
+                src="~assets/images/djnd.svg"
+                alt="Agrument logo"
+                :style="`transform: rotate(${tilted * 0.5}deg)`"
+              />
+            </a>
           </p>
         </div>
         <div class="badge">
@@ -51,7 +91,6 @@
 </template>
 
 <script>
-// import { gsap } from 'gsap'
 export default {
   data() {
     return {
@@ -99,6 +138,11 @@ export default {
       line-height: 0.75;
       text-align: center;
       margin: 0;
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
     }
 
     p {
@@ -190,6 +234,18 @@ export default {
       a {
         color: inherit;
         text-decoration: underline;
+      }
+
+      .logos {
+        a {
+          img {
+            width: 3rem;
+          }
+        }
+
+        a + a {
+          margin-left: 1rem;
+        }
       }
     }
 
@@ -286,7 +342,7 @@ export default {
             }
 
             span:last-child {
-              font-family: 'Syne Tactile', cursive;
+              font-family: 'wf-syne-tactile', cursive;
               font-size: calc(var(--badge-size) / 18);
               font-style: italic;
               line-height: 1;

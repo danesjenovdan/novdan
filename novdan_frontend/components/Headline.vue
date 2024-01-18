@@ -52,7 +52,6 @@
 </template>
 
 <script>
-// import { gsap } from 'gsap'
 export default {
   data() {
     return {
@@ -131,7 +130,7 @@ export default {
       &:nth-child(even) {
         .yellow-plate {
           font-size: 2.75rem;
-          font-family: 'Le Murmure', serif;
+          font-family: 'wf-le-murmure', serif;
         }
       }
     }

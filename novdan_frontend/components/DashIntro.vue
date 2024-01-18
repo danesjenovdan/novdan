@@ -2,7 +2,7 @@
   <section class="background-white what">
     <div class="container">
       <div class="content-narrow">
-        <p class="text-big">
+        <!-- <p class="text-big">
           <span>ZDRAVO!</span>
         </p>
         <p class="text-small">
@@ -12,7 +12,7 @@
           <a href="mailto:novdan@danesjenovdan.si" target="_blank">nam piši</a>.
         </p>
         <div class="yellow-bg" />
-        <hr v-if="isSubscribed" />
+        <hr v-if="isSubscribed" /> -->
         <div class="row">
           <div v-if="isSubscribed" style="position: relative">
             <h3>Tvoja razporeditev</h3>
@@ -104,15 +104,9 @@ export default {
     position: relative;
   }
 
-  // h3 {
-  //   font-size: 3rem;
-  //   font-weight: 400;
-  //   font-family: 'Le Murmure';
-  //   text-transform: uppercase;
-  //   letter-spacing: 3px;
-  //   margin-top: 0;
-  //   margin-bottom: 2rem;
-  // }
+  h3 {
+    margin-top: 5rem;
+  }
 
   p {
     @media (min-width: 1200px) {
@@ -170,7 +164,7 @@ export default {
       margin-right: 15px;
     }
     a {
-      font-family: "Syne Tactile", cursive;
+      font-family: 'wf-syne-tactile', cursive;
       color: #1103b1;
       text-decoration: none;
     }

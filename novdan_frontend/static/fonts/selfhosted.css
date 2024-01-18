@@ -1,0 +1,61 @@
+/* Syne */
+@font-face {
+  font-display: swap;
+  font-family: 'wf-syne';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./syne/syne-v22-latin_latin-ext-400.woff2') format('woff2'),
+       url('./syne/syne-v22-latin_latin-ext-400.ttf') format('truetype');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'wf-syne';
+  font-style: normal;
+  font-weight: 500;
+  src: url('./syne/syne-v22-latin_latin-ext-500.woff2') format('woff2'),
+       url('./syne/syne-v22-latin_latin-ext-500.ttf') format('truetype');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'wf-syne';
+  font-style: normal;
+  font-weight: 600;
+  src: url('./syne/syne-v22-latin_latin-ext-600.woff2') format('woff2'),
+       url('./syne/syne-v22-latin_latin-ext-600.ttf') format('truetype');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'wf-syne';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./syne/syne-v22-latin_latin-ext-700.woff2') format('woff2'),
+       url('./syne/syne-v22-latin_latin-ext-700.ttf') format('truetype');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'wf-syne';
+  font-style: normal;
+  font-weight: 800;
+  src: url('./syne/syne-v22-latin_latin-ext-800.woff2') format('woff2'),
+       url('./syne/syne-v22-latin_latin-ext-800.ttf') format('truetype');
+}
+
+/* Syne Tactile */
+@font-face {
+  font-display: swap;
+  font-family: 'wf-syne-tactile';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./syne-tactile/syne-tactile-v15-latin_latin-ext-400.woff2') format('woff2'),
+       url('./syne-tactile/syne-tactile-v15-latin_latin-ext-400.ttf') format('truetype');
+}
+
+/* Le Murmure */
+@font-face {
+  font-display: swap;
+  font-family: 'wf-le-murmure';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./le-murmure/Le_Murmure-Regular_web.woff2') format('woff2'),
+       url('./le-murmure/Le_Murmure-Regular_web.ttf') format('truetype');
+}

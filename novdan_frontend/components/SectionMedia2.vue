@@ -2,8 +2,7 @@
   <section class="background-gradient-orange-pink media" @mousemove="tiltTiles">
     <div class="container">
       <h2>
-        Sodelujoči <br />
-        mediji
+        Sodelujoči
       </h2>
       <div class="row">
         <div>
@@ -59,24 +58,6 @@
               </a>
             </li>
           </ul>
-        </div>
-        <div class="support-section">
-          <div class="support-wrapper">
-            <a href="#how-section" class="button">
-              <div class="support">Pridruži se!</div>
-              <div class="star">
-                <img src="~assets/images/star.png" alt="pink spinning star" />
-                <div>
-                  <span>5</span>
-                  <span>eur/<br />mes</span>
-                </div>
-              </div>
-            </a>
-            <div class="subtitle">
-              <p>Podpri <span>neodvisne</span> medije.</p>
-            </div>
-          </div>
-          <div v-if="windowWidth > 1200" class="yellow-bg" />
         </div>
       </div>
     </div>
@@ -174,141 +155,6 @@ export default {
           bottom: -1.5rem;
         }
       }
-    }
-  }
-}
-
-.support-section {
-  display: flex;
-  align-items: center;
-  @media (min-width: 1200px) {
-    margin-left: 4rem;
-  }
-  @media (min-width: 1400px) {
-    margin-left: 8rem;
-
-    .yellow-bg {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 622px;
-      height: 622px;
-      background-image: radial-gradient(
-        circle 311px at center,
-        #ffd700 0%,
-        rgba(255, 215, 0, 0) 100%
-      );
-      opacity: 0.4;
-      z-index: 1;
-    }
-  }
-}
-
-.support-wrapper {
-  z-index: 2;
-  margin-top: 2rem;
-  @media (min-width: 1200px) {
-    margin-top: 0;
-  }
-  .button {
-    text-decoration: none;
-    color: black;
-    position: relative;
-    display: flex;
-    align-items: center;
-    .support {
-      font-size: 1.5rem;
-      font-weight: 700;
-      padding: 0.5rem 5rem 0.5rem 2rem;
-      border: 3px solid #000000;
-      border-radius: 1.25rem;
-      background-color: white;
-      position: relative;
-      z-index: 3;
-      transition: all 0.25s ease;
-      transform: rotate(0) scale(1);
-      @media (min-width: 1200px) {
-        font-size: 2rem;
-      }
-      @media (min-width: 1400px) {
-        font-size: 3rem;
-        padding: 0.5rem 7rem 0.5rem 2rem;
-      }
-    }
-    .star {
-      position: absolute;
-      z-index: 3;
-      left: 12rem;
-      img {
-        height: 8rem;
-        animation: rotate360 3s linear infinite; /* animation set */
-        @media (min-width: 992px) {
-          animation-play-state: paused;
-        }
-      }
-      div {
-        position: absolute;
-        top: 2.75rem;
-        left: 2.5rem;
-        z-index: 4;
-        display: flex;
-        align-items: flex-end;
-        span:first-child {
-          font-size: 2rem;
-          font-weight: 700;
-          line-height: 1;
-        }
-        span:last-child {
-          font-size: 0.75rem;
-          font-style: italic;
-          display: inline-block;
-          font-family: 'wf-syne-tactile', cursive;
-        }
-      }
-      @media (min-width: 1200px) {
-        left: unset;
-        right: 2rem;
-      }
-      @media (min-width: 1400px) {
-        right: -4rem;
-        img {
-          height: 11rem;
-        }
-        div {
-          top: 3.5rem;
-          left: 3.5rem;
-          span:first-child {
-            font-size: 3rem;
-          }
-          span:last-child {
-            font-size: 1rem;
-          }
-        }
-      }
-    }
-    &:hover {
-      cursor: pointer;
-      .star img {
-        animation-play-state: running;
-      }
-      .support {
-        background-color: #ffd700;
-        @media (min-width: 1200px) {
-          transform: rotate(0) scale(1.1);
-        }
-      }
-    }
-  }
-  .subtitle {
-    margin-top: 2rem;
-    margin-left: 3rem;
-    font-size: 1.5rem;
-    font-weight: 700;
-    span {
-      color: #1103b1;
-      font-weight: 400;
-      font-family: 'wf-syne-tactile', cursive;
     }
   }
 }

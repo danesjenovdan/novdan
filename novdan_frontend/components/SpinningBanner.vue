@@ -24,6 +24,6 @@ export default {
 
 <style scoped lang="scss">
 .murmure {
-  font-family: "Le Murmure", serif;
+  font-family: 'wf-le-murmure', serif;
 }
 </style>

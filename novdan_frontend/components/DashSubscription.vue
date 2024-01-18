@@ -376,7 +376,7 @@ export default {
   // h3 {
   //   font-size: 3rem;
   //   font-weight: 400;
-  //   font-family: 'Le Murmure';
+  //   font-family: 'wf-le-murmure', serif;
   //   text-transform: uppercase;
   //   letter-spacing: 3px;
   //   margin-top: 0;
@@ -429,7 +429,7 @@ export default {
       margin-bottom: 0;
       text-align: center;
       span {
-        font-family: 'Syne Tactile', cursive;
+        font-family: 'wf-syne-tactile', cursive;
         color: #1103b1;
       }
     }
@@ -508,7 +508,7 @@ export default {
             font-size: 0.75rem;
             font-style: italic;
             display: inline-block;
-            font-family: 'Syne Tactile', cursive;
+            font-family: 'wf-syne-tactile', cursive;
           }
         }
         @media (min-width: 768px) {
@@ -556,7 +556,7 @@ export default {
       span {
         color: #1103b1;
         font-weight: 400;
-        font-family: 'Syne Tactile', cursive;
+        font-family: 'wf-syne-tactile', cursive;
       }
     }
     .payment-method {
@@ -565,7 +565,7 @@ export default {
         border: 2px solid #000000;
         border-radius: 10px;
         padding: 8px 20px;
-        font-family: 'Syne', sans-serif;
+        font-family: 'wf-syne', sans-serif;
         font-size: 20px;
         font-weight: 500;
         display: block;
@@ -706,7 +706,7 @@ export default {
     label {
       display: block;
       color: #1103b1;
-      font-family: 'Syne Tactile', cursive;
+      font-family: 'wf-syne-tactile', cursive;
       font-size: 20px;
       line-height: 0.8;
       letter-spacing: 1px;
@@ -743,7 +743,7 @@ export default {
     border: 2px solid #000000;
     border-radius: 10px;
     background-color: #ffffff;
-    font-family: 'Syne', sans-serif;
+    font-family: 'wf-syne', sans-serif;
     font-size: 25px;
     font-weight: 700;
     color: black;

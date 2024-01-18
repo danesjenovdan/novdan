@@ -10,7 +10,8 @@
     >
       <source src="~assets/video/back_v1_1.mp4" type="video/mp4">
     </video>
-    <SectionColumns :window-width="windowWidth" />
+    <SupportHeadline />
+    <SectionColumns no-bg :window-width="windowWidth" />
     <SectionHow :window-width="windowWidth" />
     <SectionFaq />
     <Footer :window-width="windowWidth" />
@@ -39,7 +40,7 @@ html {
 }
 body {
   margin: 0;
-  font-family: 'Syne', sans-serif;
+  font-family: 'wf-syne', sans-serif;
 }
 #bgvid {
   object-fit: cover;

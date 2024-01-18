@@ -255,7 +255,7 @@ p {
     border: 2px solid #000000;
     border-radius: 10px;
     background-color: #ffffff;
-    font-family: 'Syne', sans-serif;
+    font-family: 'wf-syne', sans-serif;
     font-size: 25px;
     font-weight: 700;
     padding: 8px 24px;

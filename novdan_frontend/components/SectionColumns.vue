@@ -1,9 +1,14 @@
 <template>
   <section class="background-gif columns">
-    <div v-if="windowWidth > 1200" class="rotating-circle">
+    <div
+      v-if="windowWidth > 1200"
+      class="rotating-circle"
+      :class="{ 'has-no-bg': noBg }"
+    >
       <img src="~assets/images/krog-moder.svg" alt="" />
     </div>
     <video
+      v-if="!noBg"
       id="bgvidfooter"
       playsinline
       autoplay
@@ -63,6 +68,10 @@ export default {
     windowWidth: {
       type: Number,
       default: 0
+    },
+    noBg: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -100,6 +109,10 @@ export default {
     left: 4rem;
     top: -2rem;
     animation: rotate360 6s linear infinite;
+
+    &.has-no-bg {
+      top: 0;
+    }
   }
 }
 .yellow-column-wrapper {
@@ -117,7 +130,7 @@ export default {
     h3 {
       text-transform: uppercase;
       font-size: 2rem;
-      font-family: 'Le Murmure', serif;
+      font-family: 'wf-le-murmure', serif;
       margin: 0;
     }
     p {
