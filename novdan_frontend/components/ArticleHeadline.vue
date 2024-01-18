@@ -3,7 +3,7 @@
     <div class="container">
       <div class="title">
         <h1>
-          n<img class="sun" src="~assets/images/sun.png" alt="sun icon" />v dan
+          <a href="/">n<img class="sun" src="~assets/images/sun.png" alt="sun icon" />v dan</a>
         </h1>
         <p>
           Neposredna podpora <br />
@@ -29,7 +29,6 @@
             podprete njihovo ustvarjanje s pomočjo našega donacijskega sistema,
             ki temelji na odprtem standardu za spletno monetizacijo (WMS) in
             omogoča pravično distribucijo podpornih sredstev.
-            <a href="/">Več informacij →</a>
           </p>
         </div>
         <div class="badge">
@@ -99,6 +98,11 @@ export default {
       line-height: 0.75;
       text-align: center;
       margin: 0;
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
     }
 
     p {
