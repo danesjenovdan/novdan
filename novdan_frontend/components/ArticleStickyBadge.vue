@@ -37,6 +37,7 @@ export default {
   z-index: 999999;
   padding: 1rem;
   padding-bottom: 0;
+  pointer-events: none;
 
   @media (min-width: 992px) {
     margin-bottom: 3rem;
@@ -58,6 +59,7 @@ export default {
       width: var(--badge-size);
       height: calc(var(--badge-size) / 1.5);
       position: relative;
+      pointer-events: all;
 
       @media (min-width: 992px) {
         margin-top: 0;

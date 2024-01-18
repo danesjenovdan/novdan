@@ -3,7 +3,10 @@
     <div class="container">
       <div class="title">
         <h1>
-          <a href="/">n<img class="sun" src="~assets/images/sun.png" alt="sun icon" />v dan</a>
+          <a href="/">
+            n<img class="sun" src="~assets/images/sun.png" alt="sun icon" />v
+            dan
+          </a>
         </h1>
         <p>
           Neposredna podpora <br />
@@ -29,6 +32,44 @@
             podprete njihovo ustvarjanje s pomočjo našega donacijskega sistema,
             ki temelji na odprtem standardu za spletno monetizacijo (WMS) in
             omogoča pravično distribucijo podpornih sredstev.
+          </p>
+          <p>Sodelujoči:</p>
+          <p class="logos">
+            <a href="https://www.ostro.si/" target="_blank">
+              <img
+                src="~assets/images/ostro.svg"
+                alt="Oštro logo"
+                :style="`transform: rotate(${tilted * 0.6}deg)`"
+              />
+            </a>
+            <a href="https://vezjak.com/" target="_blank">
+              <img
+                src="~assets/images/imr.svg"
+                alt="Boris Vezjak - In Media Res logo"
+                :style="`transform: rotate(${tilted * 0.8}deg)`"
+              />
+            </a>
+            <a href="https://mesanec.si/" target="_blank">
+              <img
+                src="~assets/images/mesanec.svg"
+                alt="Mešanec.si logo"
+                :style="`transform: rotate(${tilted * 0.2}deg)`"
+              />
+            </a>
+            <a href="https://www.dsavic.net/" target="_blank">
+              <img
+                src="~assets/images/drzavljan-d.svg"
+                alt="Domen Savič - Državljan D logo"
+                :style="`transform: rotate(${tilted * 0.4}deg)`"
+              />
+            </a>
+            <a href="https://danesjenovdan.si/agrument/" target="_blank">
+              <img
+                src="~assets/images/djnd.svg"
+                alt="Agrument logo"
+                :style="`transform: rotate(${tilted * 0.5}deg)`"
+              />
+            </a>
           </p>
         </div>
         <div class="badge">
@@ -194,6 +235,18 @@ export default {
       a {
         color: inherit;
         text-decoration: underline;
+      }
+
+      .logos {
+        a {
+          img {
+            width: 3rem;
+          }
+        }
+
+        a + a {
+          margin-left: 1rem;
+        }
       }
     }
 
