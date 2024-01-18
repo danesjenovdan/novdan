@@ -3,43 +3,49 @@
     <div class="container">
       <div>
         <div>
-          <div
-            v-for="(dayArticles, date) in articlesByDate"
-            :key="date"
-            class="date-articles"
-          >
-            <div class="date-line">
-              <span class="date">{{ formatLongDate(date) }}</span>
-              <hr />
-            </div>
+          <div class="date-articles">
             <div class="article-list">
-              <a
-                v-for="article in dayArticles"
+              <div
+                v-for="article in articlesWithFirstNewDate"
                 :key="article.id"
-                :href="article.url"
-                target="_blank"
-                class="article"
               >
-                <div class="medium-and-date">
-                  <p>
-                    <img
-                      :src="faviconURL(article.medium.url)"
-                      :alt="article.medium.name"
-                      class="favicon"
-                    />
-                    <span>{{ article.medium.name }}</span>
-                  </p>
-                  <small>{{ formatRelativeTime(article.published_at) }}</small>
+                <div
+                  :class="{
+                    'date-line': true,
+                    'only-line': !article.firstNewDate
+                  }"
+                >
+                  <span class="date">{{
+                    article.firstNewDate
+                      ? formatLongDate(article.published_at)
+                      : '&nbsp;'
+                  }}</span>
+                  <hr />
                 </div>
-                <img
-                  :src="article.image_url"
-                  :alt="`Image for ${article.title}`"
-                />
-                <h5>{{ article.title }}</h5>
-                <p class="line-clamp-4">
-                  {{ article.description }}
-                </p>
-              </a>
+                <a :href="article.url" target="_blank" class="article">
+                  <div class="medium-and-date">
+                    <p>
+                      <img
+                        :src="faviconURL(article.medium.url)"
+                        :alt="article.medium.name"
+                        class="favicon"
+                      />
+                      <span>{{ article.medium.name }}</span>
+                    </p>
+                    <small :title="article.published_at">{{
+                      formatRelativeTime(article.published_at)
+                    }}</small>
+                  </div>
+                  <img
+                    :src="article.image_url"
+                    :alt="`Image for ${article.title}`"
+                  />
+                  <h5>{{ article.title }}</h5>
+                  <p class="line-clamp-4">
+                    {{ article.description }}
+                  </p>
+                </a>
+              </div>
             </div>
           </div>
           <div v-if="articles.next" class="more-articles">
@@ -66,13 +72,20 @@ export default {
     return {}
   },
   computed: {
-    articlesByDate() {
-      return this.articles.results.reduce((acc, article) => {
+    articlesWithFirstNewDate() {
+      let lastDate = null
+      const articles = this.articles.results || []
+      return articles.map((article) => {
         const date = new Date(article.published_at).toISOString().split('T')[0]
-        acc[date] = acc[date] || []
-        acc[date].push(article)
-        return acc
-      }, {})
+        if (date !== lastDate) {
+          lastDate = date
+          return {
+            ...article,
+            firstNewDate: true
+          }
+        }
+        return article
+      })
     }
   },
   methods: {
@@ -180,22 +193,36 @@ export default {
   }
 
   .date-articles {
-    margin-top: 1rem;
+    overflow: hidden;
   }
 
   .date-line {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     align-items: center;
     color: #ffd700;
+    margin-inline: -2rem;
 
     .date {
+      margin-left: 0.5rem;
+      padding-left: 1.5rem;
+      background: #000;
       font-size: 1.25rem;
       font-weight: 500;
     }
 
     hr {
       flex: 1;
+    }
+
+    &.only-line {
+      gap: 0;
+
+      .date {
+        margin-left: 0;
+        text-indent: -999px;
+        background: transparent;
+      }
     }
   }
 
@@ -207,6 +234,7 @@ export default {
 
     .article {
       display: block;
+      margin-top: 1rem;
       text-decoration: none;
       color: #fff;
 
