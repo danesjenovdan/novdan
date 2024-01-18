@@ -117,7 +117,7 @@ export default {
     h3 {
       text-transform: uppercase;
       font-size: 2rem;
-      font-family: 'Le Murmure', serif;
+      font-family: 'wf-le-murmure', serif;
       margin: 0;
     }
     p {

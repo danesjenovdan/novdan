@@ -164,7 +164,7 @@ export default {
       margin-right: 15px;
     }
     a {
-      font-family: "Syne Tactile", cursive;
+      font-family: 'wf-syne-tactile', cursive;
       color: #1103b1;
       text-decoration: none;
     }

@@ -138,7 +138,7 @@ export default {
         font-size: 1rem;
         font-style: italic;
         display: inline-block;
-        font-family: 'Syne Tactile', cursive;
+        font-family: 'wf-syne-tactile', cursive;
       }
     }
     @media (min-width: 1200px) {

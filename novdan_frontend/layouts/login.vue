@@ -24,7 +24,7 @@
 <style lang="scss">
 body {
   margin: 0;
-  font-family: 'Syne', sans-serif;
+  font-family: 'wf-syne', sans-serif;
 }
 #bgvid {
   object-fit: cover;
@@ -84,7 +84,7 @@ body {
   h3 {
     font-size: 3rem;
     font-weight: 400;
-    font-family: 'Le Murmure';
+    font-family: 'wf-le-murmure', serif;
     text-transform: uppercase;
     letter-spacing: 3px;
     margin-top: 0;
@@ -97,7 +97,7 @@ body {
     label {
       display: block;
       color: #1103b1;
-      font-family: 'Syne Tactile', cursive;
+      font-family: 'wf-syne-tactile', cursive;
       font-size: 20px;
       line-height: 0.8;
       letter-spacing: 1px;
@@ -130,7 +130,7 @@ body {
       border: 2px solid #000000;
       border-radius: 10px;
       background-color: #ffffff;
-      font-family: 'Syne', sans-serif;
+      font-family: 'wf-syne', sans-serif;
       font-size: 25px;
       font-weight: 700;
       padding: 8px 24px;

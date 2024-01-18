@@ -372,7 +372,7 @@ export default {
           margin-bottom: 0.5rem;
         }
         .support {
-          font-family: 'Syne Tactile', cursive;
+          font-family: 'wf-syne-tactile', cursive;
           font-weight: 400;
           font-size: 2rem;
           color: #1103b1;

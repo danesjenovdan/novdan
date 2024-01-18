@@ -58,7 +58,7 @@ html {
 }
 body {
   margin: 0;
-  font-family: 'Syne', sans-serif;
+  font-family: 'wf-syne', sans-serif;
 }
 #bgvid {
   object-fit: cover;
@@ -135,7 +135,7 @@ hr {
 h3 {
   font-size: 3rem;
   font-weight: 400;
-  font-family: 'Le Murmure';
+  font-family: 'wf-le-murmure', serif;
   text-transform: uppercase;
   letter-spacing: 3px;
   margin-top: 0;

@@ -263,7 +263,7 @@ export default {
           font-size: 0.75rem;
           font-style: italic;
           display: inline-block;
-          font-family: 'Syne Tactile', cursive;
+          font-family: 'wf-syne-tactile', cursive;
         }
       }
       @media (min-width: 1200px) {
@@ -308,7 +308,7 @@ export default {
     span {
       color: #1103b1;
       font-weight: 400;
-      font-family: 'Syne Tactile', cursive;
+      font-family: 'wf-syne-tactile', cursive;
     }
   }
 }

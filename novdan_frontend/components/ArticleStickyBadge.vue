@@ -145,7 +145,7 @@ export default {
             }
 
             span:last-child {
-              font-family: 'Syne Tactile', cursive;
+              font-family: 'wf-syne-tactile', cursive;
               font-size: calc(var(--badge-size) / 18);
               font-style: italic;
               line-height: 1;

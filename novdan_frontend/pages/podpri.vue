@@ -39,7 +39,7 @@ html {
 }
 body {
   margin: 0;
-  font-family: 'Syne', sans-serif;
+  font-family: 'wf-syne', sans-serif;
 }
 #bgvid {
   object-fit: cover;
