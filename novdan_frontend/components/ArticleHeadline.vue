@@ -1,5 +1,5 @@
 <template>
-  <section class="background-gif headline" @mousemove="tiltTiles">
+  <section class="background-gif headline">
     <div class="container">
       <div class="title">
         <h1>
@@ -53,7 +53,7 @@
               <img
                 src="~assets/images/mesanec.svg"
                 alt="Mešanec.si logo"
-                :style="`transform: rotate(${tilted * 0.2}deg)`"
+                :style="`transform: rotate(${tilted * 0.3}deg)`"
               />
             </a>
             <a href="https://www.dsavic.net/" target="_blank">
@@ -97,13 +97,19 @@ export default {
       tilted: 0
     }
   },
+  mounted() {
+    window.addEventListener('mousemove', this.tiltTiles)
+  },
+  beforeDestroy() {
+    window.removeEventListener('mousemove', this.tiltTiles)
+  },
   methods: {
     tiltTiles(event) {
       const positionX = event.pageX
       const windowWidth = window.innerWidth
       const windowCenter = windowWidth / 2
       const tilted = ((windowCenter - positionX) / windowCenter) * -45
-      this.tilted = tilted / 10
+      this.tilted = tilted / 4
     }
   }
 }

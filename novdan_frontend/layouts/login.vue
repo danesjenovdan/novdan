@@ -10,7 +10,7 @@
     >
       <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
     </video>
-    <DashHeadline />
+    <SupportHeadline />
     <section class="background-gradient-yellow-white">
       <div class="container">
         <div class="content-narrow">
@@ -148,6 +148,25 @@ body {
   }
   .error {
     color: red;
+  }
+  .btn-large {
+    border: 2px solid #000000;
+    border-radius: 10px;
+    background-color: #ffffff;
+    font-family: 'wf-syne', sans-serif;
+    font-size: 25px;
+    font-weight: 700;
+    padding: 8px 24px;
+    margin: 10px 0;
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #1103b1;
+      border-color: #1103b1;
+      color: white;
+    }
   }
 }
 </style>

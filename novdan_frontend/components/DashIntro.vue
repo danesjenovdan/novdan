@@ -14,7 +14,15 @@
         <div class="yellow-bg" />
         <hr v-if="isSubscribed" /> -->
         <div class="row">
-          <div v-if="isSubscribed" style="position: relative">
+          <div class="thank-you">
+            <h3>Hvala za tvojo podporo!</h3>
+            <p class="text-small">
+              Neodvisni mediji so ti hvaležni.
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div v-if="isSubscribed && hasMonetizedTime" style="position: relative">
             <h3>Tvoja razporeditev</h3>
             <p class="text-stats">
               Ta mesec si medijem prispeval_a
@@ -33,7 +41,6 @@
                 class="pie-chart"
               ></pie-chart>
             </div>
-            <div class="pink-bg" />
           </div>
         </div>
       </div>
@@ -70,6 +77,12 @@ export default {
   computed: {
     isSubscribed() {
       if (this.status && this.status.active_subscription) {
+        return true
+      }
+      return false
+    },
+    hasMonetizedTime() {
+      if (this.status && this.status.monetized_time > 0) {
         return true
       }
       return false
@@ -178,6 +191,11 @@ export default {
     // margin-right: 10rem;
   }
 
+  .thank-you {
+    width: 100%;
+    text-align: center;
+  }
+
   .text-big {
     font-weight: 500;
     font-size: 1rem;
@@ -231,35 +249,6 @@ export default {
         circle 200px at center,
         #ffd700 0%,
         rgba(255, 215, 0, 0) 100%
-      );
-    }
-  }
-
-  .pink-bg {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 300px;
-    height: 300px;
-    background-image: radial-gradient(
-      circle 150px at center,
-      #ff5ccb 0%,
-      rgba(255, 92, 203, 0) 100%
-    );
-    opacity: 0.4;
-    z-index: -1;
-    @media (min-width: 768px) {
-      top: -10%;
-      left: 40%;
-    }
-    @media (min-width: 992px) {
-      top: -8rem;
-      width: 500px;
-      height: 500px;
-      background-image: radial-gradient(
-        circle 250px at center,
-        #ff5ccb 0%,
-        rgba(255, 92, 203, 0) 100%
       );
     }
   }

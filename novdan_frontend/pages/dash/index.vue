@@ -14,7 +14,7 @@
       >
         <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
       </video>
-      <DashHeadline />
+      <SupportHeadline />
       <DashIntro :window-width="windowWidth" :status="status" />
       <DashSubscription :window-width="windowWidth" :status="status" />
       <Footer :window-width="windowWidth" />

@@ -1,128 +1,139 @@
 <template>
   <section id="how-section" class="background-gradient-white-yellow how">
     <div class="container">
-      <h1>Kako?</h1>
-      <div v-if="windowWidth > 992">
-        <div class="row first">
-          <p>
-            Inštaliraj si
-            <span
-              >Nov<br />
-              Dan vtičnik</span
-            >.
-          </p>
-          <div class="browsers">
-            <a
-              target="_blank"
-              href="https://chrome.google.com/webstore/detail/nov-dan/lioeapnoibjfgmeicjnghkoaoalnggik?hl=sl"
-              class="button-browser-wrapper"
-            >
-              <div class="support">Chrome</div>
-              <div class="button">
-                <img
-                  src="~assets/images/chrome.png"
-                  class="browser"
-                  alt="pink spinning star"
-                />
-                <img
-                  src="~assets/images/modra-zvezda.svg"
-                  class="spinning-star"
-                  alt="pink spinning star"
-                />
-              </div>
-            </a>
-            <a
-              target="_blank"
-              href="https://addons.mozilla.org/sl-SI/firefox/addon/nov-dan/"
-              class="button-browser-wrapper"
-            >
-              <div class="support">Firefox</div>
-              <div class="button">
-                <img
-                  src="~assets/images/mozilla.png"
-                  class="browser"
-                  alt="pink spinning star"
-                />
-                <img
-                  src="~assets/images/modra-zvezda.svg"
-                  class="spinning-star"
-                  alt="pink spinning star"
-                />
-              </div>
-            </a>
-          </div>
+      <!-- <h1>Kako?</h1> -->
+      <div class="tabs">
+        <div class="tab" :class="{ active: !supportDirectly }" @click="supportDirectly = !supportDirectly">
+          Podpri preko vtičnika
         </div>
-        <div class="row">
-          <div class="subscribe">
-            <p>Plačaj <br />naročnino.</p>
-            <div class="moneybill">
-              <img src="~assets/images/5-eur.svg" alt="pink spinning star" />
-              <div class="effect">
-                <img
-                  src="~assets/images/zarki-roza.svg"
-                  alt="pink spinning star"
-                />
-              </div>
-            </div>
-          </div>
+        <div class="spacer"></div>
+        <div class="tab" :class="{ active: supportDirectly }" @click="supportDirectly = !supportDirectly">
+          Podpri neposredno
         </div>
-        <div class="row">
-          <div class="read">
+      </div>
+      <template v-if="!supportDirectly">
+        <div v-if="windowWidth > 992">
+          <div class="row first">
             <p>
-              Beri <br /><span>neodvisne</span><br />
-              medije.
+              Inštaliraj si
+              <span>Nov <br />Dan vtičnik</span>.
             </p>
-            <div>
-              <img
-                src="~assets/images/vesoljcek.png"
-                alt="pink spinning star"
-              />
+            <div class="browsers">
+              <a
+                target="_blank"
+                href="https://chrome.google.com/webstore/detail/nov-dan/lioeapnoibjfgmeicjnghkoaoalnggik?hl=sl"
+                class="button-browser-wrapper"
+              >
+                <div class="support">Chrome</div>
+                <div class="button">
+                  <img
+                    src="~assets/images/chrome.png"
+                    class="browser"
+                    alt="pink spinning star"
+                  />
+                  <img
+                    src="~assets/images/modra-zvezda.svg"
+                    class="spinning-star"
+                    alt="pink spinning star"
+                  />
+                </div>
+              </a>
+              <a
+                target="_blank"
+                href="https://addons.mozilla.org/sl-SI/firefox/addon/nov-dan/"
+                class="button-browser-wrapper"
+              >
+                <div class="support">Firefox</div>
+                <div class="button">
+                  <img
+                    src="~assets/images/mozilla.png"
+                    class="browser"
+                    alt="pink spinning star"
+                  />
+                  <img
+                    src="~assets/images/modra-zvezda.svg"
+                    class="spinning-star"
+                    alt="pink spinning star"
+                  />
+                </div>
+              </a>
             </div>
           </div>
-        </div>
-        <div class="row forth" style="justify-content: end">
-          <div>
-            <p style="text-align: end">
-              <span>Tvoj prispevek bo</span><br />
-              <span>med njih razdeljen</span><br />
-              <span>glede na tvoj</span><br />
-              <span>čas branja.</span>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div v-if="windowWidth <= 992" class="how-mobile">
-        <div class="row">
-          <p>
-            Nov dan je eksperimentalna platforma, ki zaenkrat podpira samo
-            Firefox in Chrome računalniške brskalnike.
-          </p>
-          <div class="subscribe">
-            <div class="moneybill">
-              <div>
-                <span>obišči</span><br />
-                <span><a href="/">novdan.si</a></span
-                ><br />
-                <span>na računalniku</span>
+          <div class="row">
+            <div class="subscribe">
+              <p>Plačaj <br />naročnino.</p>
+              <div class="moneybill">
+                <img src="~assets/images/5-eur.svg" alt="pink spinning star" />
+                <div class="effect">
+                  <img
+                    src="~assets/images/zarki-roza.svg"
+                    alt="pink spinning star"
+                  />
+                </div>
               </div>
-              <div class="effect">
+            </div>
+          </div>
+          <div class="row">
+            <div class="read">
+              <p>
+                Beri <br /><span>neodvisne</span><br />
+                medije.
+              </p>
+              <div>
                 <img
-                  src="~assets/images/zarki-rumeni.svg"
+                  src="~assets/images/vesoljcek.png"
                   alt="pink spinning star"
                 />
               </div>
             </div>
+          </div>
+          <div class="row forth" style="justify-content: end">
             <div>
-              <p>Spomni se kasneje</p>
-              <a
-                href="mailto:?subject=Se%20spomni%C5%A1%20platforme%20Nov%20dan%3F&body=Nov%20dan%20je%20eksperimentalna%20platforma%20za%20podporo%20neodvisnim%20medijem%20in%20medijskim%20ustvarjalcem%2C%20ki%20deluje%20s%20pomo%C4%8Djo%20novega%20odprtega%20standarda%20za%20spletno%20monetizacijo%20(web%20monetization%20standard%20%E2%80%93%20WMS).%20Povezavo%20do%20vti%C4%8Dnika%20za%20brskalnik%20dobi%C5%A1%20na%20https%3A%2F%2Fnovdan.si"
-                class="support"
-                >pošlji si e-mail!</a
-              >
+              <p style="text-align: end">
+                <span>Tvoj prispevek bo</span><br />
+                <span>med njih razdeljen</span><br />
+                <span>glede na tvoj</span><br />
+                <span>čas branja.</span>
+              </p>
             </div>
           </div>
         </div>
-      </div>
+        <div v-if="windowWidth <= 992" class="how-mobile">
+          <div class="row">
+            <p>
+              Nov dan je eksperimentalna platforma, ki zaenkrat podpira samo
+              Firefox in Chrome računalniške brskalnike.
+            </p>
+            <div class="subscribe">
+              <div class="moneybill">
+                <div>
+                  <span>obišči</span><br />
+                  <span><a href="/">novdan.si</a></span><br />
+                  <span>na računalniku</span>
+                </div>
+                <div class="effect">
+                  <img
+                    src="~assets/images/zarki-rumeni.svg"
+                    alt="pink spinning star"
+                  />
+                </div>
+              </div>
+              <div>
+                <p>Spomni se kasneje</p>
+                <a
+                  href="mailto:?subject=Se%20spomni%C5%A1%20platforme%20Nov%20dan%3F&body=Nov%20dan%20je%20eksperimentalna%20platforma%20za%20podporo%20neodvisnim%20medijem%20in%20medijskim%20ustvarjalcem%2C%20ki%20deluje%20s%20pomo%C4%8Djo%20novega%20odprtega%20standarda%20za%20spletno%20monetizacijo%20(web%20monetization%20standard%20%E2%80%93%20WMS).%20Povezavo%20do%20vti%C4%8Dnika%20za%20brskalnik%20dobi%C5%A1%20na%20https%3A%2F%2Fnovdan.si"
+                  class="support"
+                >pošlji si e-mail!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="register-max-width">
+          <RegisterForm />
+        </div>
+      </template>
     </div>
   </section>
 </template>
@@ -134,6 +145,11 @@ export default {
       type: Number,
       default: 0
     }
+  },
+  data() {
+    return {
+      supportDirectly: false
+    }
   }
 }
 </script>
@@ -142,6 +158,50 @@ export default {
 .how {
   padding: 6rem 30px;
   overflow-x: hidden;
+
+  .tabs {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 4rem;
+
+    @media (min-width: 992px) {
+      margin-bottom: 6rem;
+    }
+
+    .tab {
+      font-size: 1.5rem;
+      font-weight: 400;
+      text-decoration: underline;
+      text-align: center;
+      color: #333;
+      cursor: pointer;
+
+      @media (min-width: 992px) {
+        font-size: 2.5rem;
+      }
+
+      &.active {
+        font-weight: 600;
+        color: #000;
+        text-decoration: none;
+      }
+    }
+
+    .spacer {
+      align-self: stretch;
+      flex: 0 0 2px;
+      width: 2px;
+      margin-inline: 2rem;
+      background-color: #000;
+    }
+  }
+
+  .register-max-width {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
   .row {
     display: block;
     @media (min-width: 992px) {
