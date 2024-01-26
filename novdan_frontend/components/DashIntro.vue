@@ -22,7 +22,7 @@
           </div>
         </div>
         <div class="row">
-          <div v-if="isSubscribed" style="position: relative">
+          <div v-if="isSubscribed && hasMonetizedTime" style="position: relative">
             <h3>Tvoja razporeditev</h3>
             <p class="text-stats">
               Ta mesec si medijem prispeval_a
@@ -77,6 +77,12 @@ export default {
   computed: {
     isSubscribed() {
       if (this.status && this.status.active_subscription) {
+        return true
+      }
+      return false
+    },
+    hasMonetizedTime() {
+      if (this.status && this.status.monetized_time > 0) {
         return true
       }
       return false
