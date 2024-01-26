@@ -11,15 +11,20 @@
         <input v-model="password" type="password" />
       </div>
       <input type="submit" value="Prijava" />
-      <nuxt-link to="/dash/register"> Ustvari račun </nuxt-link>
     </form>
-    <p v-if="error" class="error">Prijava ni uspela.</p>
+    <p v-if="error" class="error">
+      Prijava ni uspela.
+    </p>
     <a
       target="_blank"
       href="/terms"
       style="width: 100%; display: inline-block; padding-top: 20px"
-      >Splošni pogoji uporabe</a
-    >
+    >Splošni pogoji uporabe</a>
+    <div style="height: 2rem;"></div>
+    <h3>Še nimaš računa?</h3>
+    <nuxt-link to="/dash/register" class="btn-large">
+      Ustvari račun
+    </nuxt-link>
   </div>
 </template>
 

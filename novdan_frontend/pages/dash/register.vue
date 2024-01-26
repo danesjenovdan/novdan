@@ -61,9 +61,6 @@
         Pošiljanje...
       </p>
       <input type="submit" value="Ustvari račun" :disabled="processing" />
-      <nuxt-link to="/dash/login">
-        Prijavi se
-      </nuxt-link>
     </form>
     <!-- <p v-if="error" class="error">Prišlo je do napake.</p> -->
     <a
@@ -71,6 +68,11 @@
       href="/terms"
       style="width: 100%; display: inline-block; padding-top: 20px"
     >Splošni pogoji uporabe</a>
+    <div style="height: 2rem;"></div>
+    <h3>Že imaš račun?</h3>
+    <nuxt-link to="/dash/login" class="btn-large">
+      Prijavi se
+    </nuxt-link>
   </div>
 </template>
 
