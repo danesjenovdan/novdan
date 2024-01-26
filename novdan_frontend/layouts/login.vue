@@ -10,7 +10,7 @@
     >
       <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
     </video>
-    <DashHeadline />
+    <SupportHeadline />
     <section class="background-gradient-yellow-white">
       <div class="container">
         <div class="content-narrow">
