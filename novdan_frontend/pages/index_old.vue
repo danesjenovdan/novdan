@@ -8,61 +8,30 @@
       loop
       poster="~assets/images/gif.png"
     >
-      <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
+      <source src="~assets/video/back_v1_1.mp4" type="video/mp4">
     </video>
-    <ArticleHeadline />
-    <ArticleStickyBadge />
-    <SectionArticlesAll :articles="articles" @load-more="onLoadMore" />
+    <Headline />
+    <SectionWhat :window-width="windowWidth" />
+    <SectionColumns :window-width="windowWidth" />
+    <SectionMedia />
+    <SectionHow :window-width="windowWidth" />
+    <SectionFaq />
     <ArticlesFooter :window-width="windowWidth" />
   </div>
 </template>
 
 <script>
-import ArticleStickyBadge from '../../components/ArticleStickyBadge.vue'
-import ArticleHeadline from '../../components/ArticleHeadline.vue'
-import SectionArticlesAll from '../../components/SectionArticlesAll.vue'
-import ArticlesFooter from '../../components/ArticlesFooter.vue'
-
 export default {
-  components: {
-    ArticleStickyBadge,
-    ArticleHeadline,
-    SectionArticlesAll,
-    ArticlesFooter
-  },
-  async asyncData({ $axios, $config }) {
-    const api = $axios.create({ baseURL: $config.apiBase })
-    const articles = await api.$get('/articles/')
-
-    return {
-      articles
-    }
-  },
-  data() {
+  data () {
     return {
       windowWidth: 0
     }
   },
-  mounted() {
+  mounted () {
     this.windowWidth = window.innerWidth
     window.addEventListener('resize', () => {
       this.windowWidth = window.innerWidth
     })
-  },
-  methods: {
-    async onLoadMore() {
-      const api = this.$axios.create({ baseURL: this.$config.apiBase })
-
-      if (this.articles.next) {
-        const { pathname, search } = new URL(this.articles.next)
-        const articles = await api.$get(`${pathname}${search}`)
-
-        this.articles = {
-          ...articles,
-          results: this.articles.results.concat(articles.results)
-        }
-      }
-    }
   }
 }
 </script>
@@ -74,6 +43,14 @@ html {
 body {
   margin: 0;
   font-family: 'wf-syne', sans-serif;
+}
+#bgvid {
+  object-fit: cover;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
 }
 section {
   display: flex;
@@ -108,16 +85,17 @@ section {
 }
 .background-gradient-white-yellow {
   background-color: white;
-  background-image: linear-gradient(
-    to top,
-    rgba(255, 215, 0, 0.4) 0%,
-    white 100%
-  );
+  background-image: linear-gradient(to top, rgba(255, 215, 0, 0.4) 0%, white 100%);
 }
 .background-black {
   background-color: black;
 }
 .row {
   display: flex;
+}
+
+// animations
+@keyframes rotate360 {
+  to { transform: rotate(360deg); }
 }
 </style>
