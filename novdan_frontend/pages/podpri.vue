@@ -14,7 +14,7 @@
     <SectionColumns no-bg :window-width="windowWidth" />
     <SectionHow :window-width="windowWidth" />
     <SectionFaq />
-    <Footer :window-width="windowWidth" />
+    <ArticlesFooter :window-width="windowWidth" />
   </div>
 </template>
 

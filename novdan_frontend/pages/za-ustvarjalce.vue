@@ -35,7 +35,7 @@
       </div>
     </section>
     <SectionMedia2 />
-    <Footer :window-width="windowWidth" />
+    <ArticlesFooter :window-width="windowWidth" />
   </div>
 </template>
 

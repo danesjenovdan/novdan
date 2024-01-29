@@ -1,18 +1,18 @@
 <template>
   <div class="content">
     <SectionTerms />
-    <Footer :window-width="windowWidth" />
+    <ArticlesFooter :window-width="windowWidth" />
   </div>
 </template>
 
 <script>
 import SectionTerms from '../../components/SectionTerms.vue'
-import Footer from '../../components/Footer.vue'
+import ArticlesFooter from '../../components/ArticlesFooter.vue'
 
 export default {
   components: {
     SectionTerms,
-    Footer
+    ArticlesFooter
   },
   data() {
     return {

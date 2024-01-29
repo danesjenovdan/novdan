@@ -17,7 +17,7 @@
       <SupportHeadline />
       <DashIntro :window-width="windowWidth" :status="status" />
       <DashSubscription :window-width="windowWidth" :status="status" />
-      <Footer :window-width="windowWidth" />
+      <ArticlesFooter :window-width="windowWidth" />
     </div>
   </div>
 </template>
