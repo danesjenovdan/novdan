@@ -22,7 +22,7 @@
               <a href="https://vezjak.com/" target="_blank">
                 <span>Boris Vezjak - In Media Res</span>
                 <img
-                  src="~assets/images/imr.svg"
+                  src="~assets/images/vezjak-favicon.svg"
                   alt="Boris Vezjak - In Media Res logo"
                   :style="`transform: rotate(${tilted * 0.8}deg)`"
                 />

@@ -41,13 +41,15 @@
                 alt="Oštro logo"
                 :style="`transform: rotate(${tilted * 0.6}deg)`"
               />
+              <span>Oštro</span>
             </a>
             <a href="https://vezjak.com/" target="_blank">
               <img
-                src="~assets/images/imr.svg"
+                src="~assets/images/vezjak-favicon.svg"
                 alt="Boris Vezjak - In Media Res logo"
                 :style="`transform: rotate(${tilted * 0.8}deg)`"
               />
+              <span>Boris Vezjak - In Media Res</span>
             </a>
             <a href="https://mesanec.si/" target="_blank">
               <img
@@ -55,6 +57,7 @@
                 alt="Mešanec.si logo"
                 :style="`transform: rotate(${tilted * 0.3}deg)`"
               />
+              <span>Mešanec.si</span>
             </a>
             <a href="https://www.dsavic.net/" target="_blank">
               <img
@@ -62,6 +65,7 @@
                 alt="Domen Savič - Državljan D logo"
                 :style="`transform: rotate(${tilted * 0.4}deg)`"
               />
+              <span>Domen Savič - Državljan D</span>
             </a>
             <a href="https://danesjenovdan.si/agrument/" target="_blank">
               <img
@@ -69,6 +73,7 @@
                 alt="Agrument logo"
                 :style="`transform: rotate(${tilted * 0.5}deg)`"
               />
+              <span>Agrument</span>
             </a>
           </p>
         </div>
@@ -94,7 +99,8 @@
 export default {
   data() {
     return {
-      tilted: 0
+      tilted: 0,
+      titlePopupText: 'xwxwxw'
     }
   },
   mounted() {
@@ -244,8 +250,26 @@ export default {
 
       .logos {
         a {
+          position: relative;
+          text-decoration: none;
+
           img {
             width: 3rem;
+          }
+
+          span {
+            position: absolute;
+            left: 0;
+            top: 30px;
+            display: block;
+            width: 300px;
+            display: none;
+          }
+
+          &:hover {
+            span {
+              display: block;
+            }
           }
         }
 

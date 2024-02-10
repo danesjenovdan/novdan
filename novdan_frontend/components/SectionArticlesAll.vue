@@ -143,7 +143,11 @@ export default {
 
 <style scoped lang="scss">
 .articles {
-  padding: 2rem 30px;
+  padding: 2rem 1rem;
+
+  @media (min-width: 576px) {
+    padding-inline: 2rem;
+  }
 
   @media (min-width: 1200px) {
     padding-inline: 0;
@@ -207,8 +211,14 @@ export default {
       margin-left: 0.5rem;
       padding-left: 1.5rem;
       background: #000;
-      font-size: 1.25rem;
+      font-size: 1rem;
       font-weight: 500;
+    }
+
+    @media (min-width: 576px) {
+      .date {
+        font-size: 1.25rem;
+      }
     }
 
     hr {
@@ -228,7 +238,7 @@ export default {
 
   .article-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
     gap: 2rem 1.5rem;
     margin-top: 1rem;
 
