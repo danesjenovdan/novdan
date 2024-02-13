@@ -1,3 +1,4 @@
+import time
 from typing import Optional
 
 import requests
@@ -67,6 +68,7 @@ class Command(BaseCommand):
             update_image_url(image_url)
             return
 
+        time.sleep(3)  # wait to avoid rate limiting
         response = requests.get(article.url, timeout=10)
         response.raise_for_status()
 
@@ -104,6 +106,7 @@ class Command(BaseCommand):
         self.stdout.write(f" > rss url: {url}")
 
         try:
+            time.sleep(3)  # wait to avoid rate limiting
             response = requests.get(url, timeout=10)
             response.raise_for_status()
 
