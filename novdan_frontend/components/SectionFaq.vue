@@ -163,38 +163,15 @@
           uporabniki namenili kateremu mediju. Glede na to razmerje med medije
           porazdelimo vsoto, zbrano tisti mesec.
         </p>
-        <h4>
-          Po kakšnem ključu ste izbrali ustvarjalce, ki sodelujejo v projektu?
-        </h4>
-        <hr />
-        <p>
-          Iskali smo neodvisne kakovostne medije in medijske projekte, ki svojih
-          vsebin ne zapirajo za plačljivimi vrati. Hkrati so morali biti mediji
-          spletni in pripravljen v glavo svoje spletne strani vnesti meta tag
-          ter z nami podpisati vse potrebne papirje, da jim lahko denar dejansko
-          nakažemo. Pristopili smo do več medijev, a so nekateri sodelovanje
-          (zaenkrat) zavrnili iz takšnih in drugačnih razlogov (vsi legitimni).
-          Na platformo smo tako vključili tiste medije, ki so bili po nekaj
-          mesecih novačenja pripravljeni sodelovati v tem eksperimentu.
-        </p>
-        <p>
-          Če se bo pilotna izvedba izkazala za uspešno, pričakujemo, da bo
-          število sodelujočih medijev raslo iz meseca v mesec.
-        </p>
         <h4>Se lahko pridružijo novi mediji?</h4>
         <hr />
         <p>
-          Ne danes,a upamo, da kmalu. Radi bi potrdili, da platforma dela, kot
-          mora, in da je vse v redu s papirologijo. Fundaciji Grant for the Web
-          smo obljubili, da bomo po nekajmesečni rabi standarda pripravili belo
-          knjigo z našimi izkušnjami in priporočili. To bi radi zaključili z
-          obstoječim naborom medijev.
+         Platforma Nov dan zbira vsebine kakovostnih in kredibilnih medijskih ustvarjalcev, 
+          ki informirajo javnost o širših družbeno političnih temah in problematikah.
         </p>
         <p>
-          Si pa vsekakor želimo, da čim več medijev in ljudi posvoji WMS. Zato
-          vse medijske projekte, ki bi se radi pridružili, vabimo, da nam pišejo
-          na novdan@danesjenovdan.si, mi pa se bomo javili, da skupaj raziščemo,
-          kaj lahko naredimo.
+Izbrani mediji in medijski ustvarjalci delujejo neodvisno in objektivno.
+K sodelovanju vabljeni vsi, ki se v tem opisu prepoznajo. Kontaktirajte nas.
         </p>
         <h4>
           Večino medijev berem na telefonu, zakaj so v projekt vključeni samo
@@ -232,12 +209,7 @@
           branost proporcionalno razdelimo med medije.
         </p>
         <p>Stroške za razvoj platforme krije fundacija Grant for the Web.</p>
-        <h4>Kdo stoji za projektom Grant for the Web?</h4>
-        <hr />
-        <p>
-          Grant for the Web deluje preko fundacije Interledger Foundation, ki jo
-          vodi in financira Coil v sodelovanju z Mozillo in Creative Commons.
-        </p>
+      
         <h4>Imam dodatna vprašanja, predloge ali komentarje.</h4>
         <hr />
         <p>Super, piši nam na novdan@danesjenovdan.si.</p>
