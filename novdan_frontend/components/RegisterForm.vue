@@ -3,7 +3,7 @@
     <h3>REGISTRACIJA</h3>
     <loading v-if="processing" />
     <p>
-      Za začetek te prosimo, da si ustvariš uporabniški profil. Tvoje podatke bo
+      Za začetek te prosimo, da si ustvariš uporabniški račun. Tvoje podatke bo
       do tvojega preklica hranil
       <a href="https://danesjenovdan.si" target="_blank">inštitut Danes je nov dan</a>, in sicer
       na strežnikih v EU.
@@ -21,7 +21,7 @@
         </p>
       </div>
       <div class="input-group">
-        <label>E-pošta</label>
+        <label>E-naslov</label>
         <input v-model="email" type="email" :disabled="processing" />
         <p
           v-for="(error, index) in errors.email"
@@ -68,7 +68,7 @@
       href="/terms"
       style="width: 100%; display: inline-block; padding-top: 20px"
     >Splošni pogoji uporabe</a>
-    <div style="height: 2rem;"></div>
+    <div style="height: 2rem"></div>
     <h3>Že imaš račun?</h3>
     <nuxt-link to="/dash/login" class="btn-large">
       Prijavi se
