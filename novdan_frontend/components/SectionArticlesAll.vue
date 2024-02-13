@@ -36,7 +36,7 @@
                       formatRelativeTime(article.published_at)
                     }}</small>
                   </div>
-                  <img
+                  <PreferHttpsImage
                     :src="article.image_url"
                     :alt="`Image for ${article.title}`"
                   />
