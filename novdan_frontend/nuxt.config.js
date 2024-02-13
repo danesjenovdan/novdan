@@ -1,8 +1,7 @@
-const OG_TITLE =
-  'Nov dan - donatorska platforma v podporo neodvisnim medijskim ustvarjalcem'
+const OG_TITLE = 'Nov dan – podpiraj neodvisne medijske ustvarjalce'
 const OG_DESCRIPTION =
-  'Pridruži se pilotskemu projektu in pomagaj pri izgradnji spleta, v katerem je kvalitetna vsebina pravično nagrajena.'
-const OG_IMAGE = 'https://novdan.si/OG.jpg'
+  'Najnovejše objave neodvisnih medijskih ustvarjalcev na enem mestu. Spremljaj, podpiraj in izboljšaj svojo medijsko dieto.'
+const OG_IMAGE = 'https://novdan.si/nov-dan-og2.jpg'
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
