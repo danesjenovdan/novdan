@@ -166,12 +166,14 @@
         <h4>Se lahko pridružijo novi mediji?</h4>
         <hr />
         <p>
-         Platforma Nov dan zbira vsebine kakovostnih in kredibilnih medijskih ustvarjalcev, 
-          ki informirajo javnost o širših družbeno političnih temah in problematikah.
+          Platforma Nov dan zbira vsebine kakovostnih in kredibilnih medijskih
+          ustvarjalcev, ki informirajo javnost o širših družbeno političnih
+          temah in problematikah.
         </p>
         <p>
-Izbrani mediji in medijski ustvarjalci delujejo neodvisno in objektivno.
-K sodelovanju vabljeni vsi, ki se v tem opisu prepoznajo. Kontaktirajte nas.
+          Izbrani mediji in medijski ustvarjalci delujejo neodvisno in
+          objektivno. K sodelovanju vabljeni vsi, ki se v tem opisu prepoznajo.
+          Kontaktirajte nas.
         </p>
         <h4>
           Večino medijev berem na telefonu, zakaj so v projekt vključeni samo
@@ -209,7 +211,6 @@ K sodelovanju vabljeni vsi, ki se v tem opisu prepoznajo. Kontaktirajte nas.
           branost proporcionalno razdelimo med medije.
         </p>
         <p>Stroške za razvoj platforme krije fundacija Grant for the Web.</p>
-      
         <h4>Imam dodatna vprašanja, predloge ali komentarje.</h4>
         <hr />
         <p>Super, piši nam na novdan@danesjenovdan.si.</p>
