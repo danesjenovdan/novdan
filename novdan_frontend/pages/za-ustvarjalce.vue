@@ -17,17 +17,17 @@
           <h2>Se želite pridružiti kot medij?</h2>
           <p>
             Platforma Nov dan zbira vsebine kakovostnih in kredibilnih medijskih
-            ustvarjalcev, ki informirajo javnost o širših družbeno političnih
+            ustvarjalcev, ki javnost informirajo o širših družbenopolitičnih
             temah in problematikah.
           </p>
           <p>
             Izbrani mediji in medijski ustvarjalci delujejo neodvisno in
             objektivno.
           </p>
-          <p>K sodelovanju vabljeni vsi, ki se v tem opisu prepoznajo.</p>
+          <p>K sodelovanju vabimo vse ki se v tem opisu prepoznate.</p>
           <p>
             <a href="mailto:novdan@djnd.si" class="btn contact-us">
-              Kontaktiraj nas
+              Pišite sem.
               <!-- <br><small>novdan@djnd.si</small> -->
             </a>
           </p>

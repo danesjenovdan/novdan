@@ -7,7 +7,7 @@
         <hr />
         <p>
           Lastnik spletnega mesta in brskalniškega vtičnika »Nov dan« je Danes
-          je nov dan, Inštitut za druga vprašanja, Parmova ulica 20, 1000
+          je nov dan, Inštitut za druga vprašanja, Resljeva cesta 25, 1000
           Ljubljana; matična številka: 6468594000 (v nadaljevanju Upravljalec).
         </p>
         <p>
@@ -39,7 +39,7 @@
             10. do 16. ure)
           </li>
           <li>
-            Danes je nov dan, Inštitut za druga vprašanja, Parmova ulica 20,
+            Danes je nov dan, Inštitut za druga vprašanja, Resljeva cesta 25,
             1000 Ljubljana
           </li>
         </ul>
@@ -70,8 +70,8 @@
         <h5>Upravičenec</h5>
         <p>
           Upravičenec do zbranih sredstev je vsaka organizacija, ki producira
-          medijske vsebine, in je navedena na spletnem mestu Nov dan v razdelku
-          Sodelujoči mediji.
+          medijske vsebine, in je navedena na spletnem mestu Nov dan na
+          podstrani “Za ustvarjalce”.
         </p>
         <h5>Predaja sredstev</h5>
         <p>

@@ -28,10 +28,11 @@
             in medijskim ustvarjalcem.
           </p>
           <p>
-            Na enem mestu zbiramo ustvarjene vsebine in spodbujamo bralce, da
-            podprete njihovo ustvarjanje s pomočjo našega donacijskega sistema,
-            ki temelji na odprtem standardu za spletno monetizacijo (WMS) in
-            omogoča pravično distribucijo podpornih sredstev.
+            Na enem mestu zbiramo vsebine, ki jih objavijo sodelujoči projekti,
+            bralce pa spodbujamo, da podprete njihovo ustvarjanje s pomočjo
+            našega donacijskega sistema. Ta temelji na odprtem standardu za
+            spletno monetizacijo (WMS) in omogoča pravično razdelitev podpornih
+            sredstev.
           </p>
           <p>Sodelujoči:</p>
           <p class="logos">

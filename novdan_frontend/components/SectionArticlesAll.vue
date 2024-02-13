@@ -26,7 +26,7 @@
                   <div class="medium-and-date">
                     <p>
                       <img
-                        :src="faviconURL(article.medium.url)"
+                        :src="article.medium.icon_url"
                         :alt="article.medium.name"
                         class="favicon"
                       />
@@ -36,7 +36,7 @@
                       formatRelativeTime(article.published_at)
                     }}</small>
                   </div>
-                  <img
+                  <PreferHttpsImage
                     :src="article.image_url"
                     :alt="`Image for ${article.title}`"
                   />
@@ -132,10 +132,6 @@ export default {
           return formatter.format(-amount, unit)
         }
       }
-    },
-    faviconURL(url) {
-      const urlObj = new URL(url)
-      return `https://icons.duckduckgo.com/ip3/${urlObj.hostname}.ico`
     }
   }
 }

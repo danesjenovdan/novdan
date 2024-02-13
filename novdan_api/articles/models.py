@@ -3,10 +3,15 @@ from uuid import uuid4
 from django.db import models
 
 
+def media_favicon_path(instance, filename):
+    return f"media_favicon_{instance.id}_{filename}"
+
+
 class Medium(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=64)
     url = models.URLField()
+    favicon = models.ImageField(upload_to=media_favicon_path, null=True, blank=True)
     article_rss_urls = models.TextField(blank=True, null=True)
     image_css_selector = models.CharField(max_length=256, default="article img")
     created_at = models.DateTimeField(auto_now_add=True)

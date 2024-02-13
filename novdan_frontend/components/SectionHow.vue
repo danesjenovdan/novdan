@@ -6,7 +6,6 @@
         <div class="tab" :class="{ active: !supportDirectly }" @click="supportDirectly = !supportDirectly">
           Podpri preko vtičnika
         </div>
-        <div class="spacer"></div>
         <div class="tab" :class="{ active: supportDirectly }" @click="supportDirectly = !supportDirectly">
           Podpri neposredno
         </div>
@@ -14,6 +13,9 @@
       <template v-if="!supportDirectly">
         <div v-if="windowWidth > 992">
           <div class="row first">
+            <p class="number">
+              1
+            </p>
             <p>
               Inštaliraj si
               <span>Nov <br />Dan vtičnik</span>.
@@ -61,6 +63,9 @@
           </div>
           <div class="row">
             <div class="subscribe">
+              <p class="number">
+                2
+              </p>
               <p>Plačaj <br />naročnino.</p>
               <div class="moneybill">
                 <img src="~assets/images/5-eur.svg" alt="pink spinning star" />
@@ -75,6 +80,9 @@
           </div>
           <div class="row">
             <div class="read">
+              <p class="number">
+                3
+              </p>
               <p>
                 Beri <br /><span>neodvisne</span><br />
                 medije.
@@ -87,9 +95,9 @@
               </div>
             </div>
           </div>
-          <div class="row forth" style="justify-content: end">
+          <div class="row forth" style="justify-content: center">
             <div>
-              <p style="text-align: end">
+              <p style="text-align: center">
                 <span>Tvoj prispevek bo</span><br />
                 <span>med njih razdeljen</span><br />
                 <span>glede na tvoj</span><br />
@@ -159,6 +167,10 @@ export default {
   padding: 6rem 30px;
   overflow-x: hidden;
 
+  > .container {
+    max-width: 1140px;
+  }
+
   .tabs {
     display: flex;
     align-items: center;
@@ -170,30 +182,36 @@ export default {
     }
 
     .tab {
-      font-size: 1.5rem;
+      flex: 1;
+      padding: 0.7em 1em;
+      font-size: 1rem;
       font-weight: 400;
-      text-decoration: underline;
       text-align: center;
       color: #333;
+      border: 3px solid #333;
       cursor: pointer;
 
       @media (min-width: 992px) {
-        font-size: 2.5rem;
+        font-size: 1.5rem;
+      }
+
+      @media (min-width: 1200px) {
+        font-size: 2rem;
+      }
+
+      &:first-child {
+        border-radius: 1.25rem 0 0 1.25rem;
+        border-right: 0;
+      }
+
+      &:last-child {
+        border-radius: 0 1.25rem 1.25rem 0;
       }
 
       &.active {
-        font-weight: 600;
+        background: #ff5ccb;
         color: #000;
-        text-decoration: none;
       }
-    }
-
-    .spacer {
-      align-self: stretch;
-      flex: 0 0 2px;
-      width: 2px;
-      margin-inline: 2rem;
-      background-color: #000;
     }
   }
 
@@ -222,6 +240,7 @@ export default {
     }
   }
   p {
+    align-self: center;
     text-transform: uppercase;
     font-size: 1.5rem;
     font-weight: 700;
@@ -233,6 +252,18 @@ export default {
     }
     @media (min-width: 1200px) {
       font-size: 2.5rem;
+    }
+  }
+  p.number {
+    align-self: center;
+    font-family: 'wf-syne-tactile', cursive;
+    font-size: 5rem;
+    line-height: 1;
+    margin-top: -1.15em;
+    margin-bottom: -1em;
+    margin-right: 2rem;
+    @media (min-width: 1200px) {
+      font-size: 8rem;
     }
   }
   .first {
