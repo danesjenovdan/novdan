@@ -24,10 +24,14 @@ export default {
       return this.src.startsWith('https://')
     },
     imageSrc() {
-      if (this.isSecure || this.fallback) {
-        return this.src
+      if (this.src === null) {
+        return this.fallback
+      } else {
+        if (this.isSecure || this.fallback) {
+          return this.src
+        }
+        return this.src.replace(/^http:\/\//i, 'https://')
       }
-      return this.src.replace(/^http:\/\//i, 'https://')
     }
   },
   methods: {
