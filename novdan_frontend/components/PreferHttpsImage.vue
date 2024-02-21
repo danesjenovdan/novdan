@@ -26,12 +26,13 @@ export default {
     imageSrc() {
       if (this.src === null) {
         return this.fallback
-      } else {
-        if (this.isSecure || this.fallback) {
-          return this.src
-        }
-        return this.src.replace(/^http:\/\//i, 'https://')
       }
+
+      if (this.isSecure || this.fallback) {
+        return this.src
+      }
+
+      return this.src.replace(/^http:\/\//i, 'https://')
     }
   },
   methods: {
