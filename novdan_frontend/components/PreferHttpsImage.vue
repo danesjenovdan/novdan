@@ -7,7 +7,7 @@ export default {
   props: {
     src: {
       type: String,
-      required: true
+      default: null
     },
     alt: {
       type: String,
@@ -20,18 +20,16 @@ export default {
     }
   },
   computed: {
-    isSecure() {
-      return this.src.startsWith('https://')
-    },
     imageSrc() {
-      if (this.src === null) {
-        return this.fallback
+      if (!this.src || typeof this.src !== 'string') {
+        return null
       }
-
-      if (this.isSecure || this.fallback) {
+      if (this.fallback) {
         return this.src
       }
-
+      if (this.src.startsWith('https://')) {
+        return this.src
+      }
       return this.src.replace(/^http:\/\//i, 'https://')
     }
   },
