@@ -69,8 +69,12 @@ class Command(BaseCommand):
             return
 
         time.sleep(3)  # wait to avoid rate limiting
-        response = requests.get(article.url, timeout=10)
-        response.raise_for_status()
+        try:
+            response = requests.get(article.url, timeout=10)
+            response.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            self.stdout.write(f"     > error updating image_url: {e}")
+            return
 
         def find_og_image(tags_group):
             for one_tag in tags_group.open_graph:
