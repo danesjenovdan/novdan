@@ -25,8 +25,8 @@ class ArticlesRssFeed(Feed):
     feed_type = Rss201rev2Feed
     title = "Nov dan"
     description = "Neposredna podpora neodvisnim medijskim ustvarjalcem"
-    link = "https://novdan.si"
-    feed_url = "https://novdan.si/articles/feed/rss/"
+    link = "https://novdan.si/"
+    feed_url = "https://denarnica.novdan.si/articles/feed/rss/"
     language = "sl"
 
     def items(self):
@@ -44,6 +44,9 @@ class ArticlesRssFeed(Feed):
     def item_pubdate(self, item):
         return item.published_at
 
+    def item_updateddate(self, item):
+        return item.updated_at
+
     def item_author_name(self, item):
         return item.medium.name
 
@@ -53,13 +56,13 @@ class ArticlesRssFeed(Feed):
     item_guid_is_permalink = False
 
     def item_guid(self, item):
-        return item.id
+        return f"urn:uuid:{item.id}"
 
 
 class ArticlesAtomFeed(ArticlesRssFeed):
     feed_type = Atom1Feed
     subtitle = ArticlesRssFeed.description
-    feed_url = "https://novdan.si/articles/feed/atom/"
+    feed_url = "https://denarnica.novdan.si/articles/feed/atom/"
 
 
 class LatestArticlesForMedia(ListAPIView):
