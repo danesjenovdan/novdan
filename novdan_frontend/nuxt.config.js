@@ -60,8 +60,8 @@ export default {
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
       { rel: 'alternate icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: '/fonts/selfhosted.css' },
-      { rel: 'alternate', type: 'application/rss+xml', title: 'RSS feed', href: 'https://novdan.si/articles/feed/rss/' },
-      { rel: 'alternate', type: 'application/atom+xml', title: 'Atom feed', href: 'https://novdan.si/articles/feed/atom/' }
+      { rel: 'alternate', type: 'application/rss+xml', title: 'RSS feed', href: 'https://denarnica.novdan.si/articles/feed/rss/' },
+      { rel: 'alternate', type: 'application/atom+xml', title: 'Atom feed', href: 'https://denarnica.novdan.si/articles/feed/atom/' }
     ],
     script: [
       {
