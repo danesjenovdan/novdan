@@ -22,7 +22,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
-from sentry_sdk import capture_exception
+from sentry_sdk import capture_exception, capture_message, push_scope
 
 from .exceptions import (ActiveSubscriptionExists, LowBalance,
                          NoActiveSubscription, invalid_receiver_error)
@@ -329,6 +329,10 @@ class SubscriptionChargedView(APIView):
         print(f'data: {self.request.data}')
 
         if not isinstance(self.request.data, dict):
+            with push_scope() as scope:
+                scope.set_extra("request_data_type", type(self.request.data))
+                scope.set_extra("request_data", self.request.data)
+                capture_message("SubscriptionChargedView: request.data is not a dict")
             raise ParseError
 
         user = self._get_user(self.request.data, 'customer_id')
@@ -337,9 +341,17 @@ class SubscriptionChargedView(APIView):
 
         if kind == 'subscription_charged_successfully':
             activate_subscription(user, payment_token)
+        elif kind == 'subscription_charged_unsuccessfully':
+            # TODO: handle this case
+            with push_scope() as scope:
+                scope.set_extra("request_data", self.request.data)
+                capture_message(f"SubscriptionChargedView: received kind=subscription_charged_unsuccessfully")
         elif kind == 'subscription_canceled':
             cancel_subscription(user, payment_token)
         else:
+            with push_scope() as scope:
+                scope.set_extra("request_data", self.request.data)
+                capture_message(f"SubscriptionChargedView: invalid kind '{kind}' received.")
             raise RestValidationError({ 'kind': ['This field must be a valid kind.'] })
 
         return Response({ 'success': True })
