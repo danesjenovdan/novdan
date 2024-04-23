@@ -127,12 +127,19 @@ class Command(BaseCommand):
 
                 self.stdout.write(f"   > {title[:67]}")
 
+                if item.link and item.link.content and not item.link.content.startswith("http"):
+                    if item.link.content.startswith("//"):
+                        item.link.content = f"http:{item.link.content}"
+                    if "://" not in item.link.content:
+                        item.link.content = f"http://{item.link.content}"
+
                 if not self.is_url(item.link.content):
                     with push_scope() as scope:
                         scope.set_extra("command", "parse_articles")
                         scope.set_extra("rss_url", url)
                         capture_message(f"Invalid url: {item.link.content}")
                     self.stdout.write(f"     > invalid url: {item.link.content}")
+                    self.stdout.write("")
                     continue
 
                 url = item.link.content[:512]
