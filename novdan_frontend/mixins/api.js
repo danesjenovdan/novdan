@@ -126,10 +126,11 @@ function api() {
     cancelSubscription() {
       return authedApi.$post('/api/subscription/cancel')
     },
-    changePassword(oldPassword, newPassword) {
+    changePassword(oldPassword, newPassword, confirmNewPassword) {
       return authedApi.$post('/api/change-password', {
+        old_password: oldPassword,
         new_password: newPassword,
-        old_password: oldPassword
+        confirm_password: confirmNewPassword
       })
     },
     connectExtension() {
