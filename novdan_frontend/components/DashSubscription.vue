@@ -151,6 +151,9 @@
               name="password-confirm"
             />
           </div>
+          <div v-if="changePasswordResponseMessage">
+            {{ changePasswordResponseMessage }}
+          </div>
           <button id="password-submit" type="submit" class="logout-button">
             Pošlji
           </button>
@@ -187,6 +190,7 @@ export default {
       oldPassword: '',
       newPassword: '',
       confirmNewPassword: '',
+      changePasswordResponseMessage: null,
       extensionNotInstalled: true,
       extensionError: false,
       postMessageExpecting: null,
@@ -289,13 +293,19 @@ export default {
           try {
             const response = await this.$api.changePassword(
               this.oldPassword,
-              this.newPassword
+              this.newPassword,
+              this.confirmNewPassword
             )
             // eslint-disable-next-line no-console
             console.log(response)
+            this.oldPassword = ''
+            this.newPassword = ''
+            this.confirmNewPassword = ''
+            this.changePasswordResponseMessage = 'Geslo je bilo uspešno spremenjeno.'
           } catch (error) {
             // eslint-disable-next-line no-console
             console.error(error)
+            this.changePasswordResponseMessage = 'Pri spremembi gesla je prišlo do napake.'
           }
         }
       }
