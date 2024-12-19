@@ -21,7 +21,7 @@ class Wallet(models.Model):
     )
 
     def __str__(self):
-        return f'Wallet ({self.id})'
+        return f"Wallet ({self.id})"
 
 
 class SubscriptionQuerySet(models.QuerySet):
@@ -46,15 +46,17 @@ class SubscriptionQuerySet(models.QuerySet):
 
     def canceled(self):
         # get last time range for each subscription
-        last_time_ranges = SubscriptionTimeRange.objects.filter(subscription__in=self) \
-            .order_by('subscription', '-ends_at') \
-            .distinct('subscription')
+        last_time_ranges = (
+            SubscriptionTimeRange.objects.filter(subscription__in=self)
+            .order_by("subscription", "-ends_at")
+            .distinct("subscription")
+        )
 
         # filter canceled time ranges from last time ranges
         # this needs to happen separately otherwise filter is executed before distinct
-        canceled_subscription_ids = SubscriptionTimeRange.objects \
-            .filter(pk__in=last_time_ranges, canceled_at__isnull=False) \
-            .values_list('subscription_id', flat=True)
+        canceled_subscription_ids = SubscriptionTimeRange.objects.filter(
+            pk__in=last_time_ranges, canceled_at__isnull=False
+        ).values_list("subscription_id", flat=True)
 
         return self.model.objects.filter(pk__in=canceled_subscription_ids)
 
@@ -68,7 +70,7 @@ class Subscription(models.Model):
     )
 
     def __str__(self):
-        return f'Subscription ({self.id})'
+        return f"Subscription ({self.id})"
 
 
 class SubscriptionTimeRangeQuerySet(models.QuerySet):
@@ -103,8 +105,8 @@ class SubscriptionTimeRange(models.Model):
     subscription = models.ForeignKey(
         Subscription,
         on_delete=models.CASCADE,
-        related_name='time_ranges',
-        related_query_name='time_range',
+        related_name="time_ranges",
+        related_query_name="time_range",
     )
 
 
@@ -114,12 +116,12 @@ class Transaction(models.Model):
     from_wallet = models.ForeignKey(
         Wallet,
         on_delete=models.CASCADE,
-        related_name='outgoing_transactions',
-        related_query_name='outgoing_transaction',
+        related_name="outgoing_transactions",
+        related_query_name="outgoing_transaction",
     )
     to_wallet = models.ForeignKey(
         Wallet,
         on_delete=models.CASCADE,
-        related_name='incoming_transactions',
-        related_query_name='incoming_transaction',
+        related_name="incoming_transactions",
+        related_query_name="incoming_transaction",
     )

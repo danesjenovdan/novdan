@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('articles', '0004_auto_20231217_2302'),
+        ("articles", "0004_auto_20231217_2302"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='medium',
-            name='article_css_selector',
+            model_name="medium",
+            name="article_css_selector",
         ),
         migrations.AddField(
-            model_name='medium',
-            name='image_css_selector',
-            field=models.CharField(default='article img', max_length=256),
+            model_name="medium",
+            name="image_css_selector",
+            field=models.CharField(default="article img", max_length=256),
         ),
     ]
