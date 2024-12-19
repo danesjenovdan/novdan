@@ -7,13 +7,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('articles', '0005_auto_20231217_2337'),
+        ("articles", "0005_auto_20231217_2337"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='medium',
-            name='favicon',
-            field=models.ImageField(blank=True, null=True, upload_to=articles.models.media_favicon_path),
+            model_name="medium",
+            name="favicon",
+            field=models.ImageField(
+                blank=True, null=True, upload_to=articles.models.media_favicon_path
+            ),
         ),
     ]

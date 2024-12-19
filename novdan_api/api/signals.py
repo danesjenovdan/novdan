@@ -14,7 +14,7 @@ def post_user_save(sender, instance, created, **kwargs):
 
         # create subscriber and send welcome email
         requests.post(
-            f'{settings.PAYMENT_API_BASE}/api/subscribe/',
-            json={ 'email': instance.email, 'campaign_id': settings.PAYMENT_CAMPAIGN_ID },
+            f"{settings.PAYMENT_API_BASE}/api/subscribe/",
+            json={"email": instance.email, "campaign_id": settings.PAYMENT_CAMPAIGN_ID},
             timeout=30,
         )

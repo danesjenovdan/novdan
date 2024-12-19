@@ -9,13 +9,14 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from oauth2_provider.contrib.rest_framework.permissions import TokenHasScope
-from oauth2_provider.models import (get_access_token_model,
-                                    get_application_model,
-                                    get_refresh_token_model)
+from oauth2_provider.models import (
+    get_access_token_model,
+    get_application_model,
+    get_refresh_token_model,
+)
 from oauth2_provider.settings import oauth2_settings
 from oauthlib.common import generate_token
-from rest_framework.exceptions import (APIException, ParseError,
-                                       PermissionDenied)
+from rest_framework.exceptions import APIException, ParseError, PermissionDenied
 from rest_framework.exceptions import ValidationError as RestValidationError
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.renderers import JSONRenderer
@@ -24,15 +25,27 @@ from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 from sentry_sdk import capture_exception, capture_message, push_scope
 
-from .exceptions import (ActiveSubscriptionExists, LowBalance,
-                         NoActiveSubscription, invalid_receiver_error)
+from .exceptions import (
+    ActiveSubscriptionExists,
+    LowBalance,
+    NoActiveSubscription,
+    invalid_receiver_error,
+)
 from .models import Subscription, Wallet
-from .serializers import (ChangePasswordSerializer, RegisterSerializer,
-                          UserSerializer, WalletSerializer)
-from .utils import (activate_subscription,
-                    api_exception_from_request_exception,
-                    calculate_receivers_percentage, cancel_subscription,
-                    get_end_of_last_month, transfer_tokens)
+from .serializers import (
+    ChangePasswordSerializer,
+    RegisterSerializer,
+    UserSerializer,
+    WalletSerializer,
+)
+from .utils import (
+    activate_subscription,
+    api_exception_from_request_exception,
+    calculate_receivers_percentage,
+    cancel_subscription,
+    get_end_of_last_month,
+    transfer_tokens,
+)
 
 User = get_user_model()
 Application = get_application_model()
@@ -52,12 +65,12 @@ class RegisterView(APIView):
 
         serializer = RegisterSerializer(
             data=self.request.data,
-            context={ 'request': self.request },
+            context={"request": self.request},
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return Response({ 'success': True })
+        return Response({"success": True})
 
 
 class ChangePasswordView(APIView):
@@ -68,24 +81,26 @@ class ChangePasswordView(APIView):
         serializer = ChangePasswordSerializer(
             self.request.user,
             data=self.request.data,
-            context={ 'request': self.request },
+            context={"request": self.request},
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return Response({ 'success': True })
+        return Response({"success": True})
 
 
 class ConnectExtensionView(APIView):
     def post(self, request):
         user = self.request.user
         application = self.request.auth.application
-        expires = timezone.now() + timezone.timedelta(seconds=oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS)
+        expires = timezone.now() + timezone.timedelta(
+            seconds=oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS
+        )
 
         # generate access token that only has `read transfer` scope (no `write`)
         access_token = AccessToken.objects.create(
             user=user,
-            scope='read transfer',
+            scope="read transfer",
             expires=expires,
             token=generate_token(),
             application=application,
@@ -98,13 +113,15 @@ class ConnectExtensionView(APIView):
             access_token=access_token,
         )
 
-        return Response({
-            'access_token': access_token.token,
-            'expires_in': oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS,
-            'token_type': 'Bearer',
-            'scope': access_token.scope,
-            'refresh_token': refresh_token.token,
-        })
+        return Response(
+            {
+                "access_token": access_token.token,
+                "expires_in": oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS,
+                "token_type": "Bearer",
+                "scope": access_token.scope,
+                "refresh_token": refresh_token.token,
+            }
+        )
 
 
 class StatusView(APIView):
@@ -119,10 +136,14 @@ class StatusView(APIView):
         subscription = Subscription.objects.filter(user=self.request.user).first()
 
         if subscription:
-            last_time_range = subscription.time_ranges.order_by('-ends_at').first()
-            is_canceled = last_time_range is not None and last_time_range.canceled_at is not None
+            last_time_range = subscription.time_ranges.order_by("-ends_at").first()
+            is_canceled = (
+                last_time_range is not None and last_time_range.canceled_at is not None
+            )
 
-            active_subscription_exists = subscription.time_ranges.current(now_time).payed().exists()
+            active_subscription_exists = (
+                subscription.time_ranges.current(now_time).payed().exists()
+            )
 
             # check if subscription is canceled and is still active until the
             # end of month
@@ -136,12 +157,23 @@ class StatusView(APIView):
             payment_pending = False
             if not active_subscription_exists and not is_canceled:
                 last_month_time = get_end_of_last_month(now_time)
-                if now_time.day <= settings.PAYMENT_GRACE_PERIOD_DAYS and subscription.time_ranges.current(last_month_time).payed().not_canceled().exists():
+                if (
+                    now_time.day <= settings.PAYMENT_GRACE_PERIOD_DAYS
+                    and subscription.time_ranges.current(last_month_time)
+                    .payed()
+                    .not_canceled()
+                    .exists()
+                ):
                     active_subscription_exists = True
                     payment_pending = True
                 else:
-                    last_payed_time_range = subscription.time_ranges.payed().order_by('-ends_at').first()
-                    if last_payed_time_range is not None and last_payed_time_range.canceled_at is None:
+                    last_payed_time_range = (
+                        subscription.time_ranges.payed().order_by("-ends_at").first()
+                    )
+                    if (
+                        last_payed_time_range is not None
+                        and last_payed_time_range.canceled_at is None
+                    ):
                         payment_pending = True
 
         # there is no subscription
@@ -152,55 +184,69 @@ class StatusView(APIView):
 
         sum, percentages = calculate_receivers_percentage(wallet)
 
-        return Response({
-            'user': user_serializer.data,
-            'wallet': wallet_serializer.data,
-            'active_subscription': active_subscription_exists,
-            'active_subscription_expires_at': active_subscription_expires_at,
-            'payment_pending': payment_pending,
-            'monetized_split': percentages,
-            'monetized_time': sum,
-        })
+        return Response(
+            {
+                "user": user_serializer.data,
+                "wallet": wallet_serializer.data,
+                "active_subscription": active_subscription_exists,
+                "active_subscription_expires_at": active_subscription_expires_at,
+                "payment_pending": payment_pending,
+                "monetized_split": percentages,
+                "monetized_time": sum,
+            }
+        )
 
 
 class TransferView(APIView):
     permission_classes = [IsAuthenticated, TokenHasScope]
-    required_scopes = ['transfer']
+    required_scopes = ["transfer"]
 
     @staticmethod
     def _get_amount(data, field_name):
         amount_value = data.get(field_name)
-        if amount_value is None or amount_value == '':
-            raise RestValidationError({ field_name: ['This field may not be blank.'] })
+        if amount_value is None or amount_value == "":
+            raise RestValidationError({field_name: ["This field may not be blank."]})
         try:
             amount = int(amount_value)
         except ValueError:
-            raise RestValidationError({ field_name: ['This field must be an integer value.'] })
+            raise RestValidationError(
+                {field_name: ["This field must be an integer value."]}
+            )
         if amount < 1:
-            raise RestValidationError({ field_name: ['This field must be a positive non-zero integer value.'] })
+            raise RestValidationError(
+                {field_name: ["This field must be a positive non-zero integer value."]}
+            )
         return amount
 
     @staticmethod
     def _get_wallet(data, field_name):
         wallet_id = data.get(field_name)
-        if wallet_id is None or wallet_id == '':
-            raise RestValidationError({ field_name: ['This field may not be blank.'] })
+        if wallet_id is None or wallet_id == "":
+            raise RestValidationError({field_name: ["This field may not be blank."]})
         try:
             wallet = Wallet.objects.get(id=wallet_id)
         except (DjangoValidationError, Wallet.DoesNotExist):
-            raise RestValidationError({ field_name: ['This field must be a valid Wallet id.'] })
+            raise RestValidationError(
+                {field_name: ["This field must be a valid Wallet id."]}
+            )
         return wallet
 
     def post(self, request):
         if not isinstance(self.request.data, dict):
             raise ParseError
 
-        amount = self._get_amount(self.request.data, 'amount')
-        from_wallet = self._get_wallet(self.request.data, 'from')
-        to_wallet = self._get_wallet(self.request.data, 'to')
+        amount = self._get_amount(self.request.data, "amount")
+        from_wallet = self._get_wallet(self.request.data, "from")
+        to_wallet = self._get_wallet(self.request.data, "to")
 
         if from_wallet == to_wallet:
-            raise RestValidationError({ api_settings.NON_FIELD_ERRORS_KEY: ['Wallet ids `from` and `to` must not be the same.'] })
+            raise RestValidationError(
+                {
+                    api_settings.NON_FIELD_ERRORS_KEY: [
+                        "Wallet ids `from` and `to` must not be the same."
+                    ]
+                }
+            )
 
         if not self.request.user.is_staff and from_wallet.user != self.request.user:
             raise PermissionDenied
@@ -210,43 +256,47 @@ class TransferView(APIView):
 
         transfer_tokens(from_wallet, to_wallet, amount)
 
-        return Response({ 'success': True })
+        return Response({"success": True})
 
 
 class SubscriptionActivateView(APIView):
     def get(self, request):
         if Subscription.objects.filter(user=self.request.user).payed().exists():
             subscription = Subscription.objects.get(user=self.request.user)
-            last_time_range = subscription.time_ranges.payed().order_by('-ends_at').first()
-            is_canceled = last_time_range is not None and last_time_range.canceled_at is not None
+            last_time_range = (
+                subscription.time_ranges.payed().order_by("-ends_at").first()
+            )
+            is_canceled = (
+                last_time_range is not None and last_time_range.canceled_at is not None
+            )
             if not is_canceled:
                 raise ActiveSubscriptionExists
 
         try:
             r = requests.get(
-                f'{settings.PAYMENT_API_BASE}/api/generic-donation/{settings.PAYMENT_CAMPAIGN_ID}/',
+                f"{settings.PAYMENT_API_BASE}/api/generic-donation/{settings.PAYMENT_CAMPAIGN_ID}/",
                 params={
-                    'customer_id': self.request.user.customer_id,
-                    'captcha': self.request.GET.get('captcha'),
+                    "customer_id": self.request.user.customer_id,
+                    "captcha": self.request.GET.get("captcha"),
                 },
                 timeout=30,
             )
             r.raise_for_status()
-            print(f'SubscriptionActivateView GET api response text:')
-            print(f'type: {type(r.text)}')
-            print(f'r.text: {r.text}')
+            print(f"SubscriptionActivateView GET api response text:")
+            print(f"type: {type(r.text)}")
+            print(f"r.text: {r.text}")
             data = r.json()
-            token = data['token']
-            customer_id = data['customer_id']
+            token = data["token"]
+            customer_id = data["customer_id"]
         except requests.exceptions.RequestException as request_exception:
             capture_exception(request_exception)
-            print('RequestException in SubscriptionActivateView GET')
+            print("RequestException in SubscriptionActivateView GET")
             if api_exception := api_exception_from_request_exception(request_exception):
-              raise api_exception
+                raise api_exception
             raise APIException
         except Exception as e:
             capture_exception(e)
-            print('Exception in SubscriptionActivateView GET:')
+            print("Exception in SubscriptionActivateView GET:")
             traceback.print_exc()
             raise APIException
 
@@ -254,79 +304,88 @@ class SubscriptionActivateView(APIView):
             self.request.user.customer_id = customer_id
             self.request.user.save()
 
-        return Response({ 'token': token })
+        return Response({"token": token})
 
     def post(self, request):
         if not isinstance(self.request.data, dict):
             raise ParseError
 
-        nonce = self.request.data.get('nonce')
-        if nonce is None or nonce == '':
-            raise RestValidationError({ 'nonce': ['This field may not be blank.'] })
+        nonce = self.request.data.get("nonce")
+        if nonce is None or nonce == "":
+            raise RestValidationError({"nonce": ["This field may not be blank."]})
 
         try:
             r = requests.post(
-                f'{settings.PAYMENT_API_BASE}/api/generic-donation/subscription/{settings.PAYMENT_CAMPAIGN_ID}/',
+                f"{settings.PAYMENT_API_BASE}/api/generic-donation/subscription/{settings.PAYMENT_CAMPAIGN_ID}/",
                 json={
-                    'nonce': nonce,
-                    'amount': settings.PAYMENT_SUBSCRIPTION_AMOUNT,
-                    'email': self.request.user.email,
-                    'customer_id': self.request.user.customer_id,
+                    "nonce": nonce,
+                    "amount": settings.PAYMENT_SUBSCRIPTION_AMOUNT,
+                    "email": self.request.user.email,
+                    "customer_id": self.request.user.customer_id,
                 },
                 timeout=30,
             )
-            print(f'SubscriptionActivateView POST api response text:')
-            print(f'type: {type(r.text)}')
-            print(f'r.text: {r.text}')
+            print(f"SubscriptionActivateView POST api response text:")
+            print(f"type: {type(r.text)}")
+            print(f"r.text: {r.text}")
             data = r.json()
-            payment_token = data['subscription_id']
+            payment_token = data["subscription_id"]
         except Exception as e:
             capture_exception(e)
-            print('Exception in SubscriptionActivateView POST:')
+            print("Exception in SubscriptionActivateView POST:")
             traceback.print_exc()
             raise APIException
 
         activate_subscription(self.request.user, payment_token)
 
-        return Response({ 'success': True })
+        return Response({"success": True})
 
 
 class SubscriptionChargedView(APIView):
-    permission_classes = [AllowAny] # TODO: protect?
+    permission_classes = [AllowAny]  # TODO: protect?
 
     @staticmethod
     def _get_user(data, field_name):
         customer_id = data.get(field_name)
-        if customer_id is None or customer_id == '':
-            raise RestValidationError({ field_name: ['This field may not be blank.'] })
+        if customer_id is None or customer_id == "":
+            raise RestValidationError({field_name: ["This field may not be blank."]})
         try:
             user = User.objects.get(customer_id=customer_id)
         except (DjangoValidationError, User.DoesNotExist):
-            raise RestValidationError({ field_name: ['This field must be a valid customer id.'] })
+            raise RestValidationError(
+                {field_name: ["This field must be a valid customer id."]}
+            )
         return user
 
     @staticmethod
     def _get_kind(data, field_name):
         value = data.get(field_name)
-        if value is None or value == '':
-            raise RestValidationError({ field_name: ['This field may not be blank.'] })
+        if value is None or value == "":
+            raise RestValidationError({field_name: ["This field may not be blank."]})
         return value
 
     @staticmethod
     def _get_subscription_id(data, field_name, user):
         subscription_id = data.get(field_name)
-        if subscription_id is None or subscription_id == '':
-            raise RestValidationError({ field_name: ['This field may not be blank.'] })
+        if subscription_id is None or subscription_id == "":
+            raise RestValidationError({field_name: ["This field may not be blank."]})
         # a past payed subscription must already exist if we want to extend it
         subscription = Subscription.objects.filter(user=user).first()
-        if not subscription or not subscription.time_ranges.filter(payment_token=subscription_id).exists():
-            raise RestValidationError({ field_name: ['This field must be a valid subscription id.'] })
+        if (
+            not subscription
+            or not subscription.time_ranges.filter(
+                payment_token=subscription_id
+            ).exists()
+        ):
+            raise RestValidationError(
+                {field_name: ["This field must be a valid subscription id."]}
+            )
         return subscription_id
 
     def post(self, request):
-        print(f'SubscriptionChargedView POST request.data:')
-        print(f'type: {type(self.request.data)}')
-        print(f'data: {self.request.data}')
+        print(f"SubscriptionChargedView POST request.data:")
+        print(f"type: {type(self.request.data)}")
+        print(f"data: {self.request.data}")
 
         if not isinstance(self.request.data, dict):
             with push_scope() as scope:
@@ -335,26 +394,32 @@ class SubscriptionChargedView(APIView):
                 capture_message("SubscriptionChargedView: request.data is not a dict")
             raise ParseError
 
-        user = self._get_user(self.request.data, 'customer_id')
-        kind = self._get_kind(self.request.data, 'kind')
-        payment_token = self._get_subscription_id(self.request.data, 'subscription_id', user)
+        user = self._get_user(self.request.data, "customer_id")
+        kind = self._get_kind(self.request.data, "kind")
+        payment_token = self._get_subscription_id(
+            self.request.data, "subscription_id", user
+        )
 
-        if kind == 'subscription_charged_successfully':
+        if kind == "subscription_charged_successfully":
             activate_subscription(user, payment_token)
-        elif kind == 'subscription_charged_unsuccessfully':
+        elif kind == "subscription_charged_unsuccessfully":
             # TODO: handle this case
             with push_scope() as scope:
                 scope.set_extra("request_data", self.request.data)
-                capture_message(f"SubscriptionChargedView: received kind=subscription_charged_unsuccessfully")
-        elif kind == 'subscription_canceled':
+                capture_message(
+                    f"SubscriptionChargedView: received kind=subscription_charged_unsuccessfully"
+                )
+        elif kind == "subscription_canceled":
             cancel_subscription(user, payment_token)
         else:
             with push_scope() as scope:
                 scope.set_extra("request_data", self.request.data)
-                capture_message(f"SubscriptionChargedView: invalid kind '{kind}' received.")
-            raise RestValidationError({ 'kind': ['This field must be a valid kind.'] })
+                capture_message(
+                    f"SubscriptionChargedView: invalid kind '{kind}' received."
+                )
+            raise RestValidationError({"kind": ["This field must be a valid kind."]})
 
-        return Response({ 'success': True })
+        return Response({"success": True})
 
 
 class SubscriptionCancelView(APIView):
@@ -364,43 +429,45 @@ class SubscriptionCancelView(APIView):
 
         subscription = Subscription.objects.get(user=self.request.user)
 
-        last_time_range = subscription.time_ranges.payed().order_by('-ends_at').first()
-        is_canceled = last_time_range is not None and last_time_range.canceled_at is not None
+        last_time_range = subscription.time_ranges.payed().order_by("-ends_at").first()
+        is_canceled = (
+            last_time_range is not None and last_time_range.canceled_at is not None
+        )
 
         if is_canceled:
             raise NoActiveSubscription
 
         try:
             r = requests.post(
-                f'{settings.PAYMENT_API_BASE}/api/generic-donation/cancel-subscription/',
+                f"{settings.PAYMENT_API_BASE}/api/generic-donation/cancel-subscription/",
                 json={
-                    'customer_id': self.request.user.customer_id,
-                    'subscription_id': last_time_range.payment_token,
+                    "customer_id": self.request.user.customer_id,
+                    "subscription_id": last_time_range.payment_token,
                 },
                 timeout=30,
             )
-            print(f'SubscriptionCancelView POST api response text:')
-            print(f'type: {type(r.text)}')
-            print(f'r.text: {r.text}')
+            print(f"SubscriptionCancelView POST api response text:")
+            print(f"type: {type(r.text)}")
+            print(f"r.text: {r.text}")
             data = r.json()
-            assert data['msg'] == 'subscription canceled', "bad response msg"
+            assert data["msg"] == "subscription canceled", "bad response msg"
         except Exception as e:
             capture_exception(e)
-            print('Exception in SubscriptionCancelView POST:')
+            print("Exception in SubscriptionCancelView POST:")
             traceback.print_exc()
             raise APIException
 
         cancel_subscription(self.request.user, last_time_range.payment_token)
 
-        return Response({ 'success': True })
+        return Response({"success": True})
 
 
 class Spsp4Renderer(JSONRenderer):
-    media_type = 'application/spsp4+json'
+    media_type = "application/spsp4+json"
 
 
 class SpspRenderer(JSONRenderer):
-    media_type = 'application/spsp+json'
+    media_type = "application/spsp+json"
 
 
 class Spsp4View(APIView):
@@ -412,9 +479,9 @@ class Spsp4View(APIView):
         if not uid and not username:
             return None
         elif uid:
-            kwargs = { 'uid': uid }
+            kwargs = {"uid": uid}
         elif username:
-            kwargs = { 'username': username }
+            kwargs = {"username": username}
         try:
             return User.objects.get(**kwargs)
         except (DjangoValidationError, User.DoesNotExist):
@@ -441,8 +508,10 @@ class Spsp4View(APIView):
 
         return Response(
             {
-                'destination_account': f'g.novdan.{wallet.id}.transfer',
-                'shared_secret': base64.b64encode('TransferDoesNotUseSTREAMProtocol'.encode()), # We don't use STREAM.
+                "destination_account": f"g.novdan.{wallet.id}.transfer",
+                "shared_secret": base64.b64encode(
+                    "TransferDoesNotUseSTREAMProtocol".encode()
+                ),  # We don't use STREAM.
             },
-            content_type='application/spsp4+json',
+            content_type="application/spsp4+json",
         )

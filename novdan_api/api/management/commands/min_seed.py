@@ -10,46 +10,46 @@ Application = get_application_model()
 
 
 class Command(BaseCommand):
-    help = 'Minimal database seed'
+    help = "Minimal database seed"
 
     def handle(self, *args, **options):
-        self.stdout.write('Starting ...')
+        self.stdout.write("Starting ...")
 
         admin = User.objects.create(
-            first_name='Danes je nov dan',
-            username='djnd',
-            email='test@test.com',
+            first_name="Danes je nov dan",
+            username="djnd",
+            email="test@test.com",
             is_active=True,
             is_superuser=True,
             is_staff=True,
         )
-        admin.set_password('changeme')
+        admin.set_password("changeme")
         admin.save()
 
         Application.objects.create(
             user=admin,
             client_type=Application.CLIENT_PUBLIC,
             authorization_grant_type=Application.GRANT_PASSWORD,
-            name='api-client'
+            name="api-client",
         )
 
         user1 = User.objects.create(
-            first_name='First',
-            last_name='User',
-            username='user1',
-            email='user1@test.com',
+            first_name="First",
+            last_name="User",
+            username="user1",
+            email="user1@test.com",
             is_active=True,
         )
-        user1.set_password('changeme')
+        user1.set_password("changeme")
         user1.save()
 
         user2 = User.objects.create(
-            first_name='User2',
-            username='user2',
-            email='user2@test.com',
+            first_name="User2",
+            username="user2",
+            email="user2@test.com",
             is_active=True,
         )
-        user2.set_password('changeme')
+        user2.set_password("changeme")
         user2.save()
 
         admin_wallet = Wallet.objects.get(user=admin)
@@ -59,8 +59,8 @@ class Command(BaseCommand):
         generate_tokens_for_month_for_wallet(admin_wallet)
 
         transfer_tokens(admin_wallet, user1_wallet, 5)
-        admin_wallet.refresh_from_db() # get updated values from db not CombinedExpression
+        admin_wallet.refresh_from_db()  # get updated values from db not CombinedExpression
         transfer_tokens(admin_wallet, user2_wallet, 10)
-        admin_wallet.refresh_from_db() # get updated values from db not CombinedExpression
+        admin_wallet.refresh_from_db()  # get updated values from db not CombinedExpression
 
-        self.stdout.write('Done')
+        self.stdout.write("Done")

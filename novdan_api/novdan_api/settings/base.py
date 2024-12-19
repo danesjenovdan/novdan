@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'thisshouldbesecret'
+SECRET_KEY = "thisshouldbesecret"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -34,77 +34,75 @@ ALLOWED_HOSTS = []
 # Remove that filter so that exceptions are logged in production as well.
 # For 'print' calls to show up PYTHONUNBUFFERED environment variable must be set
 # IMPORTANT: PYTHONUNBUFFERED is an env var NOT a setting in this file!
-DEFAULT_LOGGING['handlers']['console']['filters'] = []
+DEFAULT_LOGGING["handlers"]["console"]["filters"] = []
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    'rest_framework',
-    'corsheaders',
-    'rangefilter',
-    'oauth2_provider',
-
-    'api',
-    'articles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "rest_framework",
+    "corsheaders",
+    "rangefilter",
+    "oauth2_provider",
+    "api",
+    "articles",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'novdan_api.urls'
+ROOT_URLCONF = "novdan_api.urls"
 
-AUTH_USER_MODEL = 'api.User'
+AUTH_USER_MODEL = "api.User"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'novdan_api.wsgi.application'
+WSGI_APPLICATION = "novdan_api.wsgi.application"
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-        'oauth2_provider.contrib.rest_framework.TokenHasReadWriteScope',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+        "oauth2_provider.contrib.rest_framework.TokenHasReadWriteScope",
     ],
 }
 
 OAUTH2_PROVIDER = {
-    'SCOPES': {
-        'read': 'Read scope',
-        'write': 'Write scope',
-        'transfer': 'Transfer tokens scope',
+    "SCOPES": {
+        "read": "Read scope",
+        "write": "Write scope",
+        "transfer": "Transfer tokens scope",
     },
-    'DEFAULT_SCOPES': ['read', 'write'],
+    "DEFAULT_SCOPES": ["read", "write"],
 }
 
 
@@ -112,9 +110,9 @@ OAUTH2_PROVIDER = {
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -124,16 +122,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -141,9 +139,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -155,19 +153,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOW_HEADERS = list(cors_default_headers) + ['web-monetization-id']
+CORS_ALLOW_HEADERS = list(cors_default_headers) + ["web-monetization-id"]
 
-PAYMENT_API_BASE = ''
-PAYMENT_CAMPAIGN_ID = 'nov-dan'
+PAYMENT_API_BASE = ""
+PAYMENT_CAMPAIGN_ID = "nov-dan"
 
 PAYMENT_SUBSCRIPTION_AMOUNT = 5
 PAYMENT_GRACE_PERIOD_DAYS = 2

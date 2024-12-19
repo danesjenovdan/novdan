@@ -127,7 +127,11 @@ class Command(BaseCommand):
 
                 self.stdout.write(f"   > {title[:67]}")
 
-                if item.link and item.link.content and not item.link.content.startswith("http"):
+                if (
+                    item.link
+                    and item.link.content
+                    and not item.link.content.startswith("http")
+                ):
                     if item.link.content.startswith("//"):
                         item.link.content = f"http:{item.link.content}"
                     if "://" not in item.link.content:

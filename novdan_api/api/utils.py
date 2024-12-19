@@ -8,14 +8,16 @@ from .models import Subscription, SubscriptionTimeRange, Transaction, Wallet
 from .serializers import UserSerializer
 
 VALID_PAYOUT_USERNAMES = [
-    'agrument',
-    'drzavljand',
-    'mesanec',
-    'ostro',
-    'vezjak',
+    "agrument",
+    "drzavljand",
+    "mesanec",
+    "ostro",
+    "vezjak",
 ]
 
-USER_PAYMENT_AMOUNT = settings.PAYMENT_SUBSCRIPTION_AMOUNT * (1 - 0.03) # subtract 3% fees
+USER_PAYMENT_AMOUNT = settings.PAYMENT_SUBSCRIPTION_AMOUNT * (
+    1 - 0.03
+)  # subtract 3% fees
 
 
 def get_start_of_month(datetime):
@@ -36,7 +38,9 @@ def get_end_of_month(datetime):
 
 
 def get_end_of_last_month(datetime):
-    return timezone.datetime(datetime.year, datetime.month, 1, tzinfo=datetime.tzinfo) - timezone.timedelta(seconds=1)
+    return timezone.datetime(
+        datetime.year, datetime.month, 1, tzinfo=datetime.tzinfo
+    ) - timezone.timedelta(seconds=1)
 
 
 def calculate_receivers_percentage(from_wallet=None, time=None):
@@ -53,16 +57,25 @@ def calculate_receivers_percentage(from_wallet=None, time=None):
     if from_wallet:
         transactions = transactions.filter(from_wallet=from_wallet)
 
-    sum = transactions.aggregate(Sum('amount')).get('amount__sum', None) or 0
+    sum = transactions.aggregate(Sum("amount")).get("amount__sum", None) or 0
     if sum <= 0:
         return 0, []
 
-    results = transactions.values('to_wallet').order_by('to_wallet').annotate(sum=Sum('amount'))
-    percentages = [{
-        'user': UserSerializer(Wallet.objects.get(id=result['to_wallet']).user).data,
-        'amount': result['sum'],
-        'percentage': result['sum'] / sum,
-    } for result in results]
+    results = (
+        transactions.values("to_wallet")
+        .order_by("to_wallet")
+        .annotate(sum=Sum("amount"))
+    )
+    percentages = [
+        {
+            "user": UserSerializer(
+                Wallet.objects.get(id=result["to_wallet"]).user
+            ).data,
+            "amount": result["sum"],
+            "percentage": result["sum"] / sum,
+        }
+        for result in results
+    ]
 
     return sum, percentages
 
@@ -85,7 +98,9 @@ def generate_tokens_for_month(time=None):
 
     seconds = _get_number_of_seconds_in_month(time)
 
-    user_ids_with_subscription = Subscription.objects.current(time).values_list('user_id', flat=True)
+    user_ids_with_subscription = Subscription.objects.current(time).values_list(
+        "user_id", flat=True
+    )
 
     Wallet.objects.filter(user_id__in=user_ids_with_subscription).update(amount=seconds)
 
@@ -121,16 +136,18 @@ def generate_subscription_time_ranges_for_month(time=None):
         time = timezone.now()
 
     # get last time range for each subscription
-    last_time_ranges = SubscriptionTimeRange.objects.all() \
-        .filter(ends_at__lt=get_start_of_month(time)) \
-        .order_by('subscription', '-ends_at') \
-        .distinct('subscription')
+    last_time_ranges = (
+        SubscriptionTimeRange.objects.all()
+        .filter(ends_at__lt=get_start_of_month(time))
+        .order_by("subscription", "-ends_at")
+        .distinct("subscription")
+    )
 
     # filter non canceled time ranges from last time ranges
     # this needs to happen separately otherwise filter is executed before distinct
-    non_canceled_subscription_ids = SubscriptionTimeRange.objects \
-        .filter(pk__in=last_time_ranges, canceled_at__isnull=True) \
-        .values_list('subscription_id', flat=True)
+    non_canceled_subscription_ids = SubscriptionTimeRange.objects.filter(
+        pk__in=last_time_ranges, canceled_at__isnull=True
+    ).values_list("subscription_id", flat=True)
 
     for subscription_id in non_canceled_subscription_ids:
         _get_or_create_subscription_time_range(time, subscription_id)
@@ -146,13 +163,17 @@ def activate_subscription(user, payment_token):
     time = timezone.now()
 
     # make sure payment token is not empty
-    assert payment_token is not None and payment_token != '', "Payment token is none or empty!"
+    assert (
+        payment_token is not None and payment_token != ""
+    ), "Payment token is none or empty!"
 
     with transaction.atomic():
         subscription, _ = Subscription.objects.get_or_create(user=user)
 
         # make sure subscription is not already payed
-        assert not subscription.time_ranges.current(time).payed().exists(), "Subscription is already payed!"
+        assert (
+            not subscription.time_ranges.current(time).payed().exists()
+        ), "Subscription is already payed!"
 
         # try getting or create new subscription time range
         time_range = _get_or_create_subscription_time_range(time, subscription.id)
@@ -176,13 +197,21 @@ def cancel_subscription(user, payment_token):
     time = timezone.now()
 
     # make sure payment token is not empty
-    assert payment_token is not None and payment_token != '', "Payment token is none or empty!"
+    assert (
+        payment_token is not None and payment_token != ""
+    ), "Payment token is none or empty!"
 
     with transaction.atomic():
         subscription = Subscription.objects.get(user=user)
 
-        last_time_range = subscription.time_ranges.filter(payment_token=payment_token).order_by('-ends_at').first()
-        is_canceled = last_time_range is not None and last_time_range.canceled_at is not None
+        last_time_range = (
+            subscription.time_ranges.filter(payment_token=payment_token)
+            .order_by("-ends_at")
+            .first()
+        )
+        is_canceled = (
+            last_time_range is not None and last_time_range.canceled_at is not None
+        )
 
         # make sure subscription exists
         assert last_time_range, "Subscription with this payment token does not exist!"
@@ -204,8 +233,8 @@ def transfer_tokens(from_wallet, to_wallet, amount):
     assert from_wallet.amount >= amount, "Wallet balance too low!"
 
     with transaction.atomic():
-        from_wallet.amount = F('amount') - amount
-        to_wallet.amount = F('amount') + amount
+        from_wallet.amount = F("amount") - amount
+        to_wallet.amount = F("amount") + amount
 
         new_transaction = Transaction(
             from_wallet=from_wallet,
@@ -223,10 +252,10 @@ def api_exception_from_request_exception(request_exception):
         detail = None
         try:
             json = request_exception.response.json()
-            if 'detail' in json:
-                detail = json['detail']
-            elif 'status' in json:
-                detail = json['status']
+            if "detail" in json:
+                detail = json["detail"]
+            elif "status" in json:
+                detail = json["status"]
         except Exception:
             pass
         api_exception = APIException(detail=detail)
