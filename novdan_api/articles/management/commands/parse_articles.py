@@ -114,7 +114,11 @@ class Command(BaseCommand):
             response = requests.get(url, timeout=10)
             response.raise_for_status()
 
-            rss = Parser.parse(response.text, schema=CustomSchema)
+            response_text = response.text
+            # fix random problems with rss feeds
+            response_text = response_text.replace("<title>&nbsp;", "<title>")
+
+            rss = Parser.parse(response_text, schema=CustomSchema)
 
             self.stdout.write(f"   > title: {rss.channel.title.content}")
             self.stdout.write(f"   > found items: {len(rss.channel.items)}")
@@ -208,8 +212,8 @@ class Command(BaseCommand):
                 scope.set_extra("command", "parse_articles")
                 scope.set_extra("rss_url", url)
                 capture_exception(e)
-            self.stdout.write(f"   > error: {e}")
-            self.stdout.write("")
+            self.stderr.write(self.style.ERROR(f"   > error: {e}"))
+            self.stderr.write("")
             return
 
         self.stdout.write("")
