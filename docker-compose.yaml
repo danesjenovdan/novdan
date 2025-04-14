@@ -1,8 +1,10 @@
-version: '3'
+volumes:
+  pgdata:
+
 
 services:
   db:
-    image: postgres:latest
+    image: postgres:15
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -41,6 +43,3 @@ services:
     command: npm run dev
     volumes:
       - ./novdan_frontend:/app
-
-volumes:
-  pgdata:
