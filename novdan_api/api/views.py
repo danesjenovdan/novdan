@@ -274,7 +274,7 @@ class SubscriptionActivateView(APIView):
 
         try:
             r = requests.get(
-                f"{settings.PAYMENT_API_BASE}/api/generic-donation/{settings.PAYMENT_CAMPAIGN_ID}/",
+                f"{settings.PAYMENT_API_BASE}/api/generic-donation/subscription/{settings.PAYMENT_CAMPAIGN_ID}/",
                 params={
                     "customer_id": self.request.user.customer_id,
                     "captcha": self.request.GET.get("captcha"),
