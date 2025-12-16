@@ -1,12 +1,12 @@
 from django.contrib.syndication.views import Feed
 from django.utils.feedgenerator import Atom1Feed, Rss201rev2Feed
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from .models import Article, Medium
-from .serializers import ArticleSerializer, MediumSerializer
+from .serializers import ArticleSerializer, MediumMoreSerializer
 
 
 class Pagination(LimitOffsetPagination):
@@ -14,11 +14,26 @@ class Pagination(LimitOffsetPagination):
     max_limit = 50
 
 
+class MediumView(RetrieveAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = MediumMoreSerializer
+    lookup_field = "slug"
+    queryset = Medium.objects.all()
+
+
 class ArticlesView(ListAPIView):
     permission_classes = (AllowAny,)
-    queryset = Article.objects.all().order_by("-published_at")
     serializer_class = ArticleSerializer
     pagination_class = Pagination
+
+    def get_queryset(self):
+        qs = Article.objects.all().order_by("-published_at")
+
+        medium__slug = self.request.query_params.get("medium__slug")
+        if medium__slug:
+            return qs.filter(medium__slug=medium__slug)
+
+        return qs
 
 
 class ArticlesRssFeed(Feed):
