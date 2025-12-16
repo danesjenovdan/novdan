@@ -17,7 +17,15 @@ class MediumMoreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Medium
-        fields = ("id", "name", "slug", "description", "donation_campaign_slug", "url", "icon_url")
+        fields = (
+            "id",
+            "name",
+            "slug",
+            "description",
+            "donation_campaign_slug",
+            "url",
+            "icon_url",
+        )
 
 
 class MediumSerializer(serializers.ModelSerializer):

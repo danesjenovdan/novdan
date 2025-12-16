@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('articles', '0006_medium_favicon'),
+        ("articles", "0006_medium_favicon"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='medium',
-            name='slug',
+            model_name="medium",
+            name="slug",
             field=models.SlugField(max_length=64, null=True, unique=True),
         ),
     ]

@@ -3,17 +3,19 @@
 from django.db import migrations
 from django.utils.text import slugify
 
+
 def populate_medium_slugs(apps, schema_editor):
-    Medium = apps.get_model('articles', 'Medium')
+    Medium = apps.get_model("articles", "Medium")
     for medium in Medium.objects.all():
         if not medium.slug:
             medium.slug = slugify(medium.name)
             medium.save()
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('articles', '0007_medium_slug'),
+        ("articles", "0007_medium_slug"),
     ]
 
     operations = [
