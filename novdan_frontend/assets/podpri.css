@@ -13,7 +13,7 @@ body .page ::selection {
   color: #fff;
 }
 
-.page .checkout-stage .donation-options .donation-option {
+.page .checkout-stage .donation-options button.donation-option {
   flex-basis: 200px;
   background: #fff;
   border-radius: 1.25rem;
