@@ -1,0 +1,87 @@
+body,
+.page {
+  background: #000;
+  color: #fff;
+}
+
+body .page ::selection {
+  background: #ffd700;
+  color: #000;
+}
+
+.page .checkout-stage .language-switcher button {
+  color: #fff;
+}
+
+.page .checkout-stage .donation-options .donation-option {
+  flex-basis: 200px;
+  background: #fff;
+  border-radius: 1.25rem;
+}
+
+.page .checkout-stage .donation-option .donation-option__content-wrapper {
+  border: 4px solid transparent;
+  border-radius: 1.25rem;
+}
+
+.page .checkout-stage .donation-option:focus .donation-option__content-wrapper {
+  border: 4px solid #ffd700;
+}
+
+.page .checkout-stage .donation-option.donation-option--selected .donation-option__content-wrapper {
+  border: 4px solid #ffd700;
+}
+
+.page .checkout-stage .custom-control.custom-checkbox input.custom-control-input:checked ~ .custom-control-label::before,
+.page .checkout-stage .custom-control.custom-radio input.custom-control-input:checked ~ .custom-control-label::before {
+  border-color: #000;
+  background-color: #fff;
+}
+
+.page .checkout-stage .custom-control.custom-checkbox .custom-control-label::before,
+.page .checkout-stage .custom-control.custom-radio .custom-control-label::before {
+  border-radius: 0.375rem;
+  border-color: #000;
+  background-color: #fff;
+}
+
+.page .checkout-stage .custom-control.custom-checkbox .custom-control-label::after,
+.page .checkout-stage .custom-control.custom-radio .custom-control-label::after {
+  filter: invert(1);
+}
+
+.page .checkout-stage .form-control {
+  border-radius: 1.25rem;
+  border-color: #000;
+  background-color: #fff;
+}
+
+.page .checkout-stage .custom-control.custom-checkbox input.custom-control-input:focus ~ .custom-control-label::before,
+.page .checkout-stage .custom-control.custom-radio input.custom-control-input:focus ~ .custom-control-label::before,
+.page .checkout-stage .form-control:focus {
+  border-color: #000;
+  box-shadow: 0 0 0 0.2rem #ffd700;
+}
+
+.page .checkout-stage .confirm-button {
+  background-color: #fff;
+  border-radius: 1.25rem;
+}
+
+.page .checkout-stage .confirm-button .text {
+  color: #000;
+}
+
+.page .checkout-stage .confirm-button .arrow svg,
+.page .checkout-stage .confirm-button .hearts svg {
+  fill: #000;
+}
+
+.page .checkout-stage .payment-switcher .nav .nav-item .nav-link {
+  color: #fff;
+}
+
+.page .checkout-stage .payment-switcher .nav .nav-item .nav-link.active {
+  background-color: #fff;
+  color: #000;
+}

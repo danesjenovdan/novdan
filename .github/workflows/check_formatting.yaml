@@ -25,8 +25,8 @@ jobs:
 
       - name: Check formatting with black
         run: |
-          black . --check --diff
+          (cd ./novdan_api && black . --check --diff)
 
       - name: Check formatting with isort
         run: |
-          isort . --check --diff --profile black
+          (cd ./novdan_api && isort . --check --diff --profile black)

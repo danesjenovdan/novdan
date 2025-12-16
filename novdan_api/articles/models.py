@@ -10,6 +10,9 @@ def media_favicon_path(instance, filename):
 class Medium(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=64)
+    slug = models.SlugField(max_length=64, unique=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    donation_campaign_slug = models.CharField(max_length=128, blank=True, null=True)
     url = models.URLField()
     favicon = models.ImageField(upload_to=media_favicon_path, null=True, blank=True)
     article_rss_urls = models.TextField(blank=True, null=True)
