@@ -35,7 +35,7 @@
           <p v-for="line in descriptionLines" :key="line">
             {{ line }}
           </p>
-          <p><strong>XX Podpornikov</strong></p>
+          <!-- <p><strong>XX Podpornikov</strong></p> -->
         </div>
       </div>
       <div v-if="showButtons" class="donate-buttons">

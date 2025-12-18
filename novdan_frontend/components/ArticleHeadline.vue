@@ -76,6 +76,14 @@
               />
               <span>Agrument</span>
             </a>
+            <router-link to="/ppp">
+              <img
+                src="~assets/images/jenull.png"
+                alt="Petkova Propagandna Poročila logo"
+                :style="`transform: rotate(${tilted * 0.8}deg)`"
+              />
+              <span>Petkova Propagandna Poročila</span>
+            </router-link>
           </p>
         </div>
         <div class="badge">
