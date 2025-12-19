@@ -6,8 +6,8 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: novdanapi
+      POSTGRES_PASSWORD: novdanapi
       POSTGRES_DB: novdanapi
     ports:
       - 5432:5432
@@ -24,8 +24,8 @@ services:
       DJANGO_SETTINGS_MODULE: novdan_api.settings.k8s
       DJANGO_DATABASE_HOST: db
       DJANGO_DATABASE_NAME: novdanapi
-      DJANGO_DATABASE_USERNAME: postgres
-      DJANGO_DATABASE_PASSWORD: postgres
+      DJANGO_DATABASE_USERNAME: novdanapi
+      DJANGO_DATABASE_PASSWORD: novdanapi
     volumes:
       - ./novdan_api:/app
     depends_on:
