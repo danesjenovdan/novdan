@@ -35,7 +35,7 @@
           <p v-for="line in descriptionLines" :key="line">
             {{ line }}
           </p>
-          <p><strong>XX Podpornikov</strong></p>
+          <!-- <p><strong>XX Podpornikov</strong></p> -->
         </div>
       </div>
       <div v-if="showButtons" class="donate-buttons">
@@ -255,6 +255,11 @@ export default {
     margin-top: 5rem;
     margin-bottom: 4rem;
 
+    @media (max-width: 767px) {
+      flex-direction: column;
+      gap: 2rem;
+    }
+
     @keyframes rotate360 {
       to {
         transform: rotate(360deg);
@@ -284,6 +289,9 @@ export default {
         z-index: 3;
         transition: all 0.25s ease;
         transform: rotate(0) scale(1);
+        @media (max-width: 767px) {
+          width: calc(100% - 12rem);
+        }
         @media (min-width: 1200px) {
           font-size: 1.75rem;
         }
@@ -292,6 +300,9 @@ export default {
         position: absolute;
         z-index: 3;
         right: -4rem;
+        @media (max-width: 767px) {
+          right: 1rem;
+        }
         img {
           height: 8rem;
           animation: rotate360 3s linear infinite; /* animation set */
