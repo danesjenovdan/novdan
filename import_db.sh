@@ -37,7 +37,7 @@ PGPASSWORD=$DATABASE_PASSWORD \
 
 # echo
 # echo "LOADING DB INTO CONTAINER"
-# docker container exec -i $(docker-compose ps -q db) psql -U novdanapi novdanapi < db.dump
+# docker container exec -i $(docker compose ps -q db) psql -U novdanapi novdanapi < db.dump
 
 # docker-compose down
 

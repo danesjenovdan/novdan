@@ -73,6 +73,19 @@ class CustomAtomSchema(Atom, XMLBaseModel):
     feed: Tag[CustomFeed]
 
 
+def requests_get_with_retries(url, retries=5, delay=15, **kwargs):
+    for attempt in range(retries):
+        try:
+            response = requests.get(url, **kwargs)
+            response.raise_for_status()
+            return response
+        except requests.exceptions.RequestException as e:
+            if attempt < retries - 1:
+                time.sleep(delay)
+            else:
+                raise e
+
+
 class Command(BaseCommand):
     help = "Parse articles from Media RSS feeds"
 
@@ -99,8 +112,7 @@ class Command(BaseCommand):
 
         time.sleep(3)  # wait to avoid rate limiting
         try:
-            response = requests.get(article.url, timeout=10)
-            response.raise_for_status()
+            response = requests_get_with_retries(article.url, timeout=30)
         except requests.exceptions.RequestException as e:
             self.stdout.write(f"     > error updating image_url: {e}")
             return
@@ -143,8 +155,7 @@ class Command(BaseCommand):
 
         try:
             time.sleep(3)  # wait to avoid rate limiting
-            response = requests.get(url, timeout=10)
-            response.raise_for_status()
+            response = requests_get_with_retries(url, timeout=30)
 
             response_text = response.text
             # fix random problems with feeds
