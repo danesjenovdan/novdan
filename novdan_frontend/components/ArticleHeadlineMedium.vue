@@ -35,6 +35,9 @@
           <p v-for="line in descriptionLines" :key="line">
             {{ line }}
           </p>
+          <div v-for="link in medium.description_links" :key="link.url" class="link">
+            <a :href="link.url" target="_blank">{{ link.url }}</a><br />
+          </div>
           <!-- <p><strong>XX Podpornikov</strong></p> -->
         </div>
       </div>
@@ -51,7 +54,7 @@
             <img src="~assets/images/star.png" alt="pink spinning star" />
           </div>
         </a>
-        <a class="link" href="#">Prekini podporo</a>
+        <a class="link" href="#" @click.prevent="cancelSupport">Prekini podporo</a>
       </div>
     </div>
   </section>
@@ -75,6 +78,11 @@ export default {
   computed: {
     descriptionLines() {
       return this.medium.description.replace(/\r\n/g, '\n').split('\n')
+    }
+  },
+  methods: {
+    cancelSupport() {
+      prompt('Prosimo kontaktirajte nas na e-naslovu:', 'novdan@djnd.si')
     }
   }
 }
@@ -239,6 +247,10 @@ export default {
       }
 
       p + p {
+        margin-top: 1.25rem;
+      }
+
+      p + div.link {
         margin-top: 1.25rem;
       }
 

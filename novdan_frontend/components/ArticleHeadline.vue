@@ -76,7 +76,7 @@
               />
               <span>Agrument</span>
             </a>
-            <router-link to="/ppp">
+            <router-link to="/ppporocila">
               <img
                 src="~assets/images/jenull.png"
                 alt="Petkova Propagandna Poročila logo"

@@ -1,12 +1,18 @@
 from django.contrib import admin
 
-from .models import Article, Medium
+from .models import Article, Medium, MediumLink
+
+
+class MediumLinkInline(admin.TabularInline):
+    model = MediumLink
+    extra = 1
 
 
 @admin.register(Medium)
 class MediumAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "url")
     search_fields = ("id", "name", "url")
+    inlines = [MediumLinkInline]
 
 
 @admin.register(Article)

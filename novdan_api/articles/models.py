@@ -7,6 +7,19 @@ def media_favicon_path(instance, filename):
     return f"media_favicon_{instance.id}_{filename}"
 
 
+class MediumLink(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    medium = models.ForeignKey(
+        "Medium",
+        on_delete=models.CASCADE,
+        related_name="description_links",
+    )
+    url = models.URLField()
+
+    def __str__(self):
+        return f"{self.url}"
+
+
 class Medium(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=64)
