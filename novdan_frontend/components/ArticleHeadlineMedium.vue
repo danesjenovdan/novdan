@@ -51,7 +51,7 @@
             <img src="~assets/images/star.png" alt="pink spinning star" />
           </div>
         </a>
-        <a class="link" href="#">Prekini podporo</a>
+        <a class="link" href="#" @click.prevent="cancelSupport">Prekini podporo</a>
       </div>
     </div>
   </section>
@@ -75,6 +75,11 @@ export default {
   computed: {
     descriptionLines() {
       return this.medium.description.replace(/\r\n/g, '\n').split('\n')
+    }
+  },
+  methods: {
+    cancelSupport() {
+      prompt('Prosimo kontaktirajte nas na e-naslovu:', 'novdan@djnd.si')
     }
   }
 }
