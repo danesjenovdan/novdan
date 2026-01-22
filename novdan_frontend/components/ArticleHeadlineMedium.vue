@@ -42,7 +42,7 @@
         </div>
       </div>
       <div v-if="showButtons" class="donate-buttons">
-        <a class="button" @click.prevent="$router.push(`/${medium.slug}/podpri`)">
+        <a class="button" @click.prevent="$router.push(`/${medium.slug}/podpri-izbira`)">
           <div class="support">Postani podpornik</div>
           <div class="star">
             <img src="~assets/images/star.png" alt="pink spinning star" />
