@@ -7,6 +7,7 @@ from .models import Article, Medium
 
 class MediumMoreSerializer(serializers.ModelSerializer):
     icon_url = serializers.SerializerMethodField()
+    description_links = serializers.SerializerMethodField()
 
     def get_icon_url(self, obj):
         if obj.favicon:
@@ -15,6 +16,9 @@ class MediumMoreSerializer(serializers.ModelSerializer):
         hostname = urlsplit(obj.url).netloc or "example.com"
         return f"https://icons.duckduckgo.com/ip3/{hostname}.ico"
 
+    def get_description_links(self, obj):
+        return [{"url": link.url} for link in obj.description_links.all()]
+
     class Meta:
         model = Medium
         fields = (
@@ -22,6 +26,7 @@ class MediumMoreSerializer(serializers.ModelSerializer):
             "name",
             "slug",
             "description",
+            "description_links",
             "donation_campaign_slug",
             "url",
             "icon_url",

@@ -35,6 +35,9 @@
           <p v-for="line in descriptionLines" :key="line">
             {{ line }}
           </p>
+          <div v-for="link in medium.description_links" :key="link.url" class="link">
+            <a :href="link.url" target="_blank">{{ link.url }}</a><br />
+          </div>
           <!-- <p><strong>XX Podpornikov</strong></p> -->
         </div>
       </div>
@@ -244,6 +247,10 @@ export default {
       }
 
       p + p {
+        margin-top: 1.25rem;
+      }
+
+      p + div.link {
         margin-top: 1.25rem;
       }
 
