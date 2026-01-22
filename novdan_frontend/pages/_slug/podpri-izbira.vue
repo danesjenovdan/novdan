@@ -11,20 +11,20 @@
       <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
     </video>
     <ArticleHeadlineMedium :medium="medium" :show-buttons="false" />
-    <SectionPaymentEmbed :campaign-slug="medium.donation_campaign_slug" :type="paymentType" :amount="amount" />
+    <SectionPaymentChooser :medium="medium" :type="paymentType" />
     <ArticlesFooter :window-width="windowWidth" />
   </div>
 </template>
 
 <script>
 import ArticleHeadlineMedium from '../../components/ArticleHeadlineMedium.vue'
-import SectionPaymentEmbed from '../../components/SectionPaymentEmbed.vue'
+import SectionPaymentChooser from '../../components/SectionPaymentChooser.vue'
 import ArticlesFooter from '../../components/ArticlesFooter.vue'
 
 export default {
   components: {
     ArticleHeadlineMedium,
-    SectionPaymentEmbed,
+    SectionPaymentChooser,
     ArticlesFooter
   },
   async asyncData({ $axios, $config, params, query, error }) {
@@ -41,8 +41,7 @@ export default {
 
     return {
       medium,
-      paymentType: query.enkratno === 'true' ? 'one_time' : 'recurring',
-      amount: query.znesek ? parseInt(query.znesek) : null
+      paymentType: query.enkratno === 'true' ? 'one_time' : 'recurring'
     }
   },
   data() {
