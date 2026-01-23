@@ -1,18 +1,23 @@
 from django.contrib import admin
 
-from .models import Article, Medium, MediumLink
+from .models import Article, Medium, MediumDonationAmount, MediumLink
 
 
 class MediumLinkInline(admin.TabularInline):
     model = MediumLink
-    extra = 1
+    extra = 0
+
+
+class MediumDonationAmountInline(admin.TabularInline):
+    model = MediumDonationAmount
+    extra = 0
 
 
 @admin.register(Medium)
 class MediumAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "url")
     search_fields = ("id", "name", "url")
-    inlines = [MediumLinkInline]
+    inlines = [MediumLinkInline, MediumDonationAmountInline]
 
 
 @admin.register(Article)

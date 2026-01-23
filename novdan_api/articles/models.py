@@ -20,6 +20,26 @@ class MediumLink(models.Model):
         return f"{self.url}"
 
 
+class MediumDonationAmount(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    medium = models.ForeignKey(
+        "Medium",
+        on_delete=models.CASCADE,
+        related_name="donation_amounts",
+    )
+    name = models.CharField(max_length=128, blank=True, null=True)
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        help_text="For custom amount use -1",
+    )
+    one_time = models.BooleanField(default=True)
+    recurring = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.amount}"
+
+
 class Medium(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=64)

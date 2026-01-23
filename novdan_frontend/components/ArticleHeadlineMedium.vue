@@ -48,7 +48,7 @@
             <img src="~assets/images/star.png" alt="pink spinning star" />
           </div>
         </a>
-        <a class="button" @click.prevent="$router.push(`/${medium.slug}/podpri?enkratno=true`)">
+        <a class="button" @click.prevent="$router.push(`/${medium.slug}/podpri-izbira?enkratno=true`)">
           <div class="support">Doniraj enkratno</div>
           <div class="star">
             <img src="~assets/images/star.png" alt="pink spinning star" />

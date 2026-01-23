@@ -7,45 +7,33 @@
           <p>Izberi višino mesečne podpore.</p>
         </div>
         <div class="amount-buttons">
-          <button
-            @click.prevent="
-              $router.push(`/${medium.slug}/podpri?${queryString(5)}`)
-            "
-          >
-            <div>Mini podpornik</div>
-            <div class="amount">
-              5&nbsp;€
+          <template v-for="da in donationAmounts">
+            <button
+              v-if="Number(da.amount) > 0"
+              :key="da.id"
+              @click.prevent="
+                $router.push(`/${medium.slug}/podpri?${queryString(da.amount)}`)
+              "
+            >
+              <div v-if="da.name">
+                {{ da.name }}
+              </div>
+              <div class="amount">
+                {{ Number(da.amount) }}&nbsp;€
+              </div>
+            </button>
+            <div
+              v-else-if="Number(da.amount) === -1"
+              :key="`custom-${da.id}`"
+              class="button"
+              @click.prevent="focusInput"
+            >
+              <div>{{ da.name || 'Poljubni znesek' }}</div>
+              <form class="amount" @submit.prevent="continueWithCustomAmount">
+                <input v-model="customAmount" type="number" />&nbsp;€
+              </form>
             </div>
-          </button>
-          <button
-            @click.prevent="
-              $router.push(`/${medium.slug}/podpri?${queryString(15)}`)
-            "
-          >
-            <div>Mega podpornik</div>
-            <div class="amount">
-              15&nbsp;€
-            </div>
-          </button>
-          <button
-            @click.prevent="
-              $router.push(`/${medium.slug}/podpri?${queryString(30)}`)
-            "
-          >
-            <div>Stric iz ozadja</div>
-            <div class="amount">
-              30&nbsp;€
-            </div>
-          </button>
-          <div
-            class="button"
-            @click.prevent="focusInput"
-          >
-            <div>Poljubni znesek</div>
-            <form class="amount" @submit.prevent="continueWithCustomAmount">
-              <input v-model="customAmount" type="number">&nbsp;€
-            </form>
-          </div>
+          </template>
         </div>
         <div class="disclaimer">
           Neposredna finančna podpora omogoča neodvisno delovanje in prinaša
@@ -87,6 +75,17 @@ export default {
   data() {
     return {
       customAmount: ''
+    }
+  },
+  computed: {
+    donationAmounts() {
+      return this.medium.donation_amounts.filter(da => da[this.type]).sort(
+        (a, b) => {
+          if (Number(a.amount) === -1) { return 1 }
+          if (Number(b.amount) === -1) { return -1 }
+          return Number(a.amount) - Number(b.amount)
+        }
+      )
     }
   },
   methods: {
@@ -196,7 +195,7 @@ export default {
           margin: 0;
         }
 
-        input[type=number] {
+        input[type='number'] {
           -moz-appearance: textfield;
         }
 
