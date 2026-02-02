@@ -216,8 +216,12 @@ def cancel_subscription(user, payment_token):
         # make sure subscription exists
         assert last_time_range, "Subscription with this payment token does not exist!"
 
-        # make sure subscription is not canceled
-        assert not is_canceled, "Subscription with this payment token already canceled!"
+        if is_canceled:
+            # already canceled, nothing to do
+            # - if user cancels on our site we set it canceled right away and
+            #   then the payment provider calls us again
+            # - if user cancels on payment provider site we get called only once
+            return
 
         # add cancelation data and save
         last_time_range.canceled_at = time
