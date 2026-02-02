@@ -404,11 +404,12 @@ class SubscriptionChargedView(APIView):
             activate_subscription(user, payment_token)
         elif kind == "subscription_charged_unsuccessfully":
             # TODO: handle this case
-            with push_scope() as scope:
-                scope.set_extra("request_data", self.request.data)
-                capture_message(
-                    f"SubscriptionChargedView: received kind=subscription_charged_unsuccessfully"
-                )
+            # with push_scope() as scope:
+            #     scope.set_extra("request_data", self.request.data)
+            #     capture_message(
+            #         f"SubscriptionChargedView: received kind=subscription_charged_unsuccessfully"
+            #     )
+            pass
         elif kind == "subscription_canceled":
             cancel_subscription(user, payment_token)
         else:
