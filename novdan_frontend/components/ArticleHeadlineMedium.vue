@@ -38,20 +38,24 @@
           <div v-for="link in medium.description_links" :key="link.url" class="link">
             <a :href="link.url" target="_blank">{{ link.url }}</a><br />
           </div>
-          <!-- <p><strong>XX Podpornikov</strong></p> -->
+          <div v-if="supporterAmount > 0" class="supporter-amount">
+            <span>{{ supporterAmount }}</span> PODPORNIKOV
+          </div>
         </div>
       </div>
       <div v-if="showButtons" class="donate-buttons">
         <a class="button" @click.prevent="$router.push(`/${medium.slug}/podpri-izbira`)">
           <div class="support">Postani podpornik</div>
           <div class="star">
-            <img src="~assets/images/star.png" alt="pink spinning star" />
+            <img src="~assets/images/star.png" alt="pink spinning star" class="star-img" />
+            <img src="~assets/images/fist.png" alt="" class="icon-img" />
           </div>
         </a>
         <a class="button" @click.prevent="$router.push(`/${medium.slug}/podpri-izbira?enkratno=true`)">
           <div class="support">Doniraj enkratno</div>
           <div class="star">
-            <img src="~assets/images/star.png" alt="pink spinning star" />
+            <img src="~assets/images/star.png" alt="pink spinning star" class="star-img" />
+            <img src="~assets/images/evro.png" alt="" class="icon-img" />
           </div>
         </a>
         <a class="link" href="#" @click.prevent="cancelSupport">Prekini podporo</a>
@@ -70,6 +74,10 @@ export default {
     showButtons: {
       type: Boolean,
       default: true
+    },
+    supporterAmount: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -228,6 +236,12 @@ export default {
       }
     }
 
+    .supporter-amount {
+      margin-top: 1rem;
+      font-size: 1.125rem;
+      font-weight: 700;
+    }
+
     .description {
       flex: 1;
 
@@ -315,12 +329,20 @@ export default {
         @media (max-width: 767px) {
           right: 1rem;
         }
-        img {
+        img.star-img {
           height: 8rem;
           animation: rotate360 3s linear infinite; /* animation set */
           @media (min-width: 992px) {
             animation-play-state: paused;
           }
+        }
+        img.icon-img {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 34px;
+          height: 34px;
         }
         div {
           position: absolute;

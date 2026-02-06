@@ -10,7 +10,7 @@
     >
       <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
     </video>
-    <ArticleHeadlineMedium :medium="medium" />
+    <ArticleHeadlineMedium :medium="medium" :supporter-amount="supporterAmount" />
     <SectionArticlesAll :articles="articles" @load-more="onLoadMore" />
     <ArticlesFooter :window-width="windowWidth" />
   </div>
@@ -40,10 +40,16 @@ export default {
     if (!medium || !medium.donation_campaign_slug) {
       return error({ statusCode: 404, message: 'Medium not found' })
     }
+    let supporterAmount = 0
+    try {
+      const podpriRes = await $axios.$get(`https://podpri.lb.djnd.si/api/donation-campaign/${medium.donation_campaign_slug}/`)
+      supporterAmount = podpriRes?.active_monthly_subscriptions || 0
+    } catch (e) {}
 
     return {
       medium,
-      articles
+      articles,
+      supporterAmount
     }
   },
   data() {

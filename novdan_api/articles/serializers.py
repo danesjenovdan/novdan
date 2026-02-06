@@ -14,7 +14,7 @@ class MediumLinkSerializer(serializers.ModelSerializer):
 class MediumDonationAmountSerializer(serializers.ModelSerializer):
     class Meta:
         model = MediumDonationAmount
-        fields = ("id", "name", "amount", "one_time", "recurring")
+        fields = ("id", "name", "amount", "one_time", "recurring", "image")
 
 
 class MediumMoreSerializer(serializers.ModelSerializer):

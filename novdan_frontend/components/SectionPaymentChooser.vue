@@ -15,6 +15,13 @@
                 $router.push(`/${medium.slug}/podpri?${queryString(da.amount)}`)
               "
             >
+              <div v-if="da.image">
+                <img
+                  :src="da.image"
+                  alt=""
+                  style="max-width: 100%; max-height: 120px; object-fit: contain;"
+                />
+              </div>
               <div v-if="da.name">
                 {{ da.name }}
               </div>
