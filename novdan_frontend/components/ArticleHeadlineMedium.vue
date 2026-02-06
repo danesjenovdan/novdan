@@ -38,7 +38,9 @@
           <div v-for="link in medium.description_links" :key="link.url" class="link">
             <a :href="link.url" target="_blank">{{ link.url }}</a><br />
           </div>
-          <!-- <p><strong>XX Podpornikov</strong></p> -->
+          <div v-if="supporterAmount > 0" class="supporter-amount">
+            <span>{{ supporterAmount }}</span> PODPORNIKOV
+          </div>
         </div>
       </div>
       <div v-if="showButtons" class="donate-buttons">
@@ -70,6 +72,10 @@ export default {
     showButtons: {
       type: Boolean,
       default: true
+    },
+    supporterAmount: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -226,6 +232,12 @@ export default {
           }
         }
       }
+    }
+
+    .supporter-amount {
+      margin-top: 1rem;
+      font-size: 1.125rem;
+      font-weight: 700;
     }
 
     .description {

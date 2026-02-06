@@ -10,7 +10,7 @@
     >
       <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
     </video>
-    <ArticleHeadlineMedium :medium="medium" :show-buttons="false" />
+    <ArticleHeadlineMedium :medium="medium" :supporter-amount="supporterAmount" :show-buttons="false" />
     <SectionPaymentEmbed :campaign-slug="medium.donation_campaign_slug" :type="paymentType" :amount="amount" />
     <ArticlesFooter :window-width="windowWidth" />
   </div>
@@ -38,11 +38,17 @@ export default {
     if (!medium || !medium.donation_campaign_slug) {
       return error({ statusCode: 404, message: 'Medium not found' })
     }
+    let supporterAmount = 0
+    try {
+      const podpriRes = await $axios.$get(`https://podpri.lb.djnd.si/api/donation-campaign/${medium.donation_campaign_slug}/`)
+      supporterAmount = podpriRes?.active_monthly_subscriptions || 0
+    } catch (e) {}
 
     return {
       medium,
       paymentType: query.enkratno === 'true' ? 'one_time' : 'recurring',
-      amount: query.znesek ? parseInt(query.znesek) : null
+      amount: query.znesek ? parseInt(query.znesek) : null,
+      supporterAmount
     }
   },
   data() {
