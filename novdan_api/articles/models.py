@@ -7,6 +7,10 @@ def media_favicon_path(instance, filename):
     return f"media_favicon_{instance.id}_{filename}"
 
 
+def media_amount_image_path(instance, filename):
+    return f"media_amount_image_{instance.medium.id}_{filename}"
+
+
 class MediumLink(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     medium = models.ForeignKey(
@@ -27,6 +31,7 @@ class MediumDonationAmount(models.Model):
         on_delete=models.CASCADE,
         related_name="donation_amounts",
     )
+    image = models.ImageField(upload_to=media_amount_image_path, null=True, blank=True)
     name = models.CharField(max_length=128, blank=True, null=True)
     amount = models.DecimalField(
         max_digits=10,
