@@ -289,9 +289,17 @@ class SubscriptionActivateView(APIView):
             token = data["token"]
             customer_id = data["customer_id"]
         except requests.exceptions.RequestException as request_exception:
+            api_exception = api_exception_from_request_exception(request_exception)
+            # don't send to sentry if it's just a wrong captcha answer
+            if (
+                api_exception
+                and api_exception.status_code == 403
+                and api_exception.detail == "Napačen CAPTCHA odgovor"
+            ):
+                raise api_exception
+            # everything else we want to send to sentry
             capture_exception(request_exception)
-            print("RequestException in SubscriptionActivateView GET")
-            if api_exception := api_exception_from_request_exception(request_exception):
+            if api_exception:
                 raise api_exception
             raise APIException
         except Exception as e:
