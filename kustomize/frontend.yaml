@@ -53,21 +53,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - novdan.lb.djnd.si
         - novdan.si
         - www.novdan.si
       secretName: novdan-frontend-tls
   rules:
-    - host: novdan.lb.djnd.si
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: novdan-frontend
-                port:
-                  number: 3000
     - host: novdan.si
       http:
         paths:
