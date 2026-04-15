@@ -139,17 +139,17 @@ export default {
       this.$router.replace('/dash/login')
     }
 
-    if (this.$refs.captcha && !document.querySelector('#djncaptcha')) {
+    if (this.$refs.captcha && !document.querySelector('#vajbcha')) {
       const s = document.createElement('script')
       s.dataset.inputName = 'captcha'
       s.dataset.locale = 'sl'
-      s.src = 'https://captcha.lb.djnd.si/js/djncaptcha.js'
+      s.src = 'https://vajbcha.danesjenovdan.si/js/vajbcha.js'
       this.$refs.captcha.appendChild(s)
     }
   },
   methods: {
     async solveCaptcha() {
-      const captchaApi = window.djnCAPTCHA?.captcha
+      const captchaApi = window.vajbcha?.captcha
       if (!captchaApi) {
         this.captchaError = 'Izziv CAPTCHA ni bil naložen. Osveži stran.'
         return
