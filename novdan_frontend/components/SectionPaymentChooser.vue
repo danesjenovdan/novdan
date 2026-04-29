@@ -4,7 +4,12 @@
       <div>
         <div class="headline">
           <h2>POSTANI PODPORNIK</h2>
-          <p>Izberi višino mesečne podpore.</p>
+          <p v-if="type === 'recurring'">
+            Izberi višino mesečne podpore.
+          </p>
+          <p v-else>
+            Izberi višino enkratne podpore.
+          </p>
         </div>
         <div class="amount-buttons">
           <template v-for="da in donationAmounts">
