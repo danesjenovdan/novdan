@@ -21,10 +21,10 @@
       style="width: 100%; display: inline-block; padding-top: 20px"
     >Splošni pogoji uporabe</a>
     <div style="height: 2rem;"></div>
-    <h3>Še nimaš računa?</h3>
+    <!-- <h3>Še nimaš računa?</h3>
     <nuxt-link to="/dash/register" class="btn-large">
       Ustvari račun
-    </nuxt-link>
+    </nuxt-link> -->
   </div>
 </template>
 

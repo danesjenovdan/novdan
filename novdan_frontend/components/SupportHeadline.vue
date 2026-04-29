@@ -15,7 +15,7 @@
         <nav>
           <ul>
             <li><a href="/za-ustvarjalce">Za ustvarjalce</a></li>
-            <li><a href="/dash/register">Za podpornike</a></li>
+            <!-- <li><a href="/dash/register">Za podpornike</a></li> -->
           </ul>
         </nav>
       </div>

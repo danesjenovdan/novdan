@@ -35,13 +35,13 @@ export default {
   },
   async mounted() {
     if (!this.$api.hasToken()) {
-      this.$router.replace('/dash/register')
+      this.$router.replace('/dash/login')
     }
     try {
       this.status = await this.$api.getStatus()
       console.log(this.status)
     } catch (e) {
-      this.$router.replace('/dash/register')
+      this.$router.replace('/dash/login')
     }
 
     this.windowWidth = window.innerWidth
