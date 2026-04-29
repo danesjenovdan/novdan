@@ -2,7 +2,7 @@
   <section class="sticky-badge-container">
     <div class="container">
       <div class="preamble">
-        <div class="badge">
+        <!-- <div class="badge">
           <a href="/podpri" class="support-wrapper">
             <div class="star">
               <img src="~assets/images/star.png" alt="pink spinning star" />
@@ -14,7 +14,7 @@
             <div class="support">Podpri</div>
             <div class="yellow-bg" />
           </a>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>

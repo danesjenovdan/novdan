@@ -15,7 +15,7 @@
         <nav>
           <ul>
             <li><a href="/za-ustvarjalce">Za ustvarjalce</a></li>
-            <li><a href="/dash/register">Za podpornike</a></li>
+            <!-- <li><a href="/dash/register">Za podpornike</a></li> -->
           </ul>
         </nav>
       </div>
@@ -86,7 +86,7 @@
             </router-link>
           </p>
         </div>
-        <div class="badge">
+        <!-- <div class="badge">
           <a href="/podpri" class="support-wrapper">
             <div class="star">
               <img src="~assets/images/star.png" alt="pink spinning star" />
@@ -98,7 +98,7 @@
             <div class="support">Podpri</div>
             <div class="yellow-bg" />
           </a>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
@@ -135,10 +135,10 @@ export default {
   padding: 1rem;
   padding-bottom: 0;
 
-  @media (min-width: 992px) {
-    // for sticky badge
-    margin-bottom: -10.5rem;
-  }
+  // @media (min-width: 992px) {
+  //   // for sticky badge
+  //   margin-bottom: -10.5rem;
+  // }
 
   .container:nth-of-type(1) {
     position: relative;
