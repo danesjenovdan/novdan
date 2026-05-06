@@ -1,11 +1,18 @@
 <template>
-  <section class="background-black chooser">
+  <section class="chooser">
     <div class="container">
       <div>
         <div class="headline">
           <h2>POSTANI PODPORNIK</h2>
+          <div class="right">
+            <a v-if="type === 'recurring'" class="link" href="?enkratno=true">Želim donirati enkraten znesek</a>
+            <a v-else class="link" href="?">Želim donirati mesečno</a>
+            <a class="link" href="#" @click.prevent="cancelSupport">Prekini podporo</a>
+          </div>
+        </div>
+        <div class="subheadline">
           <p v-if="type === 'recurring'">
-            Izberi višino mesečne podpore.
+            Pomagaj zagotoviti neodvisno ustvarjanje z mesečno donacijo.
           </p>
           <p v-else>
             Izberi višino enkratne podpore.
@@ -33,6 +40,9 @@
               <div class="amount">
                 {{ Number(da.amount) }}&nbsp;€
               </div>
+              <div v-if="type === 'recurring'" class="period">
+                /mesec
+              </div>
             </button>
             <div
               v-else-if="Number(da.amount) === -1"
@@ -58,7 +68,7 @@
             rel="noopener noreferrer"
           >Danes je nov dan</a>, ves izkupiček gre avtorju.
         </div>
-        <div class="continue-button">
+        <div v-if="customAmount && customAmount > 0" class="continue-button">
           <button
             :disabled="!customAmount || customAmount <= 0"
             @click.prevent="continueWithCustomAmount"
@@ -121,6 +131,9 @@ export default {
           `/${this.medium.slug}/podpri?${this.queryString(this.customAmount)}`
         )
       }
+    },
+    cancelSupport() {
+      prompt('Prosimo kontaktirajte nas na e-naslovu:', 'novdan@djnd.si')
     }
   }
 }
@@ -128,33 +141,67 @@ export default {
 
 <style scoped lang="scss">
 .chooser {
-  padding-inline: 1rem;
-  padding-block: 2rem;
+  padding-top: 1.75rem;
+  margin-bottom: 2rem;
+  border-top: 2px solid #000;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
     'Noto Sans', 'Liberation Sans', Arial, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  color: #fff;
 
   a {
     color: inherit;
   }
 
   .headline {
+    display: flex;
+    flex-direction: column;
     text-align: center;
     font-size: 1.25rem;
 
     @media (min-width: 768px) {
-      font-size: 1.75rem;
+      font-size: 1.5rem;
+      flex-direction: row;
+      text-align: left;
     }
 
-    h2,
-    p {
+    h2 {
+      flex: 1;
       margin: 0;
+    }
+
+    .right {
+      flex: 1;
+      margin-block: 0.25rem;
+      display: flex;
+      gap: 0.25rem;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      font-size: 1.125rem;
+
+      @media (min-width: 768px) {
+        align-items: flex-end;
+        text-align: right;
+      }
+    }
+  }
+
+  .subheadline {
+    font-size: 1.25rem;
+    text-align: center;
+
+    @media (min-width: 768px) {
+      font-size: 1.5rem;
+      text-align: left;
+    }
+
+    p {
+      margin-block: 1rem;
     }
   }
 
   .amount-buttons {
-    margin-block: 3rem;
+    margin-block: 1rem 2rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
     justify-content: center;
@@ -227,6 +274,12 @@ export default {
             outline: 4px solid #ffd700;
           }
         }
+      }
+
+      .period {
+        font-size: 1rem;
+        line-height: 1;
+        font-weight: 600;
       }
     }
   }
