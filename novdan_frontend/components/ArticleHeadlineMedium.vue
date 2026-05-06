@@ -27,6 +27,9 @@
             <img class="tile-bg" src="~assets/images/tile-bg.svg" alt="" />
             <img class="tile-icon" :src="medium.icon_url" alt="" />
           </div>
+          <div v-if="supporterAmount > 0" class="supporter-amount">
+            <span>{{ supporterAmount }}</span> PODPORNIKOV
+          </div>
         </div>
         <div class="description">
           <div class="name">
@@ -38,34 +41,20 @@
           <div v-for="link in medium.description_links" :key="link.url" class="link">
             <a :href="link.url" target="_blank">{{ link.url }}</a><br />
           </div>
-          <div v-if="supporterAmount > 0" class="supporter-amount">
-            <span>{{ supporterAmount }}</span> PODPORNIKOV
-          </div>
         </div>
       </div>
-      <div v-if="showButtons" class="donate-buttons">
-        <a class="button" @click.prevent="$router.push(`/${medium.slug}/podpri-izbira`)">
-          <div class="support">Postani podpornik</div>
-          <div class="star">
-            <img src="~assets/images/star.png" alt="pink spinning star" class="star-img" />
-            <img src="~assets/images/fist.png" alt="" class="icon-img" />
-          </div>
-        </a>
-        <a class="button" @click.prevent="$router.push(`/${medium.slug}/podpri-izbira?enkratno=true`)">
-          <div class="support">Doniraj enkratno</div>
-          <div class="star">
-            <img src="~assets/images/star.png" alt="pink spinning star" class="star-img" />
-            <img src="~assets/images/evro.png" alt="" class="icon-img" />
-          </div>
-        </a>
-        <a class="link" href="#" @click.prevent="cancelSupport">Prekini podporo</a>
-      </div>
+      <SectionPaymentChooser v-if="showButtons" :medium="medium" :type="paymentType" />
     </div>
   </section>
 </template>
 
 <script>
+import SectionPaymentChooser from './SectionPaymentChooser.vue'
+
 export default {
+  components: {
+    SectionPaymentChooser
+  },
   props: {
     medium: {
       type: Object,
@@ -81,16 +70,15 @@ export default {
     }
   },
   data() {
-    return {}
+    const query = this.$route.query
+
+    return {
+      paymentType: query.enkratno === 'true' ? 'one_time' : 'recurring'
+    }
   },
   computed: {
     descriptionLines() {
       return this.medium.description.replace(/\r\n/g, '\n').split('\n')
-    }
-  },
-  methods: {
-    cancelSupport() {
-      prompt('Prosimo kontaktirajte nas na e-naslovu:', 'novdan@djnd.si')
     }
   }
 }
@@ -271,110 +259,6 @@ export default {
       a {
         color: inherit;
         text-decoration: underline;
-      }
-    }
-  }
-
-  .donate-buttons {
-    display: flex;
-    gap: 5rem;
-    margin-top: 5rem;
-    margin-bottom: 4rem;
-
-    @media (max-width: 767px) {
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    @keyframes rotate360 {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .link {
-      margin-left: auto;
-      align-self: flex-end;
-      color: inherit;
-    }
-
-    .button {
-      text-decoration: none;
-      color: black;
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      .support {
-        font-size: 1.5rem;
-        font-weight: 700;
-        padding: 0.5rem 5rem 0.5rem 2rem;
-        border: 3px solid #000000;
-        border-radius: 1.25rem;
-        background-color: white;
-        position: relative;
-        z-index: 3;
-        transition: all 0.25s ease;
-        transform: rotate(0) scale(1);
-        @media (max-width: 767px) {
-          width: calc(100% - 12rem);
-        }
-        @media (min-width: 1200px) {
-          font-size: 1.75rem;
-        }
-      }
-      .star {
-        position: absolute;
-        z-index: 3;
-        right: -4rem;
-        @media (max-width: 767px) {
-          right: 1rem;
-        }
-        img.star-img {
-          height: 8rem;
-          animation: rotate360 3s linear infinite; /* animation set */
-          @media (min-width: 992px) {
-            animation-play-state: paused;
-          }
-        }
-        img.icon-img {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 34px;
-          height: 34px;
-        }
-        div {
-          position: absolute;
-          top: 2.75rem;
-          left: 2.5rem;
-          z-index: 4;
-          display: flex;
-          align-items: flex-end;
-          span:first-child {
-            font-size: 2rem;
-            font-weight: 700;
-            line-height: 1;
-          }
-          span:last-child {
-            font-size: 0.75rem;
-            font-style: italic;
-            display: inline-block;
-            font-family: 'wf-syne-tactile', cursive;
-          }
-        }
-      }
-      &:hover {
-        cursor: pointer;
-        .star img {
-          animation-play-state: running;
-        }
-        .support {
-          background-color: #ffd700;
-          @media (min-width: 1200px) {
-            transform: rotate(0) scale(1.1);
-          }
-        }
       }
     }
   }
