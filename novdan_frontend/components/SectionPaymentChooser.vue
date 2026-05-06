@@ -40,6 +40,9 @@
               <div class="amount">
                 {{ Number(da.amount) }}&nbsp;€
               </div>
+              <div v-if="type === 'recurring'" class="period">
+                /mesec
+              </div>
             </button>
             <div
               v-else-if="Number(da.amount) === -1"
@@ -271,6 +274,12 @@ export default {
             outline: 4px solid #ffd700;
           }
         }
+      }
+
+      .period {
+        font-size: 1rem;
+        line-height: 1;
+        font-weight: 600;
       }
     }
   }
