@@ -108,23 +108,12 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-production"
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   tls:
     - hosts:
-        - api.novdan.lb.djnd.si
         - denarnica.novdan.si
       secretName: novdan-api-tls
   rules:
-    - host: api.novdan.lb.djnd.si
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: novdan-api
-                port:
-                  number: 8000
     - host: denarnica.novdan.si
       http:
         paths:
