@@ -169,7 +169,18 @@ class Command(BaseCommand):
 
             response_text = response.text
             # fix random problems with feeds
-            response_text = response_text.replace("<title>&nbsp;", "<title>")
+            response_text = response_text.replace(
+                "<title>&nbsp;",
+                "<title>",
+            )
+            response_text = response_text.replace(
+                "&nbsp;</title>",
+                "</title>",
+            )
+            response_text = response_text.replace(
+                "&nbsp;</media:title>",
+                "</media:title>",
+            )
 
             feed_type = "Atom" if self.is_atom_feed(response_text) else "RSS"
             self.stdout.write(f"   > feed type: {feed_type}")
