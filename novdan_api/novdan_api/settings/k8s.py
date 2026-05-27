@@ -54,7 +54,7 @@ if os.getenv("DJANGO_ENABLE_S3", False):
     AWS_S3_SIGNATURE_VERSION = os.getenv("DJANGO_AWS_S3_SIGNATURE_VERSION", "s3v4")
     AWS_S3_FILE_OVERWRITE = False
 
-PAYMENT_API_BASE = os.getenv("DJANGO_PAYMENT_API_BASE", "https://podpri.lb.djnd.si")
+PAYMENT_API_BASE = os.getenv("DJANGO_PAYMENT_API_BASE", "https://podpri.djnd.si")
 PAYMENT_CAMPAIGN_ID = os.getenv("DJANGO_PAYMENT_CAMPAIGN_ID", "nov-dan")
 
 # sentry setup
