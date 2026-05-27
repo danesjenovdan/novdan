@@ -42,7 +42,7 @@ export default {
     }
     let supporterAmount = 0
     try {
-      const podpriRes = await $axios.$get(`https://podpri.lb.djnd.si/api/donation-campaign/${medium.donation_campaign_slug}/`)
+      const podpriRes = await $axios.$get(`https://podpri.djnd.si/api/donation-campaign/${medium.donation_campaign_slug}/`)
       supporterAmount = podpriRes?.active_monthly_subscriptions || 0
     } catch (e) {}
 
