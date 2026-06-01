@@ -167,6 +167,16 @@ class Command(BaseCommand):
             time.sleep(3)  # wait to avoid rate limiting
             response = requests_get_with_retries(url, timeout=30)
 
+            content_type = response.headers.get("Content-Type", "").lower()
+            if "xml" not in content_type:
+                with push_scope() as scope:
+                    scope.set_extra("command", "parse_articles")
+                    scope.set_extra("rss_url", url)
+                    capture_message(f"Unexpected content type: {content_type}")
+                self.stdout.write(f"   > unexpected content type: {content_type}")
+                self.stdout.write("")
+                return
+
             response_text = response.text
             # fix random problems with feeds
             response_text = response_text.replace(
