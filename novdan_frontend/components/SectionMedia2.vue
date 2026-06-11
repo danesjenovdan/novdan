@@ -1,9 +1,7 @@
 <template>
   <section class="background-gradient-orange-pink media" @mousemove="tiltTiles">
     <div class="container">
-      <h2>
-        Sodelujoči
-      </h2>
+      <h2>Sodelujoči</h2>
       <div class="row">
         <div>
           <ul>
@@ -48,14 +46,14 @@
               </a>
             </li>
             <li>
-              <a href="https://danesjenovdan.si/agrument/" target="_blank">
-                <span>Agrument</span>
+              <router-link to="/ppporocila">
+                <span>Petkova Propagandna Poročila</span>
                 <img
-                  src="~assets/images/djnd.svg"
-                  alt="Agrument logo"
+                  src="~assets/images/jenull.png"
+                  alt="Petkova Propagandna Poročila logo"
                   :style="`transform: rotate(${tilted * 0.5}deg)`"
                 />
-              </a>
+              </router-link>
             </li>
           </ul>
         </div>
