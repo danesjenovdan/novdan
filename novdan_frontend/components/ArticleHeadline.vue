@@ -24,15 +24,13 @@
       <div class="preamble">
         <div class="description">
           <p>
-            Nov dan je eksperimentalna platforma za podporo neodvisnim medijem
-            in medijskim ustvarjalcem.
+            Nov dan je donacijska platforma za podporo neodvisnim medijem in
+            medijskim ustvarjalcem.
           </p>
           <p>
             Na enem mestu zbiramo vsebine, ki jih objavijo sodelujoči projekti,
             bralce pa spodbujamo, da podprete njihovo ustvarjanje s pomočjo
-            našega donacijskega sistema. Ta temelji na odprtem standardu za
-            spletno monetizacijo (WMS) in omogoča pravično razdelitev podpornih
-            sredstev.
+            našega donacijskega sistema.
           </p>
           <p>Sodelujoči:</p>
           <p class="logos">
@@ -67,14 +65,6 @@
                 :style="`transform: rotate(${tilted * 0.4}deg)`"
               />
               <span>Domen Savič - Državljan D</span>
-            </a>
-            <a href="https://danesjenovdan.si/agrument/" target="_blank">
-              <img
-                src="~assets/images/djnd.svg"
-                alt="Agrument logo"
-                :style="`transform: rotate(${tilted * 0.5}deg)`"
-              />
-              <span>Agrument</span>
             </a>
             <router-link to="/ppporocila">
               <img

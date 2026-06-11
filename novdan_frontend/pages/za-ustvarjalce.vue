@@ -24,10 +24,10 @@
             Izbrani mediji in medijski ustvarjalci delujejo neodvisno in
             objektivno.
           </p>
-          <p>K sodelovanju vabimo vse ki se v tem opisu prepoznate.</p>
+          <p>K sodelovanju vabimo vse, ki se v tem opisu prepoznate.</p>
           <p>
             <a href="mailto:novdan@djnd.si" class="btn contact-us">
-              Pišite sem.
+              Pišite nam
               <!-- <br><small>novdan@djnd.si</small> -->
             </a>
           </p>
