@@ -3,19 +3,16 @@ on:
   push:
     branches:
       - "main"
-  pull_request:
-    branches:
-      - "k8s"
 jobs:
   check_python_formatting:
     name: Check Python formatting
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.14"
 
