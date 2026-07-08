@@ -1,14 +1,12 @@
-import os
-
 from .base import *
 
-# Add general dev env settings here, but keep your local overrides in local.py
 
-DEBUG = True
+# debug toolbar settings
+def show_toolbar(request):
+    return True
 
-#
 
-try:
-    from .local import *
-except ImportError:
-    pass
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+    "RESULTS_CACHE_SIZE": 500,
+}

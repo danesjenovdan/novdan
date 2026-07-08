@@ -49,9 +49,6 @@ USER django
 ENV IPYTHONDIR=/tmp/ipython
 RUN mkdir -p $IPYTHONDIR/profile_default
 
-# Compile locale files.
-RUN python manage.py compilemessages
-
 # Runtime command that executes when "docker run" is called, it does the
 # following:
 #   1. Migrate the database.

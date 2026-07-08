@@ -1,7 +1,8 @@
-"""novdan_api URL Configuration
+"""
+URL configuration for novdan_api project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.2/topics/http/urls/
+    https://docs.djangoproject.com/en/6.0/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -15,7 +16,6 @@ Including another URLconf
 """
 
 from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from oauth2_provider.urls import app_name as oauth2_app_name
@@ -34,4 +34,14 @@ urlpatterns = [
     path("api/", include("api.urls")),
     path("articles/", include("articles.urls")),
     path("", include(spsp4_urlpatterns)),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    from debug_toolbar.toolbar import debug_toolbar_urls
+    from django.conf.urls.static import static
+
+    # Add debug toolbar
+    urlpatterns += debug_toolbar_urls()
+
+    # Serve static and media files from development server
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
