@@ -1,0 +1,46 @@
+volumes:
+  postgres-data:
+
+
+services:
+  novdan-api:
+    build: ./novdan_api
+    command: ./manage.py runserver 0.0.0.0:8000
+    user: "django:django"
+    volumes:
+      - ./novdan_api:/app
+      - ./novdan_api/ipython_config.py:/tmp/ipython/profile_default/ipython_config.py
+    ports:
+      - 8000:8000
+    environment:
+      DJANGO_RUNSERVER_HIDE_WARNING: "true"
+      DJANGO_DATABASE_HOST: db
+      DJANGO_DATABASE_NAME: novdanapi
+      DJANGO_DATABASE_USERNAME: novdanapi
+      DJANGO_DATABASE_PASSWORD: novdanapi
+    depends_on:
+      - db
+
+  # novdan-frontend:
+  #   build: ./novdan_frontend
+  #   ports:
+  #     - 3000:3000
+  #   environment:
+  #     NODE_ENV: development
+  #     NUXT_API_BASE: http://novdan-api:8000
+  #     NUXT_API_BASE_BROWSER: http://localhost:8000
+  #     NUXT_API_CLIENT_ID: IfFCMgW5XsJZGX27M5a4cjdicW6AEJZzrimI5qiS
+  #   command: npm run dev
+  #   volumes:
+  #     - ./novdan_frontend:/app
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: novdanapi
+      POSTGRES_USER: novdanapi
+      POSTGRES_PASSWORD: novdanapi
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    expose:
+      - "5432"
