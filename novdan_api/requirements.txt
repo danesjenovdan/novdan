@@ -50,11 +50,14 @@ ptyprocess==0.7.0
 pur==7.4.0
 pure_eval==0.2.3
 pycparser==3.0
+pydantic==2.13.4
+pydantic_core==2.46.4
 Pygments==2.20.0
 python-dateutil==2.9.0.post0
 pytokens==0.4.1
 pytz==2026.2
 requests==2.34.2
+rss-parser==2.1.1
 s3transfer==0.19.0
 selectolax==0.4.10
 sentry-sdk==2.64.0
@@ -66,8 +69,9 @@ sqlparse==0.5.5
 stack-data==0.6.3
 tomli==2.4.1
 traitlets==5.15.1
+typing-inspection==0.4.2
 typing_extensions==4.16.0
 urllib3==2.7.0
 wcwidth==0.8.2
 wrapt==2.2.2
-xmltodict==1.0.4
+xmltodict==0.13.0
