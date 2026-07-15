@@ -31,6 +31,7 @@ export default {
     ArticlesFooter
   },
   async asyncData({ $config }) {
+    console.log('API Base URL:', $config.apiBase) // Debugging line
     const response = await fetch(`${$config.apiBase}/articles/`)
     const articles = await response.json()
 

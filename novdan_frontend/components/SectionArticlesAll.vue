@@ -48,7 +48,7 @@
               </div>
             </div>
           </div>
-          <div v-if="articles.next" class="more-articles">
+          <div v-if="articles?.next" class="more-articles">
             <button type="button" @click="$emit('load-more')">
               <span>Več →</span>
             </button>
@@ -74,7 +74,7 @@ export default {
   computed: {
     articlesWithFirstNewDate() {
       let lastDate = null
-      const articles = this.articles.results || []
+      const articles = this.articles?.results || []
       return articles.map((article) => {
         const date = new Date(article.published_at).toISOString().split('T')[0]
         if (date !== lastDate) {

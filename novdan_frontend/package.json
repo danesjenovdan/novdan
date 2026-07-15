@@ -12,5 +12,6 @@
     "nuxt": "^4.4.8"
   },
   "devDependencies": {
+    "sass": "^1.101.0"
   }
 }

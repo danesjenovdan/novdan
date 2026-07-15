@@ -1,0 +1,1 @@
+<template>catch all</template>
