@@ -38,20 +38,23 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      windowWidth: 0,
-    };
-  },
-  mounted() {
-    this.windowWidth = window.innerWidth;
-    window.addEventListener("resize", () => {
-      this.windowWidth = window.innerWidth;
-    });
-  },
-};
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
+
+const windowWidth = ref(0);
+
+function updateWindowWidth() {
+  windowWidth.value = window.innerWidth;
+}
+
+onMounted(() => {
+  updateWindowWidth();
+  window.addEventListener("resize", updateWindowWidth);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateWindowWidth);
+});
 </script>
 
 <style scoped lang="scss">
