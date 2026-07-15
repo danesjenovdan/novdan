@@ -30,9 +30,9 @@ export default {
     SectionArticlesAll,
     ArticlesFooter
   },
-  async asyncData({ $axios, $config }) {
-    const api = $axios.create({ baseURL: $config.apiBase })
-    const articles = await api.$get('/articles/')
+  async asyncData({ $config }) {
+    const response = await fetch(`${$config.apiBase}/articles/`)
+    const articles = await response.json()
 
     return {
       articles
@@ -51,11 +51,10 @@ export default {
   },
   methods: {
     async onLoadMore() {
-      const api = this.$axios.create({ baseURL: this.$config.apiBase })
-
       if (this.articles.next) {
-        const { pathname, search } = new URL(this.articles.next)
-        const articles = await api.$get(`${pathname}${search}`)
+        const url = new URL(this.articles.next, this.$config.apiBase)
+        const response = await fetch(url.toString())
+        const articles = await response.json()
 
         this.articles = {
           ...articles,

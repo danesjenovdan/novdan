@@ -27,11 +27,13 @@ export default {
     SectionPaymentEmbed,
     ArticlesFooter
   },
-  async asyncData({ $axios, $config, params, query, error }) {
-    const api = $axios.create({ baseURL: $config.apiBase })
+  async asyncData({ $config, params, query, error }) {
+    const apiBase = $config.apiBase
     let medium = null
     try {
-      medium = await api.$get(`/articles/medium/${encodeURIComponent(params.slug)}/`)
+      const mediumRes = await fetch(`${apiBase}/articles/medium/${encodeURIComponent(params.slug)}/`)
+      if (!mediumRes.ok) throw new Error('Failed to fetch medium')
+      medium = await mediumRes.json()
     } catch (e) {
       return error({ statusCode: 404, message: 'Medium not found' })
     }
@@ -40,14 +42,16 @@ export default {
     }
     let supporterAmount = 0
     try {
-      const podpriRes = await $axios.$get(`https://podpri.djnd.si/api/donation-campaign/${medium.donation_campaign_slug}/`)
+      const podpriFetchRes = await fetch(`https://podpri.djnd.si/api/donation-campaign/${medium.donation_campaign_slug}/`)
+      if (!podpriFetchRes.ok) throw new Error('Failed to fetch supporter amount')
+      const podpriRes = await podpriFetchRes.json()
       supporterAmount = podpriRes?.active_monthly_subscriptions || 0
     } catch (e) {}
 
     return {
       medium,
       paymentType: query.enkratno === 'true' ? 'one_time' : 'recurring',
-      amount: query.znesek ? parseInt(query.znesek) : null,
+      amount: query.znesek ? parseInt(query.znesek, 10) : null,
       supporterAmount
     }
   },

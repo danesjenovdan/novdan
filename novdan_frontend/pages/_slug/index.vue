@@ -27,13 +27,15 @@ export default {
     SectionArticlesAll,
     ArticlesFooter
   },
-  async asyncData({ $axios, $config, params, error }) {
-    const api = $axios.create({ baseURL: $config.apiBase })
+  async asyncData({ $config, params, error }) {
+    const baseURL = $config.apiBase
     let medium = null
     let articles = null
     try {
-      medium = await api.$get(`/articles/medium/${encodeURIComponent(params.slug)}/`)
-      articles = await api.$get(`/articles/?medium__slug=${encodeURIComponent(params.slug)}`)
+      const mediumRes = await fetch(`${baseURL}/articles/medium/${encodeURIComponent(params.slug)}/`)
+      medium = await mediumRes.json()
+      const articlesRes = await fetch(`${baseURL}/articles/?medium__slug=${encodeURIComponent(params.slug)}`)
+      articles = await articlesRes.json()
     } catch (e) {
       return error({ statusCode: 404, message: 'Medium not found' })
     }
@@ -42,8 +44,9 @@ export default {
     }
     let supporterAmount = 0
     try {
-      const podpriRes = await $axios.$get(`https://podpri.djnd.si/api/donation-campaign/${medium.donation_campaign_slug}/`)
-      supporterAmount = podpriRes?.active_monthly_subscriptions || 0
+      const podpriRes = await fetch(`https://podpri.djnd.si/api/donation-campaign/${medium.donation_campaign_slug}/`)
+      const podpriData = await podpriRes.json()
+      supporterAmount = podpriData?.active_monthly_subscriptions || 0
     } catch (e) {}
 
     return {
@@ -65,11 +68,9 @@ export default {
   },
   methods: {
     async onLoadMore() {
-      const api = this.$axios.create({ baseURL: this.$config.apiBase })
-
       if (this.articles.next) {
-        const { pathname, search } = new URL(this.articles.next)
-        const articles = await api.$get(`${pathname}${search}`)
+        const response = await fetch(this.articles.next)
+        const articles = await response.json()
 
         this.articles = {
           ...articles,
