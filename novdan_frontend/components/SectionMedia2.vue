@@ -67,56 +67,68 @@ export default {
   props: {
     windowWidth: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   data() {
     return {
-      tilted: 0
-    }
+      tilted: 0,
+    };
   },
   methods: {
     tiltTiles(event) {
-      const positionX = event.pageX
-      const windowWidth = window.innerWidth
-      const windowCenter = windowWidth / 2
-      const tilted = ((windowCenter - positionX) / windowCenter) * -45
-      this.tilted = tilted / 2
-    }
-  }
-}
+      const positionX = event.pageX;
+      const windowWidth = window.innerWidth;
+      const windowCenter = windowWidth / 2;
+      const tilted = ((windowCenter - positionX) / windowCenter) * -45;
+      this.tilted = tilted / 2;
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
 .media {
   padding: 4rem 30px;
   overflow: hidden;
+
   @media (min-width: 1200px) {
     padding: 6rem 0;
   }
+
   .row {
     display: block;
+
     @media (min-width: 1200px) {
       display: flex;
+      justify-content: center;
     }
   }
+
   h2 {
     font-size: 2rem;
     font-weight: 800;
     line-height: 1;
     margin: 0;
+    text-align: center;
+
     @media (min-width: 992px) {
       font-size: 4rem;
     }
   }
+
   ul {
     list-style-type: none;
     padding-left: 0;
+    margin-bottom: 0;
+
     li {
       margin: 2rem 0;
-      @media (min-width: 1400px) {
-        margin: 0;
+
+      &:last-child {
+        margin-bottom: 0;
       }
+
       a {
         text-decoration: none;
         text-transform: uppercase;
@@ -128,30 +140,22 @@ export default {
         align-items: center;
         flex-direction: row-reverse;
         justify-content: flex-end;
+
         @media (min-width: 1200px) {
           font-size: 1.75rem;
         }
-        @media (min-width: 1400px) {
-          display: inline-block;
-          max-width: unset;
-          font-size: 2rem;
+
+        &:hover {
+          text-decoration: underline;
         }
       }
+
       span {
-        padding-left: 2rem;
-        @media (min-width: 1400px) {
-          padding-left: 0;
-          padding-right: 2rem;
-        }
+        padding-left: 1.5rem;
       }
+
       img {
         height: 3rem;
-
-        @media (min-width: 1400px) {
-          height: 5rem;
-          position: relative;
-          bottom: -1.5rem;
-        }
       }
     }
   }

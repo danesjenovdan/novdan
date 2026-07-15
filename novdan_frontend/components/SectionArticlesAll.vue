@@ -12,13 +12,13 @@
                 <div
                   :class="{
                     'date-line': true,
-                    'only-line': !article.firstNewDate
+                    'only-line': !article.firstNewDate,
                   }"
                 >
                   <span class="date">{{
                     article.firstNewDate
                       ? formatLongDate(article.published_at)
-                      : '&nbsp;'
+                      : "&nbsp;"
                   }}</span>
                   <hr />
                 </div>
@@ -48,7 +48,7 @@
               </div>
             </div>
           </div>
-          <div v-if="articles.next" class="more-articles">
+          <div v-if="articles?.next" class="more-articles">
             <button type="button" @click="$emit('load-more')">
               <span>Več →</span>
             </button>
@@ -60,58 +60,64 @@
 </template>
 
 <script>
+import PreferHttpsImage from "./PreferHttpsImage.vue";
+
 export default {
-  name: 'SectionArticlesAll',
+  name: "SectionArticlesAll",
+  components: {
+    PreferHttpsImage,
+  },
   props: {
     articles: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
+  emits: ["load-more"],
   data() {
-    return {}
+    return {};
   },
   computed: {
     articlesWithFirstNewDate() {
-      let lastDate = null
-      const articles = this.articles.results || []
+      let lastDate = null;
+      const articles = this.articles?.results || [];
       return articles.map((article) => {
-        const date = new Date(article.published_at).toISOString().split('T')[0]
+        const date = new Date(article.published_at).toISOString().split("T")[0];
         if (date !== lastDate) {
-          lastDate = date
+          lastDate = date;
           return {
             ...article,
-            firstNewDate: true
-          }
+            firstNewDate: true,
+          };
         }
-        return article
-      })
-    }
+        return article;
+      });
+    },
   },
   methods: {
     formatDate(date) {
-      return Intl.DateTimeFormat('sl-SI', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      }).format(new Date(date))
+      return Intl.DateTimeFormat("sl-SI", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }).format(new Date(date));
     },
     formatLongDate(date) {
-      return Intl.DateTimeFormat('sl-SI', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long'
-      }).format(new Date(date))
+      return Intl.DateTimeFormat("sl-SI", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long",
+      }).format(new Date(date));
     },
     formatRelativeTime(date) {
-      const now = new Date().getTime()
-      const then = new Date(date).getTime()
-      const diff = now - then
+      const now = new Date().getTime();
+      const then = new Date(date).getTime();
+      const diff = now - then;
 
-      const formatter = new Intl.RelativeTimeFormat('sl-SI', {
-        numeric: 'auto'
-      })
+      const formatter = new Intl.RelativeTimeFormat("sl-SI", {
+        numeric: "auto",
+      });
 
       const UNITS = {
         second: 1000,
@@ -120,21 +126,21 @@ export default {
         day: 1000 * 60 * 60 * 24,
         week: 1000 * 60 * 60 * 24 * 7,
         month: 1000 * 60 * 60 * 24 * 30,
-        year: 1000 * 60 * 60 * 24 * 365
-      }
-      const UNIT_KEYS = Object.keys(UNITS)
+        year: 1000 * 60 * 60 * 24 * 365,
+      };
+      const UNIT_KEYS = Object.keys(UNITS);
 
       for (let i = 0; i < UNIT_KEYS.length; i++) {
-        const unit = UNIT_KEYS[i]
-        const nextUnit = UNIT_KEYS[i + 1]
+        const unit = UNIT_KEYS[i];
+        const nextUnit = UNIT_KEYS[i + 1];
         if (!nextUnit || diff < UNITS[nextUnit]) {
-          const amount = Math.floor(diff / UNITS[unit])
-          return formatter.format(-amount, unit)
+          const amount = Math.floor(diff / UNITS[unit]);
+          return formatter.format(-amount, unit);
         }
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -283,8 +289,9 @@ export default {
 
       .line-clamp-4 {
         display: -webkit-box;
-        -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
         overflow: hidden;
       }
 

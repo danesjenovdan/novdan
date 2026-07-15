@@ -13,8 +13,12 @@ def post_user_save(sender, instance, created, **kwargs):
         Wallet.objects.create(user=instance)
 
         # create subscriber and send welcome email
-        requests.post(
-            f"{settings.PAYMENT_API_BASE}/api/subscribe/",
-            json={"email": instance.email, "campaign_id": settings.PAYMENT_CAMPAIGN_ID},
-            timeout=30,
-        )
+        if settings.PAYMENT_API_BASE:
+            requests.post(
+                f"{settings.PAYMENT_API_BASE}/api/subscribe/",
+                json={
+                    "email": instance.email,
+                    "campaign_id": settings.PAYMENT_CAMPAIGN_ID,
+                },
+                timeout=30,
+            )

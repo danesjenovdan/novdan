@@ -5,18 +5,25 @@
         <div class="headline">
           <h2>POSTANI PODPORNIK</h2>
           <div class="right">
-            <a v-if="type === 'recurring'" class="link" href="?enkratno=true">Želim donirati enkraten znesek</a>
-            <a v-else class="link" href="?">Želim donirati mesečno</a>
-            <a class="link" href="#" @click.prevent="cancelSupport">Prekini podporo</a>
+            <NuxtLink
+              v-if="type === 'recurring'"
+              class="link"
+              to="?enkratno=true"
+              >Želim donirati enkraten znesek</NuxtLink
+            >
+            <NuxtLink v-else class="link" to="?enkratno=false"
+              >Želim donirati mesečno</NuxtLink
+            >
+            <a class="link" href="#" @click.prevent="cancelSupport"
+              >Prekini podporo</a
+            >
           </div>
         </div>
         <div class="subheadline">
           <p v-if="type === 'recurring'">
             Pomagaj zagotoviti neodvisno ustvarjanje z mesečno donacijo.
           </p>
-          <p v-else>
-            Izberi višino enkratne podpore.
-          </p>
+          <p v-else>Izberi višino enkratne podpore.</p>
         </div>
         <div class="amount-buttons">
           <template v-for="da in donationAmounts">
@@ -31,18 +38,18 @@
                 <img
                   :src="da.image"
                   alt=""
-                  style="max-width: 100%; max-height: 120px; object-fit: contain;"
+                  style="
+                    max-width: 100%;
+                    max-height: 120px;
+                    object-fit: contain;
+                  "
                 />
               </div>
               <div v-if="da.name">
                 {{ da.name }}
               </div>
-              <div class="amount">
-                {{ Number(da.amount) }}&nbsp;€
-              </div>
-              <div v-if="type === 'recurring'" class="period">
-                /mesec
-              </div>
+              <div class="amount">{{ Number(da.amount) }}&nbsp;€</div>
+              <div v-if="type === 'recurring'" class="period">/mesec</div>
             </button>
             <div
               v-else-if="Number(da.amount) === -1"
@@ -50,7 +57,7 @@
               class="button"
               @click.prevent="focusInput"
             >
-              <div>{{ da.name || 'Poljubni znesek' }}</div>
+              <div>{{ da.name || "Poljubni znesek" }}</div>
               <form class="amount" @submit.prevent="continueWithCustomAmount">
                 <input v-model="customAmount" type="number" />&nbsp;€
               </form>
@@ -66,7 +73,8 @@
             href="https://danesjenovdan.si"
             target="_blank"
             rel="noopener noreferrer"
-          >Danes je nov dan</a>, ves izkupiček gre avtorju.
+            >Danes je nov dan</a
+          >, ves izkupiček gre avtorju.
         </div>
         <div v-if="customAmount && customAmount > 0" class="continue-button">
           <button
@@ -83,60 +91,65 @@
 
 <script>
 export default {
-  name: 'SectionPaymentChooser',
+  name: "SectionPaymentChooser",
   props: {
     medium: {
       type: Object,
-      required: true
+      required: true,
     },
     type: {
       type: String,
-      default: 'recurring'
-    }
+      default: "recurring",
+    },
   },
   data() {
     return {
-      customAmount: ''
-    }
+      customAmount: "",
+    };
   },
   computed: {
     donationAmounts() {
-      return this.medium.donation_amounts.filter(da => da[this.type]).sort(
-        (a, b) => {
-          if (Number(a.amount) === -1) { return 1 }
-          if (Number(b.amount) === -1) { return -1 }
-          return Number(a.amount) - Number(b.amount)
-        }
-      )
-    }
+      return this.medium.donation_amounts
+        .filter((da) => da[this.type])
+        .sort((a, b) => {
+          if (Number(a.amount) === -1) {
+            return 1;
+          }
+          if (Number(b.amount) === -1) {
+            return -1;
+          }
+          return Number(a.amount) - Number(b.amount);
+        });
+    },
   },
   methods: {
     queryString(amount) {
-      const params = new URLSearchParams()
-      if (this.type === 'one_time') {
-        params.append('enkratno', 'true')
+      const params = new URLSearchParams();
+      if (this.type === "one_time") {
+        params.append("enkratno", "true");
       }
-      params.append('znesek', amount)
-      return params.toString()
+      params.append("znesek", amount);
+      return params.toString();
     },
     focusInput() {
-      const input = this.$el.querySelector('.amount-buttons .button input')
+      const input = this.$el.querySelector(".amount-buttons .button input");
       if (input) {
-        input.focus()
+        input.focus();
       }
     },
     continueWithCustomAmount() {
       if (this.customAmount && this.customAmount > 0) {
         this.$router.push(
-          `/${this.medium.slug}/podpri?${this.queryString(this.customAmount)}`
-        )
+          `/${this.medium.slug}/podpri?${this.queryString(this.customAmount)}`,
+        );
       }
     },
     cancelSupport() {
-      prompt('Prosimo kontaktirajte nas na e-naslovu:', 'novdan@djnd.si')
-    }
-  }
-}
+      // eslint-disable-next-line no-alert
+      prompt("Prosimo kontaktirajte nas na e-naslovu:", "novdan@djnd.si");
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -144,9 +157,20 @@ export default {
   padding-top: 1.75rem;
   margin-bottom: 2rem;
   border-top: 2px solid #000;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
-    'Noto Sans', 'Liberation Sans', Arial, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    "Noto Sans",
+    "Liberation Sans",
+    Arial,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
 
   a {
     color: inherit;
@@ -254,8 +278,9 @@ export default {
           margin: 0;
         }
 
-        input[type='number'] {
+        input[type="number"] {
           -moz-appearance: textfield;
+          appearance: textfield;
         }
 
         input {

@@ -3,10 +3,9 @@
     <div class="container">
       <div class="title">
         <h1>
-          <a href="/">
-            n<img class="sun" src="~assets/images/sun.png" alt="sun icon" />v
-            dan
-          </a>
+          <NuxtLink to="/" aria-label="nov dan">
+            n<img class="sun" src="~assets/images/sun.png" alt="" />v dan
+          </NuxtLink>
         </h1>
         <p>
           Neposredna podpora <br />
@@ -14,8 +13,7 @@
         </p>
         <nav>
           <ul>
-            <li><a href="/za-ustvarjalce">Za ustvarjalce</a></li>
-            <!-- <li><a href="/dash/register">Za podpornike</a></li> -->
+            <li><NuxtLink to="/za-ustvarjalce">Za ustvarjalce</NuxtLink></li>
           </ul>
         </nav>
       </div>
@@ -24,7 +22,7 @@
 </template>
 
 <script>
-export default {}
+export default {};
 </script>
 
 <style scoped lang="scss">

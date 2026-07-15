@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from .models import Article, Medium
-from .serializers import ArticleSerializer, MediumMoreSerializer
+from .serializers import ArticleSerializer, MediumMoreSerializer, MediumSerializer
 
 
 class Pagination(LimitOffsetPagination):
