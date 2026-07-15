@@ -10,129 +10,88 @@
     >
       <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
     </video>
-    <ArticleHeadlineMedium :medium="medium" :supporter-amount="supporterAmount" />
+    <ArticleHeadlineMedium
+      :medium="medium"
+      :supporter-amount="supporterAmount"
+    />
     <SectionArticlesAll :articles="articles" @load-more="onLoadMore" />
     <ArticlesFooter :window-width="windowWidth" />
   </div>
 </template>
 
-<script>
+<script setup>
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import ArticleHeadlineMedium from '../../components/ArticleHeadlineMedium.vue'
 import SectionArticlesAll from '../../components/SectionArticlesAll.vue'
 import ArticlesFooter from '../../components/ArticlesFooter.vue'
 
-export default {
-  components: {
-    ArticleHeadlineMedium,
-    SectionArticlesAll,
-    ArticlesFooter
-  },
-  async asyncData({ $config, params, error }) {
-    const baseURL = $config.apiBase
-    let medium = null
-    let articles = null
-    try {
-      const mediumRes = await fetch(`${baseURL}/articles/medium/${encodeURIComponent(params.slug)}/`)
-      medium = await mediumRes.json()
-      const articlesRes = await fetch(`${baseURL}/articles/?medium__slug=${encodeURIComponent(params.slug)}`)
-      articles = await articlesRes.json()
-    } catch (e) {
-      return error({ statusCode: 404, message: 'Medium not found' })
-    }
-    if (!medium || !medium.donation_campaign_slug) {
-      return error({ statusCode: 404, message: 'Medium not found' })
-    }
-    let supporterAmount = 0
-    try {
-      const podpriRes = await fetch(`https://podpri.djnd.si/api/donation-campaign/${medium.donation_campaign_slug}/`)
-      const podpriData = await podpriRes.json()
-      supporterAmount = podpriData?.active_monthly_subscriptions || 0
-    } catch (e) {}
+const config = useRuntimeConfig()
+const apiBase = config.public?.apiBase || config.apiBase
+const route = useRoute()
+const windowWidth = ref(0)
 
-    return {
-      medium,
-      articles,
-      supporterAmount
-    }
-  },
-  data() {
-    return {
-      windowWidth: 0
-    }
-  },
-  mounted() {
-    this.windowWidth = window.innerWidth
-    window.addEventListener('resize', () => {
-      this.windowWidth = window.innerWidth
-    })
-  },
-  methods: {
-    async onLoadMore() {
-      if (this.articles.next) {
-        const response = await fetch(this.articles.next)
-        const articles = await response.json()
+const slug = encodeURIComponent(String(route.params.slug || ''))
 
-        this.articles = {
-          ...articles,
-          results: this.articles.results.concat(articles.results)
-        }
-      }
+const { data: medium, error: mediumError } = await useFetch(
+  `/articles/medium/${slug}/`,
+  {
+    baseURL: apiBase
+  }
+)
+
+const { data: initialArticles, error: articlesError } = await useFetch(
+  '/articles/',
+  {
+    baseURL: apiBase,
+    query: {
+      medium__slug: route.params.slug
     }
+  }
+)
+
+if (
+  mediumError.value ||
+  articlesError.value ||
+  !medium.value ||
+  !medium.value.donation_campaign_slug
+) {
+  throw createError({ statusCode: 404, message: 'Medium not found' })
+}
+
+const articles = ref(initialArticles.value)
+
+const supporterAmount = ref(0)
+try {
+  const podpriData = await $fetch(
+    `https://podpri.djnd.si/api/donation-campaign/${medium.value.donation_campaign_slug}/`
+  )
+  supporterAmount.value = podpriData?.active_monthly_subscriptions || 0
+} catch (e) {}
+
+function updateWindowWidth() {
+  windowWidth.value = window.innerWidth
+}
+
+onMounted(() => {
+  updateWindowWidth()
+  window.addEventListener('resize', updateWindowWidth)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateWindowWidth)
+})
+
+async function onLoadMore() {
+  if (!articles.value?.next) {
+    return
+  }
+
+  const url = new URL(articles.value.next, apiBase)
+  const nextArticles = await $fetch(url.toString())
+
+  articles.value = {
+    ...nextArticles,
+    results: articles.value.results.concat(nextArticles.results)
   }
 }
 </script>
-
-<style lang="scss">
-html {
-  scroll-behavior: smooth;
-}
-body {
-  margin: 0;
-  font-family: 'wf-syne', sans-serif;
-}
-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-}
-.container {
-  width: 100%;
-  @media (min-width: 576px) {
-    max-width: 540px;
-  }
-  @media (min-width: 768px) {
-    max-width: 720px;
-  }
-  @media (min-width: 992px) {
-    max-width: 960px;
-  }
-  @media (min-width: 1200px) {
-    max-width: 1140px;
-  }
-  @media (min-width: 1400px) {
-    max-width: 1320px;
-  }
-}
-.background-white {
-  background-color: white;
-}
-.background-gradient-orange-pink {
-  background-image: linear-gradient(-99deg, #ff5ccb 0%, #ffd700 100%);
-}
-.background-gradient-white-yellow {
-  background-color: white;
-  background-image: linear-gradient(
-    to top,
-    rgba(255, 215, 0, 0.4) 0%,
-    white 100%
-  );
-}
-.background-black {
-  background-color: black;
-}
-.row {
-  display: flex;
-}
-</style>

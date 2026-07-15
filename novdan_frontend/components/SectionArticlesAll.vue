@@ -60,8 +60,13 @@
 </template>
 
 <script>
+import PreferHttpsImage from './PreferHttpsImage.vue'
+
 export default {
   name: 'SectionArticlesAll',
+  components: {
+    PreferHttpsImage
+  },
   props: {
     articles: {
       type: Object,
@@ -283,8 +288,9 @@ export default {
 
       .line-clamp-4 {
         display: -webkit-box;
-        -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
         overflow: hidden;
       }
 

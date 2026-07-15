@@ -3,10 +3,9 @@
     <div class="container">
       <div class="title">
         <h1>
-          <a href="/">
-            n<img class="sun" src="~assets/images/sun.png" alt="sun icon" />v
-            dan
-          </a>
+          <NuxtLink to="/" aria-label="nov dan">
+            n<img class="sun" src="~assets/images/sun.png" alt="" />v dan
+          </NuxtLink>
         </h1>
         <p>
           Neposredna podpora <br />
@@ -14,8 +13,7 @@
         </p>
         <nav>
           <ul>
-            <li><a href="/za-ustvarjalce">Za ustvarjalce</a></li>
-            <!-- <li><a href="/dash/register">Za podpornike</a></li> -->
+            <li><NuxtLink to="/za-ustvarjalce">Za ustvarjalce</NuxtLink></li>
           </ul>
         </nav>
       </div>
@@ -66,29 +64,16 @@
               />
               <span>Domen Savič - Državljan D</span>
             </a>
-            <router-link to="/ppporocila">
+            <NuxtLink to="/ppporocila">
               <img
                 src="~assets/images/jenull.png"
                 alt="Petkova Propagandna Poročila logo"
                 :style="`transform: rotate(${tilted * 0.8}deg)`"
               />
               <span>Petkova Propagandna Poročila</span>
-            </router-link>
+            </NuxtLink>
           </p>
         </div>
-        <!-- <div class="badge">
-          <a href="/podpri" class="support-wrapper">
-            <div class="star">
-              <img src="~assets/images/star.png" alt="pink spinning star" />
-              <div>
-                <span>5</span>
-                <span>eur/<br />mes</span>
-              </div>
-            </div>
-            <div class="support">Podpri</div>
-            <div class="yellow-bg" />
-          </a>
-        </div> -->
       </div>
     </div>
   </section>
@@ -124,11 +109,6 @@ export default {
 .headline {
   padding: 1rem;
   padding-bottom: 0;
-
-  // @media (min-width: 992px) {
-  //   // for sticky badge
-  //   margin-bottom: -10.5rem;
-  // }
 
   .container:nth-of-type(1) {
     position: relative;

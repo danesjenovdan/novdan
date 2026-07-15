@@ -16,7 +16,7 @@
       loop
       poster="~assets/images/gif.png"
     >
-      <source src="~assets/video/back_v4.mp4" type="video/mp4" />
+      <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
     </video>
     <div class="container">
       <div class="row">

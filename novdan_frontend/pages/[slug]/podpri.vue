@@ -10,116 +10,68 @@
     >
       <source src="~assets/video/back_v1_1.mp4" type="video/mp4" />
     </video>
-    <ArticleHeadlineMedium :medium="medium" :supporter-amount="supporterAmount" :show-buttons="false" />
-    <SectionPaymentEmbed :campaign-slug="medium.donation_campaign_slug" :type="paymentType" :amount="amount" />
+    <ArticleHeadlineMedium
+      :medium="medium"
+      :supporter-amount="supporterAmount"
+      :show-buttons="false"
+    />
+    <SectionPaymentEmbed
+      :campaign-slug="medium.donation_campaign_slug"
+      :type="paymentType"
+      :amount="amount"
+    />
     <ArticlesFooter :window-width="windowWidth" />
   </div>
 </template>
 
-<script>
+<script setup>
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import ArticleHeadlineMedium from '../../components/ArticleHeadlineMedium.vue'
 import SectionPaymentEmbed from '../../components/SectionPaymentEmbed.vue'
 import ArticlesFooter from '../../components/ArticlesFooter.vue'
 
-export default {
-  components: {
-    ArticleHeadlineMedium,
-    SectionPaymentEmbed,
-    ArticlesFooter
-  },
-  async asyncData({ $config, params, query, error }) {
-    const apiBase = $config.apiBase
-    let medium = null
-    try {
-      const mediumRes = await fetch(`${apiBase}/articles/medium/${encodeURIComponent(params.slug)}/`)
-      if (!mediumRes.ok) throw new Error('Failed to fetch medium')
-      medium = await mediumRes.json()
-    } catch (e) {
-      return error({ statusCode: 404, message: 'Medium not found' })
-    }
-    if (!medium || !medium.donation_campaign_slug) {
-      return error({ statusCode: 404, message: 'Medium not found' })
-    }
-    let supporterAmount = 0
-    try {
-      const podpriFetchRes = await fetch(`https://podpri.djnd.si/api/donation-campaign/${medium.donation_campaign_slug}/`)
-      if (!podpriFetchRes.ok) throw new Error('Failed to fetch supporter amount')
-      const podpriRes = await podpriFetchRes.json()
-      supporterAmount = podpriRes?.active_monthly_subscriptions || 0
-    } catch (e) {}
+const config = useRuntimeConfig()
+const apiBase = config.public?.apiBase || config.apiBase
+const route = useRoute()
+const windowWidth = ref(0)
 
-    return {
-      medium,
-      paymentType: query.enkratno === 'true' ? 'one_time' : 'recurring',
-      amount: query.znesek ? parseInt(query.znesek, 10) : null,
-      supporterAmount
-    }
-  },
-  data() {
-    return {
-      windowWidth: 0
-    }
-  },
-  mounted() {
-    this.windowWidth = window.innerWidth
-    window.addEventListener('resize', () => {
-      this.windowWidth = window.innerWidth
-    })
+const slug = encodeURIComponent(String(route.params.slug || ''))
+const paymentType = route.query.enkratno === 'true' ? 'one_time' : 'recurring'
+const amount = route.query.znesek ? parseInt(route.query.znesek, 10) : null
+
+const { data: medium, error: mediumError } = await useFetch(
+  `/articles/medium/${slug}/`,
+  {
+    baseURL: apiBase
   }
+)
+
+if (
+  mediumError.value ||
+  !medium.value ||
+  !medium.value.donation_campaign_slug
+) {
+  throw createError({ statusCode: 404, message: 'Medium not found' })
 }
+
+const supporterAmount = ref(0)
+try {
+  const podpriData = await $fetch(
+    `https://podpri.djnd.si/api/donation-campaign/${medium.value.donation_campaign_slug}/`
+  )
+  supporterAmount.value = podpriData?.active_monthly_subscriptions || 0
+} catch (e) {}
+
+function updateWindowWidth() {
+  windowWidth.value = window.innerWidth
+}
+
+onMounted(() => {
+  updateWindowWidth()
+  window.addEventListener('resize', updateWindowWidth)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateWindowWidth)
+})
 </script>
-
-<style lang="scss">
-html {
-  scroll-behavior: smooth;
-}
-body {
-  margin: 0;
-  font-family: 'wf-syne', sans-serif;
-}
-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-}
-.container {
-  width: 100%;
-  @media (min-width: 576px) {
-    max-width: 540px;
-  }
-  @media (min-width: 768px) {
-    max-width: 720px;
-  }
-  @media (min-width: 992px) {
-    max-width: 960px;
-  }
-  @media (min-width: 1200px) {
-    max-width: 1140px;
-  }
-  @media (min-width: 1400px) {
-    max-width: 1320px;
-  }
-}
-.background-white {
-  background-color: white;
-}
-.background-gradient-orange-pink {
-  background-image: linear-gradient(-99deg, #ff5ccb 0%, #ffd700 100%);
-}
-.background-gradient-white-yellow {
-  background-color: white;
-  background-image: linear-gradient(
-    to top,
-    rgba(255, 215, 0, 0.4) 0%,
-    white 100%
-  );
-}
-.background-black {
-  background-color: black;
-}
-.row {
-  display: flex;
-}
-</style>

@@ -3,10 +3,9 @@
     <div class="container">
       <div class="title">
         <h1>
-          <a href="/">
-            n<img class="sun" src="~assets/images/sun.png" alt="sun icon" />v
-            dan
-          </a>
+          <NuxtLink to="/" aria-label="nov dan">
+            n<img class="sun" src="~assets/images/sun.png" alt="" />v dan
+          </NuxtLink>
         </h1>
         <p>
           Neposredna podpora <br />
@@ -14,8 +13,7 @@
         </p>
         <nav>
           <ul>
-            <li><a href="/za-ustvarjalce">Za ustvarjalce</a></li>
-            <!-- <li><a href="/dash/register">Za podpornike</a></li> -->
+            <li><NuxtLink to="/za-ustvarjalce">Za ustvarjalce</NuxtLink></li>
           </ul>
         </nav>
       </div>
@@ -38,12 +36,21 @@
           <p v-for="line in descriptionLines" :key="line">
             {{ line }}
           </p>
-          <div v-for="link in medium.description_links" :key="link.url" class="link">
-            <a :href="link.url" target="_blank">{{ link.url }}</a><br />
+          <div
+            v-for="link in medium.description_links"
+            :key="link.url"
+            class="link"
+          >
+            <a :href="link.url" target="_blank">{{ link.url }}</a
+            ><br />
           </div>
         </div>
       </div>
-      <SectionPaymentChooser v-if="showButtons" :medium="medium" :type="paymentType" />
+      <SectionPaymentChooser
+        v-if="showButtons"
+        :medium="medium"
+        :type="paymentType"
+      />
     </div>
   </section>
 </template>
@@ -74,6 +81,11 @@ export default {
 
     return {
       paymentType: query.enkratno === 'true' ? 'one_time' : 'recurring'
+    }
+  },
+  watch: {
+    '$route.query.enkratno'(value) {
+      this.paymentType = value === 'true' ? 'one_time' : 'recurring'
     }
   },
   computed: {
