@@ -22,6 +22,8 @@ metadata:
   name: novdan-api
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-production"
+    traefik.ingress.kubernetes.io/router.middlewares: |
+      traefik-redirect-to-https@kubernetescrd
 spec:
   ingressClassName: traefik
   tls:
