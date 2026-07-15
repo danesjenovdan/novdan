@@ -3,11 +3,7 @@
     <div class="container">
       <div>
         <div>
-          <iframe
-            class="payment-frame"
-            :src="embedUrl"
-            frameborder="0"
-          ></iframe>
+          <iframe class="payment-frame" :src="embedUrl" frameborder="0" />
         </div>
       </div>
     </div>
@@ -16,43 +12,43 @@
 
 <script>
 export default {
-  name: 'SectionPaymentEmbed',
+  name: "SectionPaymentEmbed",
   props: {
     campaignSlug: {
       type: String,
-      required: true
+      required: true,
     },
     type: {
       type: String,
-      default: 'recurring'
+      default: "recurring",
     },
     amount: {
       type: Number,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
-    return {}
+    return {};
   },
   computed: {
     hasAmount() {
-      return this.amount != null && !isNaN(this.amount) && this.amount > 0
+      return this.amount != null && !isNaN(this.amount) && this.amount > 0;
     },
     embedUrl() {
-      let url = `https://moj.djnd.si/${this.campaignSlug}/doniraj`
-      if (this.hasAmount && this.type === 'one_time') {
-        url += `/placilo?znesek=${this.amount}`
-      } else if (this.hasAmount && this.type === 'recurring') {
-        url += `/info?mesecna=1&znesek=${this.amount}`
-      } else if (this.type === 'recurring') {
-        url += '?mesecna=1'
-      } else if (this.type === 'one_time') {
-        url += '?enkratna=1'
+      let url = `https://moj.djnd.si/${this.campaignSlug}/doniraj`;
+      if (this.hasAmount && this.type === "one_time") {
+        url += `/placilo?znesek=${this.amount}`;
+      } else if (this.hasAmount && this.type === "recurring") {
+        url += `/info?mesecna=1&znesek=${this.amount}`;
+      } else if (this.type === "recurring") {
+        url += "?mesecna=1";
+      } else if (this.type === "one_time") {
+        url += "?enkratna=1";
       }
-      return url
-    }
-  }
-}
+      return url;
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">

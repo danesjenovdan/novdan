@@ -57,7 +57,7 @@
               class="button"
               @click.prevent="focusInput"
             >
-              <div>{{ da.name || 'Poljubni znesek' }}</div>
+              <div>{{ da.name || "Poljubni znesek" }}</div>
               <form class="amount" @submit.prevent="continueWithCustomAmount">
                 <input v-model="customAmount" type="number" />&nbsp;€
               </form>
@@ -91,21 +91,21 @@
 
 <script>
 export default {
-  name: 'SectionPaymentChooser',
+  name: "SectionPaymentChooser",
   props: {
     medium: {
       type: Object,
-      required: true
+      required: true,
     },
     type: {
       type: String,
-      default: 'recurring'
-    }
+      default: "recurring",
+    },
   },
   data() {
     return {
-      customAmount: ''
-    }
+      customAmount: "",
+    };
   },
   computed: {
     donationAmounts() {
@@ -113,42 +113,43 @@ export default {
         .filter((da) => da[this.type])
         .sort((a, b) => {
           if (Number(a.amount) === -1) {
-            return 1
+            return 1;
           }
           if (Number(b.amount) === -1) {
-            return -1
+            return -1;
           }
-          return Number(a.amount) - Number(b.amount)
-        })
-    }
+          return Number(a.amount) - Number(b.amount);
+        });
+    },
   },
   methods: {
     queryString(amount) {
-      const params = new URLSearchParams()
-      if (this.type === 'one_time') {
-        params.append('enkratno', 'true')
+      const params = new URLSearchParams();
+      if (this.type === "one_time") {
+        params.append("enkratno", "true");
       }
-      params.append('znesek', amount)
-      return params.toString()
+      params.append("znesek", amount);
+      return params.toString();
     },
     focusInput() {
-      const input = this.$el.querySelector('.amount-buttons .button input')
+      const input = this.$el.querySelector(".amount-buttons .button input");
       if (input) {
-        input.focus()
+        input.focus();
       }
     },
     continueWithCustomAmount() {
       if (this.customAmount && this.customAmount > 0) {
         this.$router.push(
-          `/${this.medium.slug}/podpri?${this.queryString(this.customAmount)}`
-        )
+          `/${this.medium.slug}/podpri?${this.queryString(this.customAmount)}`,
+        );
       }
     },
     cancelSupport() {
-      prompt('Prosimo kontaktirajte nas na e-naslovu:', 'novdan@djnd.si')
-    }
-  }
-}
+      // eslint-disable-next-line no-alert
+      prompt("Prosimo kontaktirajte nas na e-naslovu:", "novdan@djnd.si");
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -159,17 +160,17 @@ export default {
   font-family:
     system-ui,
     -apple-system,
-    'Segoe UI',
+    "Segoe UI",
     Roboto,
-    'Helvetica Neue',
-    'Noto Sans',
-    'Liberation Sans',
+    "Helvetica Neue",
+    "Noto Sans",
+    "Liberation Sans",
     Arial,
     sans-serif,
-    'Apple Color Emoji',
-    'Segoe UI Emoji',
-    'Segoe UI Symbol',
-    'Noto Color Emoji';
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
 
   a {
     color: inherit;
@@ -277,7 +278,7 @@ export default {
           margin: 0;
         }
 
-        input[type='number'] {
+        input[type="number"] {
           -moz-appearance: textfield;
           appearance: textfield;
         }

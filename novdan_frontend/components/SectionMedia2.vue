@@ -67,24 +67,24 @@ export default {
   props: {
     windowWidth: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   data() {
     return {
-      tilted: 0
-    }
+      tilted: 0,
+    };
   },
   methods: {
     tiltTiles(event) {
-      const positionX = event.pageX
-      const windowWidth = window.innerWidth
-      const windowCenter = windowWidth / 2
-      const tilted = ((windowCenter - positionX) / windowCenter) * -45
-      this.tilted = tilted / 2
-    }
-  }
-}
+      const positionX = event.pageX;
+      const windowWidth = window.innerWidth;
+      const windowCenter = windowWidth / 2;
+      const tilted = ((windowCenter - positionX) / windowCenter) * -45;
+      this.tilted = tilted / 2;
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">

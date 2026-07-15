@@ -84,25 +84,25 @@ export default {
   data() {
     return {
       tilted: 0,
-      titlePopupText: 'xwxwxw'
-    }
+      titlePopupText: "xwxwxw",
+    };
   },
   mounted() {
-    window.addEventListener('mousemove', this.tiltTiles)
+    window.addEventListener("mousemove", this.tiltTiles);
   },
-  beforeDestroy() {
-    window.removeEventListener('mousemove', this.tiltTiles)
+  beforeUnmount() {
+    window.removeEventListener("mousemove", this.tiltTiles);
   },
   methods: {
     tiltTiles(event) {
-      const positionX = event.pageX
-      const windowWidth = window.innerWidth
-      const windowCenter = windowWidth / 2
-      const tilted = ((windowCenter - positionX) / windowCenter) * -45
-      this.tilted = tilted / 4
-    }
-  }
-}
+      const positionX = event.pageX;
+      const windowWidth = window.innerWidth;
+      const windowCenter = windowWidth / 2;
+      const tilted = ((windowCenter - positionX) / windowCenter) * -45;
+      this.tilted = tilted / 4;
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -351,7 +351,7 @@ export default {
             }
 
             span:last-child {
-              font-family: 'wf-syne-tactile', cursive;
+              font-family: "wf-syne-tactile", cursive;
               font-size: calc(var(--badge-size) / 18);
               font-style: italic;
               line-height: 1;

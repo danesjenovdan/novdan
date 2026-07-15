@@ -25,53 +25,55 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from 'vue'
-import ArticleHeadlineMedium from '../../components/ArticleHeadlineMedium.vue'
-import SectionPaymentEmbed from '../../components/SectionPaymentEmbed.vue'
-import ArticlesFooter from '../../components/ArticlesFooter.vue'
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import ArticleHeadlineMedium from "../../components/ArticleHeadlineMedium.vue";
+import SectionPaymentEmbed from "../../components/SectionPaymentEmbed.vue";
+import ArticlesFooter from "../../components/ArticlesFooter.vue";
 
-const config = useRuntimeConfig()
-const apiBase = config.public?.apiBase || config.apiBase
-const route = useRoute()
-const windowWidth = ref(0)
+const config = useRuntimeConfig();
+const apiBase = config.public?.apiBase || config.apiBase;
+const route = useRoute();
+const windowWidth = ref(0);
 
-const slug = encodeURIComponent(String(route.params.slug || ''))
-const paymentType = route.query.enkratno === 'true' ? 'one_time' : 'recurring'
-const amount = route.query.znesek ? parseInt(route.query.znesek, 10) : null
+const slug = encodeURIComponent(String(route.params.slug || ""));
+const paymentType = route.query.enkratno === "true" ? "one_time" : "recurring";
+const amount = route.query.znesek ? parseInt(route.query.znesek, 10) : null;
 
 const { data: medium, error: mediumError } = await useFetch(
   `/articles/medium/${slug}/`,
   {
-    baseURL: apiBase
-  }
-)
+    baseURL: apiBase,
+  },
+);
 
 if (
   mediumError.value ||
   !medium.value ||
   !medium.value.donation_campaign_slug
 ) {
-  throw createError({ statusCode: 404, message: 'Medium not found' })
+  throw createError({ statusCode: 404, message: "Medium not found" });
 }
 
-const supporterAmount = ref(0)
+const supporterAmount = ref(0);
 try {
   const podpriData = await $fetch(
-    `https://podpri.djnd.si/api/donation-campaign/${medium.value.donation_campaign_slug}/`
-  )
-  supporterAmount.value = podpriData?.active_monthly_subscriptions || 0
-} catch (e) {}
+    `https://podpri.djnd.si/api/donation-campaign/${medium.value.donation_campaign_slug}/`,
+  );
+  supporterAmount.value = podpriData?.active_monthly_subscriptions || 0;
+} catch {
+  // ignore errors
+}
 
 function updateWindowWidth() {
-  windowWidth.value = window.innerWidth
+  windowWidth.value = window.innerWidth;
 }
 
 onMounted(() => {
-  updateWindowWidth()
-  window.addEventListener('resize', updateWindowWidth)
-})
+  updateWindowWidth();
+  window.addEventListener("resize", updateWindowWidth);
+});
 
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', updateWindowWidth)
-})
+  window.removeEventListener("resize", updateWindowWidth);
+});
 </script>

@@ -26,10 +26,10 @@ export default {
   props: {
     windowWidth: {
       type: Number,
-      default: 0
-    }
-  }
-}
+      default: 0,
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">

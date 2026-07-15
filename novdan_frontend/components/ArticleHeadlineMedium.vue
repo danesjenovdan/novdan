@@ -56,44 +56,44 @@
 </template>
 
 <script>
-import SectionPaymentChooser from './SectionPaymentChooser.vue'
+import SectionPaymentChooser from "./SectionPaymentChooser.vue";
 
 export default {
   components: {
-    SectionPaymentChooser
+    SectionPaymentChooser,
   },
   props: {
     medium: {
       type: Object,
-      required: true
+      required: true,
     },
     showButtons: {
       type: Boolean,
-      default: true
+      default: true,
     },
     supporterAmount: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   data() {
-    const query = this.$route.query
+    const query = this.$route.query;
 
     return {
-      paymentType: query.enkratno === 'true' ? 'one_time' : 'recurring'
-    }
-  },
-  watch: {
-    '$route.query.enkratno'(value) {
-      this.paymentType = value === 'true' ? 'one_time' : 'recurring'
-    }
+      paymentType: query.enkratno === "true" ? "one_time" : "recurring",
+    };
   },
   computed: {
     descriptionLines() {
-      return this.medium.description.replace(/\r\n/g, '\n').split('\n')
-    }
-  }
-}
+      return this.medium.description.replace(/\r\n/g, "\n").split("\n");
+    },
+  },
+  watch: {
+    "$route.query.enkratno"(value) {
+      this.paymentType = value === "true" ? "one_time" : "recurring";
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">

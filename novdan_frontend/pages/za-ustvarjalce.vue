@@ -42,16 +42,16 @@
 export default {
   data() {
     return {
-      windowWidth: 0
-    }
+      windowWidth: 0,
+    };
   },
   mounted() {
-    this.windowWidth = window.innerWidth
-    window.addEventListener('resize', () => {
-      this.windowWidth = window.innerWidth
-    })
-  }
-}
+    this.windowWidth = window.innerWidth;
+    window.addEventListener("resize", () => {
+      this.windowWidth = window.innerWidth;
+    });
+  },
+};
 </script>
 
 <style scoped lang="scss">
