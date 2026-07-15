@@ -5,7 +5,9 @@ resources:
   - api/deployment.yaml
   - api/ingress.yaml
   - api/service.yaml
-  - frontend.yaml
+  - frontend/deployment.yaml
+  - frontend/ingress.yaml
+  - frontend/service.yaml
   # DISABLED: - cronjobs/api_generate_monthly_tokens.yaml
   - cronjobs/parse_articles.yaml
 images:
