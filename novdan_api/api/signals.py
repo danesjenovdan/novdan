@@ -16,6 +16,9 @@ def post_user_save(sender, instance, created, **kwargs):
         if settings.PAYMENT_API_BASE:
             requests.post(
                 f"{settings.PAYMENT_API_BASE}/api/subscribe/",
-                json={"email": instance.email, "campaign_id": settings.PAYMENT_CAMPAIGN_ID},
+                json={
+                    "email": instance.email,
+                    "campaign_id": settings.PAYMENT_CAMPAIGN_ID,
+                },
                 timeout=30,
             )

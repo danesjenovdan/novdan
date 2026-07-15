@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django.views.generic import TemplateView
 from oauth2_provider.contrib.rest_framework.permissions import TokenHasScope
 from oauth2_provider.models import (
     get_access_token_model,
@@ -51,6 +52,10 @@ User = get_user_model()
 Application = get_application_model()
 AccessToken = get_access_token_model()
 RefreshToken = get_refresh_token_model()
+
+
+class HomeView(TemplateView):
+    template_name = "home.html"
 
 
 class RegisterView(APIView):

@@ -22,8 +22,10 @@ from oauth2_provider.urls import app_name as oauth2_app_name
 from oauth2_provider.urls import base_urlpatterns as oauth2_base_urlpatterns
 
 from api.urls import spsp4_urlpatterns
+from api.views import HomeView
 
 urlpatterns = [
+    path("", HomeView.as_view(), name="home"),
     path("admin/", admin.site.urls),
     path(
         "o/",
