@@ -4,7 +4,7 @@ namespace: novdan
 resources:
   - frontend.yaml
   - api.yaml
-  - cronjobs/api_generate_monthly_tokens.yaml
+  # DISABLED: - cronjobs/api_generate_monthly_tokens.yaml
   - cronjobs/parse_articles.yaml
 images:
   - name: novdan-frontend
