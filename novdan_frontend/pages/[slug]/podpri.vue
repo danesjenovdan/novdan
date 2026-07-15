@@ -31,7 +31,7 @@ import SectionPaymentEmbed from "../../components/SectionPaymentEmbed.vue";
 import ArticlesFooter from "../../components/ArticlesFooter.vue";
 
 const config = useRuntimeConfig();
-const apiBase = config.public?.apiBase || config.apiBase;
+const apiBase = import.meta.server ? config.apiBase : config.public?.apiBase;
 const route = useRoute();
 const windowWidth = ref(0);
 
@@ -39,11 +39,12 @@ const slug = encodeURIComponent(String(route.params.slug || ""));
 const paymentType = route.query.enkratno === "true" ? "one_time" : "recurring";
 const amount = route.query.znesek ? parseInt(route.query.znesek, 10) : null;
 
-const { data: medium, error: mediumError } = await useFetch(
-  `/articles/medium/${slug}/`,
-  {
-    baseURL: apiBase,
-  },
+const { data: medium, error: mediumError } = await useAsyncData(
+  `${slug}-medium`,
+  () =>
+    $fetch(`/articles/medium/${slug}/`, {
+      baseURL: apiBase,
+    }),
 );
 
 if (

@@ -23,12 +23,12 @@ import SectionArticlesAll from "../components/SectionArticlesAll.vue";
 import ArticlesFooter from "../components/ArticlesFooter.vue";
 
 const config = useRuntimeConfig();
-const apiBase = config.public?.apiBase || config.apiBase;
+const apiBase = import.meta.server ? config.apiBase : config.public?.apiBase;
 const windowWidth = ref(0);
 
-const { data: initialArticles } = await useFetch("/articles/", {
-  baseURL: apiBase,
-});
+const { data: initialArticles } = await useAsyncData("articles", () =>
+  $fetch("/articles/", { baseURL: apiBase }),
+);
 
 const articles = ref(initialArticles.value);
 

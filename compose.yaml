@@ -21,18 +21,25 @@ services:
     depends_on:
       - db
 
-  # novdan-frontend:
-  #   build: ./novdan_frontend
-  #   ports:
-  #     - 3000:3000
-  #   environment:
-  #     NODE_ENV: development
-  #     NUXT_API_BASE: http://novdan-api:8000
-  #     NUXT_API_BASE_BROWSER: http://localhost:8000
-  #     NUXT_API_CLIENT_ID: IfFCMgW5XsJZGX27M5a4cjdicW6AEJZzrimI5qiS
-  #   command: npm run dev
-  #   volumes:
-  #     - ./novdan_frontend:/app
+  novdan-frontend:
+    build:
+      context: ./novdan_frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./novdan_frontend/assets:/app/assets
+      - ./novdan_frontend/components:/app/components
+      - ./novdan_frontend/pages:/app/pages
+      - ./novdan_frontend/public:/app/public
+      - ./novdan_frontend/.prettierrc.json:/app/.prettierrc.json
+      - ./novdan_frontend/eslint.config.js:/app/eslint.config.js
+      - ./novdan_frontend/nuxt.config.js:/app/nuxt.config.js
+    ports:
+      - 3000:3000
+    environment:
+      NUXT_API_BASE: http://novdan-api:8000
+      NUXT_API_BASE_BROWSER: http://localhost:8000
+    depends_on:
+      - novdan-api
 
   db:
     image: postgres:16-alpine

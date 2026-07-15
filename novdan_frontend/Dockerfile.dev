@@ -1,0 +1,12 @@
+FROM node:26-alpine
+
+# set current directory
+WORKDIR /app
+
+# install dependencies
+COPY package.json package-lock.json ./
+RUN npm ci
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]

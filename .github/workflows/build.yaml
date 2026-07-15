@@ -28,6 +28,9 @@ jobs:
           DOCKER_BUILD_RECORD_UPLOAD: false
         with:
           context: ./novdan_frontend
+          build-args: |
+            NUXT_API_BASE=https://denarnica.novdan.si
+            NUXT_API_BASE_BROWSER=https://denarnica.novdan.si
           push: true
           tags: |
             rg.fr-par.scw.cloud/djnd/novdan-frontend:${{ github.sha }}
