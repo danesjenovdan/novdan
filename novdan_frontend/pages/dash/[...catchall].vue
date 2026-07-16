@@ -16,8 +16,8 @@
         <div class="main-text-wrapper">
           <h2>Pozdravljeni</h2>
           <p>
-            Z julijem na platformi uvajamo spremembo donacijskega sistema, ki ne
-            bo več temeljil na vtičniku (browser extension) in samodejnem
+            Julija 2026 smo na platformi uvedli spremembo donacijskega sistema,
+            ki ne bo več temeljil na vtičniku (browser extension) in samodejnem
             prerazporejanju sredstev med medijske projekte.
           </p>
           <p>
