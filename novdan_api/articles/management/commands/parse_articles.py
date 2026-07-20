@@ -10,7 +10,7 @@ from django.core.validators import URLValidator
 from django.utils import timezone
 from django.utils.html import strip_tags
 from meta_tags_parser.parse import parse_meta_tags_from_source
-from meta_tags_parser.structs import WhatToParse
+from meta_tags_parser.structs import SettingsFromUser, WhatToParse
 from rss_parser import AtomParser, RSSParser
 from rss_parser.models import XMLBaseModel
 from rss_parser.models.atom import Atom
@@ -138,7 +138,9 @@ class Command(BaseCommand):
 
         tags_group = parse_meta_tags_from_source(
             response.text,
-            what_to_parse=(WhatToParse.OPEN_GRAPH, WhatToParse.TWITTER),
+            options=SettingsFromUser(
+                what_to_parse=(WhatToParse.OPEN_GRAPH, WhatToParse.TWITTER),
+            ),
         )
         image_url = find_og_image(tags_group)
 
