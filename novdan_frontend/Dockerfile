@@ -34,6 +34,10 @@ RUN npm run build
 # ---
 FROM node:26-alpine
 
+# install tini
+RUN apk add --no-cache tini
+ENTRYPOINT ["/sbin/tini", "--"]
+
 # set current directory
 WORKDIR /app
 
@@ -43,6 +47,10 @@ COPY --from=build /app/.output ./
 # set NODE_ENV to production
 ENV NODE_ENV=production
 
+# set user
+USER node
+
+# define port
 EXPOSE 3000
 
 CMD ["node", "server/index.mjs"]
