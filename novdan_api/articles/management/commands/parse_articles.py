@@ -1,5 +1,4 @@
 import time
-from typing import Optional
 
 import requests
 from bs4 import BeautifulSoup
@@ -11,58 +10,10 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from meta_tags_parser.parse import parse_meta_tags_from_source
 from meta_tags_parser.structs import SettingsFromUser, WhatToParse
-from pydantic import Field
-from rss_parser import AtomParser, RSSParser
-from rss_parser.models import XMLBaseModel
-from rss_parser.models.atom import Atom
-from rss_parser.models.atom.entry import Entry
-from rss_parser.models.atom.feed import Feed
-from rss_parser.models.rss import RSS
-from rss_parser.models.rss.channel import Channel
-from rss_parser.models.rss.item import Item
-from rss_parser.models.types.date import DateTimeOrStr
-from rss_parser.models.types.only_list import OnlyList
-from rss_parser.models.types.tag import Tag
+from rss_parser import AtomParser, RSSParser, detect_feed_type, FeedType
 from sentry_sdk import capture_exception, capture_message, push_scope
 
 from ...models import Article, Medium
-
-
-# Fix non standard rss feeds
-class CustomItem(Item, XMLBaseModel):
-    category: Optional[OnlyList[Tag[str]]] = None
-    enclosure: Optional[OnlyList[Tag[str]]] = None
-
-
-class CustomChannel(Channel, XMLBaseModel):
-    items: Optional[OnlyList[Tag[CustomItem]]] = Field(alias="item", default=[])
-
-
-class CustomSchema(RSS, XMLBaseModel):
-    channel: Tag[CustomChannel]
-
-
-# Fix for non standard atom feeds
-class MediaGroup(XMLBaseModel):
-    description: Optional[Tag[str]] = Field(alias="media:description", default=None)
-    thumbnails: Optional[OnlyList[Tag[XMLBaseModel]]] = Field(
-        alias="media:thumbnail", default=[]
-    )
-
-
-class CustomEntry(Entry, XMLBaseModel):
-    media_groups: Optional[OnlyList[Tag[MediaGroup]]] = Field(
-        alias="media:group", default=[]
-    )
-
-
-class CustomFeed(Feed, XMLBaseModel):
-    updated: Optional[Tag[DateTimeOrStr]]
-    entries: Optional[OnlyList[Tag[CustomEntry]]] = Field(alias="entry", default=[])
-
-
-class CustomAtomSchema(Atom, XMLBaseModel):
-    feed: Tag[CustomFeed]
 
 
 class DontRetryException(Exception):
@@ -149,9 +100,6 @@ class Command(BaseCommand):
             update_image_url(image_url)
             return
 
-    def is_atom_feed(self, data: str) -> bool:
-        return "<feed" in data[:1000] and "http://www.w3.org/2005/Atom" in data[:1000]
-
     def parse_rss_feed(self, medium, url):
         now = timezone.now()
 
@@ -163,43 +111,26 @@ class Command(BaseCommand):
 
             content_type = response.headers.get("Content-Type", "").lower()
             if "xml" not in content_type:
-                with push_scope() as scope:
-                    scope.set_extra("command", "parse_articles")
-                    scope.set_extra("rss_url", url)
-                    capture_message(f"Unexpected content type: {content_type}")
-                self.stdout.write(f"   > unexpected content type: {content_type}")
-                self.stdout.write("")
-                return
+                raise ValueError(f"Unexpected content type: {content_type}")
 
             response_text = response.text
-            # fix random problems with feeds
-            response_text = response_text.replace(
-                "<title>&nbsp;",
-                "<title>",
-            )
-            response_text = response_text.replace(
-                "&nbsp;</title>",
-                "</title>",
-            )
-            response_text = response_text.replace(
-                "&nbsp;</media:title>",
-                "</media:title>",
-            )
-
-            feed_type = "Atom" if self.is_atom_feed(response_text) else "RSS"
-            self.stdout.write(f"   > feed type: {feed_type}")
-
-            if feed_type == "Atom":
-                rss = AtomParser.parse(response_text, schema=CustomAtomSchema)
-                self.stdout.write(f"   > title: {rss.feed.title.content}")
-                self.stdout.write(f"   > found items: {len(rss.feed.entries)}")
+            feed_type = detect_feed_type(response_text)
+            if feed_type == FeedType.ATOM:
+                rss = AtomParser.parse(response_text)
+                feed_title = rss.feed.title.content
+                items = rss.feed.entries
+            elif feed_type == FeedType.RSS:
+                rss = RSSParser.parse(response_text)
+                feed_title = rss.channel.title.content
+                items = rss.channel.items
             else:
-                rss = RSSParser.parse(response_text, schema=CustomSchema)
-                self.stdout.write(f"   > title: {rss.channel.title.content}")
-                self.stdout.write(f"   > found items: {len(rss.channel.items)}")
+                raise ValueError(f"Unsupported feed type: {feed_type}")
+
+            self.stdout.write(f"   > feed type: {feed_type}")
+            self.stdout.write(f"   > title: {feed_title}")
+            self.stdout.write(f"   > found items: {len(items)}")
             self.stdout.write("")
 
-            items = rss.feed.entries if feed_type == "Atom" else rss.channel.items
             for item in items:
                 title = item.title.content
                 if len(title) > 256:
@@ -207,10 +138,10 @@ class Command(BaseCommand):
 
                 self.stdout.write(f"   > {title[:67]}")
 
-                link = item.links[0] if hasattr(item, "links") and item.links else None
-                if feed_type == "Atom":
+                link = item.links[0] if len(item.links) else None
+                if feed_type == FeedType.ATOM:
                     link_content = link.attributes.get("href", None) if link else None
-                elif feed_type == "RSS":
+                elif feed_type == FeedType.RSS:
                     link_content = link.content if link else None
 
                 if link_content and not link_content.startswith("http"):
@@ -226,30 +157,27 @@ class Command(BaseCommand):
                         capture_message(f"Invalid url: {link_content}")
                     self.stdout.write(f"     > invalid url: {link_content}")
                     self.stdout.write("")
-                    print(link)
                     continue
 
                 url = link_content[:512]
                 description = ""
-                if feed_type == "RSS":
+                if feed_type == FeedType.RSS:
                     if item.description and item.description.content:
                         description = strip_tags(item.description.content)
-                elif feed_type == "Atom":
+                elif feed_type == FeedType.ATOM:
                     if item.summary and item.summary.content:
                         description = strip_tags(item.summary.content)
                     elif item.content and item.content.content:
                         description = strip_tags(item.content.content)
-                    elif item.media_groups:
-                        for mg in item.media_groups:
-                            if mg.description and mg.description.content:
-                                description = strip_tags(mg.description.content)
-                                break
+                    elif mg := item.content.model_extra.get("media:group", None):
+                        if md := mg.get("media:description", None):
+                            description = strip_tags(md)
                 if len(description) > 256:
                     description = description[:253] + "..."
 
-                if feed_type == "RSS":
+                if feed_type == FeedType.RSS:
                     guid = item.guid.content if item.guid else None
-                elif feed_type == "Atom":
+                elif feed_type == FeedType.ATOM:
                     guid = item.id.content if item.id else None
 
                 if not guid:
@@ -259,9 +187,9 @@ class Command(BaseCommand):
                 if guid and len(guid) > 256:
                     guid = guid[:253] + "..."
 
-                if feed_type == "RSS":
+                if feed_type == FeedType.RSS:
                     pub_date = item.pub_date.content if item.pub_date else None
-                elif feed_type == "Atom":
+                elif feed_type == FeedType.ATOM:
                     pub_date = item.published.content if item.published else None
 
                 if pub_date and isinstance(pub_date, str):
@@ -270,20 +198,16 @@ class Command(BaseCommand):
                     pub_date = now
 
                 image_url = None
-                if feed_type == "RSS":
-                    if hasattr(item, "enclosure") and item.enclosure:
-                        for enclosure in item.enclosure:
-                            enclosure_type = enclosure.attributes.get("type", "")
-                            if enclosure_type.startswith("image/"):
-                                image_url = enclosure.attributes.get("url")
-                                break
-                elif feed_type == "Atom":
-                    if hasattr(item, "media_groups") and item.media_groups:
-                        for media_group in item.media_groups:
-                            for thumbnail in media_group.thumbnails:
-                                image_url = thumbnail.attributes.get("url")
-                                if image_url:
-                                    break
+                if feed_type == FeedType.RSS:
+                    for enclosure in item.enclosures:
+                        enclosure_type = enclosure.attributes.get("type", "")
+                        if enclosure_type.startswith("image/"):
+                            image_url = enclosure.attributes.get("url")
+                            break
+                elif feed_type == FeedType.ATOM:
+                    if mg := item.content.model_extra.get("media:group", None):
+                        if mt := mg.get("media:thumbnail", None):
+                            image_url = mt.get("@url", None)
 
                 existing_article = Article.objects.filter(
                     medium=medium,
