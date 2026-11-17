@@ -1,5 +1,5 @@
 # Use an official Python runtime based on Debian 13 "trixie" as a parent image.
-FROM python:3.14-slim-trixie
+FROM python:3.15-slim-trixie
 
 # Add user that will be used in the container.
 RUN useradd django
@@ -24,9 +24,6 @@ RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-r
     zlib1g-dev \
     libwebp-dev \
     && rm -rf /var/lib/apt/lists/*
-
-# Install the application server.
-RUN pip install "gunicorn==26.0.0"
 
 # Install the project requirements.
 COPY requirements.txt /

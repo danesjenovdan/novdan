@@ -50,8 +50,11 @@ async function onLoadMore() {
     return;
   }
 
-  const url = new URL(articles.value.next, apiBase);
-  const nextArticles = await $fetch(url.toString());
+  // if next is relative, add api base
+  const nextUrl = new URL(articles.value.next, apiBase);
+  // replace api base if next was absolute
+  const url = `${apiBase}${nextUrl.pathname}${nextUrl.search}`;
+  const nextArticles = await $fetch(url);
 
   articles.value = {
     ...nextArticles,
