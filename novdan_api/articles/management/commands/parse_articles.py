@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from meta_tags_parser.parse import parse_meta_tags_from_source
 from meta_tags_parser.structs import SettingsFromUser, WhatToParse
-from rss_parser import AtomParser, RSSParser, detect_feed_type, FeedType
+from rss_parser import AtomParser, FeedType, RSSParser, detect_feed_type
 from sentry_sdk import capture_exception, capture_message, push_scope
 
 from ...models import Article, Medium
