@@ -11,6 +11,7 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from meta_tags_parser.parse import parse_meta_tags_from_source
 from meta_tags_parser.structs import SettingsFromUser, WhatToParse
+from pydantic import Field
 from rss_parser import AtomParser, RSSParser
 from rss_parser.models import XMLBaseModel
 from rss_parser.models.atom import Atom
@@ -22,12 +23,9 @@ from rss_parser.models.rss.item import Item
 from rss_parser.models.types.date import DateTimeOrStr
 from rss_parser.models.types.only_list import OnlyList
 from rss_parser.models.types.tag import Tag
-from rss_parser.pydantic_proxy import import_v1_pydantic
 from sentry_sdk import capture_exception, capture_message, push_scope
 
 from ...models import Article, Medium
-
-pydantic = import_v1_pydantic()
 
 
 # Fix non standard rss feeds
@@ -37,9 +35,7 @@ class CustomItem(Item, XMLBaseModel):
 
 
 class CustomChannel(Channel, XMLBaseModel):
-    items: Optional[OnlyList[Tag[CustomItem]]] = pydantic.Field(
-        alias="item", default=[]
-    )
+    items: Optional[OnlyList[Tag[CustomItem]]] = Field(alias="item", default=[])
 
 
 class CustomSchema(RSS, XMLBaseModel):
@@ -48,25 +44,21 @@ class CustomSchema(RSS, XMLBaseModel):
 
 # Fix for non standard atom feeds
 class MediaGroup(XMLBaseModel):
-    description: Optional[Tag[str]] = pydantic.Field(
-        alias="media:description", default=None
-    )
-    thumbnails: Optional[OnlyList[Tag[XMLBaseModel]]] = pydantic.Field(
+    description: Optional[Tag[str]] = Field(alias="media:description", default=None)
+    thumbnails: Optional[OnlyList[Tag[XMLBaseModel]]] = Field(
         alias="media:thumbnail", default=[]
     )
 
 
 class CustomEntry(Entry, XMLBaseModel):
-    media_groups: Optional[OnlyList[Tag[MediaGroup]]] = pydantic.Field(
+    media_groups: Optional[OnlyList[Tag[MediaGroup]]] = Field(
         alias="media:group", default=[]
     )
 
 
 class CustomFeed(Feed, XMLBaseModel):
     updated: Optional[Tag[DateTimeOrStr]]
-    entries: Optional[OnlyList[Tag[CustomEntry]]] = pydantic.Field(
-        alias="entry", default=[]
-    )
+    entries: Optional[OnlyList[Tag[CustomEntry]]] = Field(alias="entry", default=[])
 
 
 class CustomAtomSchema(Atom, XMLBaseModel):
